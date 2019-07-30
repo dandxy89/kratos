@@ -7,7 +7,7 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class PGAExamplesSpec extends FlatSpec with Matchers with SimulationTestData {
 
-  "Strokes Gained: off-the-tee" should "return XXX" in {
+  "Strokes Gained: off-the-tee" should "return 0.275" in {
     val strokesGainedAll = getAllStrokesGained(pgaExample)
     getStrokesGainedOffTheTee(strokesGainedAll, ParFour) shouldBe 0.275
   }
