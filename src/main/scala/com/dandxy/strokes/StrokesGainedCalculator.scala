@@ -4,6 +4,7 @@ import cats.Monad
 import cats.implicits._
 import com.dandxy.model.golf.Location.{ OnTheGreen, TeeBox }
 import com.dandxy.model.golf.Par.ParThree
+import com.dandxy.model.golf.Score.findScore
 import com.dandxy.model.golf.Statistic.PGAStatistic
 import com.dandxy.model.golf.{ Distance, Location, Par }
 import com.dandxy.model.player.GolfInput.{ InputAndMetric, UserGolfInput }
@@ -67,7 +68,7 @@ object StrokesGainedCalculator {
     getMetrics(dbOp)(input).map(getAllStrokesGained).map { userAndMetrics =>
       val run = getAllStrokesGained(userAndMetrics)
       UserGolfResult(
-        score = input.size,
+        score = findScore(input.size, par),
         strokesGained = run.map(_.result).sum,
         strokesGainedOffTheTee = getStrokesGainedOffTheTee(run, par),
         strokesGainedApproach = getStrokesGainedApproachTheGreen(run, par),

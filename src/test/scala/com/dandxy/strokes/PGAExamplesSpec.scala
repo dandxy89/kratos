@@ -1,8 +1,9 @@
 package com.dandxy.strokes
 
-import com.dandxy.model.golf.Par.{ ParFour, ParThree }
+import com.dandxy.model.golf.Par.{ParFour, ParThree}
 import com.dandxy.strokes.StrokesGainedCalculator._
-import org.scalatest.{ FlatSpec, Matchers }
+import com.dandxy.testData.SimulationTestData
+import org.scalatest.{FlatSpec, Matchers}
 
 class PGAExamplesSpec extends FlatSpec with Matchers with SimulationTestData {
 
@@ -15,7 +16,7 @@ class PGAExamplesSpec extends FlatSpec with Matchers with SimulationTestData {
   // Strokes gained: approach-the-green measures player performance on approach shots.
   // Approach shots include all shots that are not from the tee on par-4 and par-5 holes and are not
   // included in strokes gained: around-the-green and strokes gained: putting. Approach shots include tee shots on par-3s.
-  "Strokes Gained: approach-the-green" should "return XXX" in {
+  "Strokes Gained: approach-the-green" should "return 0.274" in {
     val strokesGainedAll = getAllStrokesGained(pgaExample)
     getStrokesGainedApproachTheGreen(strokesGainedAll, ParThree) shouldBe 0.274
   }
