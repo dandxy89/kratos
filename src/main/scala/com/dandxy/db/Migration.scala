@@ -19,7 +19,7 @@ object Migration extends LazyLogging {
       val migrationsApplied: Int = fw.migrate()
 
       logger.info(
-        s"Successfully applied $migrationsApplied migrations to the `entitlements` database"
+        s"Successfully applied $migrationsApplied migrations to the database"
       )
       migrationsApplied
     }.leftMap {
