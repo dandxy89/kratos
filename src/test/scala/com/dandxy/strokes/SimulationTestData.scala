@@ -3,11 +3,11 @@ package com.dandxy.strokes
 import cats.effect.IO
 import com.dandxy.model.golf.DistanceMetric.Feet
 import com.dandxy.model.golf.GolfClub._
-import com.dandxy.model.golf.Location.{ Fairway, OnTheGreen, TeeBox }
-import com.dandxy.model.golf.Orientation.{ LongLeft, MiddleLeft }
+import com.dandxy.model.golf.Location.{Fairway, OnTheGreen, TeeBox}
+import com.dandxy.model.golf.Orientation.{LongLeft, MiddleLeft}
 import com.dandxy.model.golf.Statistic.PGAStatistic
-import com.dandxy.model.golf.{ Distance, Hole, Location, Par }
-import com.dandxy.model.player.GolfInput.{ UserGolfInput, UserInput }
+import com.dandxy.model.golf.{Distance, Hole, Location, Par}
+import com.dandxy.model.player.GolfInput.{InputAndMetric, UserGolfInput, UserInput}
 
 trait SimulationTestData {
 
@@ -19,7 +19,12 @@ trait SimulationTestData {
   val dbCalled: Location => Distance => IO[PGAStatistic] = stat =>
     distance =>
       stat match {
-        case OnTheGreen => IO.pure(PGAStatistic(Distance(10), 1.626))
+        case OnTheGreen =>
+          distance match {
+            case Distance(17) => IO.pure(PGAStatistic(Distance(17), 1.83))
+            case _            => IO.pure(PGAStatistic(Distance(10), 1.626))
+          }
+
         case TeeBox =>
           distance match {
             case Distance(430.0) => IO.pure(PGAStatistic(Distance(430), 4.08))
@@ -29,6 +34,7 @@ trait SimulationTestData {
             case Distance(210.0) => IO.pure(PGAStatistic(Distance(210), 3.15))
             case _               => IO.pure(PGAStatistic(Distance(100), 0))
           }
+
         case _ =>
           distance match {
             case Distance(430.0) => IO.pure(PGAStatistic(Distance(430), 4.08))
@@ -85,4 +91,9 @@ trait SimulationTestData {
     UserGolfInput(Distance(2), 5, OnTheGreen, Option(MiddleLeft), Putter)
   )
 
+  val pgaExample: List[InputAndMetric] = List(
+    InputAndMetric(UserGolfInput(Distance(446), 1, TeeBox, Option(MiddleLeft), Driver), PGAStatistic(Distance(446), 4.100), 0),
+    InputAndMetric(UserGolfInput(Distance(116), 2, Fairway, Option(MiddleLeft), FiveWood), PGAStatistic(Distance(116), 2.825), 0),
+    InputAndMetric(UserGolfInput(Distance(17), 4, OnTheGreen, Option(LongLeft), Putter), PGAStatistic(Distance(17), 1.826), 0)
+  )
 }
