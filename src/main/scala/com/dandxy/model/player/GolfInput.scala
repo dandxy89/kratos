@@ -6,7 +6,7 @@ trait GolfInput
 
 object GolfInput {
 
-  final case class UserGolfGolfInput(
+  final case class UserGolfInput(
     distance: Distance,
     shot: Int,
     location: Location,
@@ -14,12 +14,12 @@ object GolfInput {
     club: GolfClub
   ) extends GolfInput
 
-  final case class UserGolfInput(
+  final case class UserInput (
     userId: String,
     puttingMetric: DistanceMetric,
     hole: Hole,
     par: Par,
-    golfInput: List[UserGolfGolfInput]
+    golfInput: List[UserGolfInput]
   ) extends GolfInput
 
   final case class UserProfile(playerId: PlayerId, firstName: String, lastName: String, handicap: Double) extends GolfInput
