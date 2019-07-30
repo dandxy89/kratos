@@ -3,11 +3,12 @@ package com.dandxy.strokes
 import cats.effect.IO
 import com.dandxy.model.golf.DistanceMetric.Feet
 import com.dandxy.model.golf.GolfClub._
-import com.dandxy.model.golf.Location.{Fairway, OnTheGreen, TeeBox}
-import com.dandxy.model.golf.Orientation.{LongLeft, MiddleLeft}
+import com.dandxy.model.golf.Location.{ Fairway, OnTheGreen, TeeBox }
+import com.dandxy.model.golf.Orientation.{ LongLeft, MiddleLeft }
 import com.dandxy.model.golf.Statistic.PGAStatistic
-import com.dandxy.model.golf.{Distance, Hole, Location, Par}
-import com.dandxy.model.player.GolfInput.{InputAndMetric, UserGolfInput, UserInput}
+import com.dandxy.model.golf.{ Distance, Hole, Location, Par }
+import com.dandxy.model.player.GolfInput.{ InputAndMetric, UserGolfInput, UserInput }
+import com.dandxy.model.player.UserGolfResult
 
 trait SimulationTestData {
 
@@ -22,26 +23,34 @@ trait SimulationTestData {
         case OnTheGreen =>
           distance match {
             case Distance(17) => IO.pure(PGAStatistic(Distance(17), 1.83))
-            case _            => IO.pure(PGAStatistic(Distance(10), 1.626))
+            case _ =>
+              println(s"Putting Miss: $distance")
+              IO.pure(PGAStatistic(Distance(10), 1.626))
           }
 
         case TeeBox =>
           distance match {
+            case Distance(446.0) => IO.pure(PGAStatistic(Distance(446), 4.10))
             case Distance(430.0) => IO.pure(PGAStatistic(Distance(430), 4.08))
             case Distance(160.0) => IO.pure(PGAStatistic(Distance(160), 2.99))
             case Distance(559.0) => IO.pure(PGAStatistic(Distance(560), 4.74))
             case Distance(310.0) => IO.pure(PGAStatistic(Distance(310), 3.75))
             case Distance(210.0) => IO.pure(PGAStatistic(Distance(210), 3.15))
-            case _               => IO.pure(PGAStatistic(Distance(100), 0))
+            case _ =>
+              println(s"Tee Miss: $distance")
+              IO.pure(PGAStatistic(Distance(100), 0))
           }
 
         case _ =>
           distance match {
+            case Distance(116.0) => IO.pure(PGAStatistic(Distance(116), 2.825))
             case Distance(430.0) => IO.pure(PGAStatistic(Distance(430), 4.08))
             case Distance(320.0) => IO.pure(PGAStatistic(Distance(320), 3.84))
             case Distance(160.0) => IO.pure(PGAStatistic(Distance(160), 2.98))
             case Distance(200.0) => IO.pure(PGAStatistic(Distance(200), 3.19))
-            case _               => IO.pure(PGAStatistic(Distance(100), 0))
+            case _ =>
+              println(s"Other Miss: $distance")
+              IO.pure(PGAStatistic(Distance(100), 0))
           }
       }
 
@@ -96,4 +105,19 @@ trait SimulationTestData {
     InputAndMetric(UserGolfInput(Distance(116), 2, Fairway, Option(MiddleLeft), FiveWood), PGAStatistic(Distance(116), 2.825), 0),
     InputAndMetric(UserGolfInput(Distance(17), 4, OnTheGreen, Option(LongLeft), Putter), PGAStatistic(Distance(17), 1.826), 0)
   )
+
+  val pgaExpectedResult: UserGolfResult =
+    UserGolfResult(
+      score = 3,
+      strokesGained = 1.1,
+      strokesGainedOffTheTee = 0.275,
+      strokesGainedApproach = -0.005,
+      strokesGainedAround = 0.0,
+      strokesGainedPutting = 0.83,
+      userDate = List(
+        UserGolfInput(Distance(446.0), 1, TeeBox, Some(MiddleLeft), Driver),
+        UserGolfInput(Distance(116.0), 2, Fairway, Some(MiddleLeft), FiveWood),
+        UserGolfInput(Distance(17.0), 4, OnTheGreen, Some(LongLeft), Putter)
+      )
+    )
 }
