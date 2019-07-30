@@ -1,8 +1,11 @@
-# TODO
 
+TODO: Add Travis
 
+# Overview of Application
 
-# GUIDE
+TODO: Overview of the project
+
+# Strokes Gained
 
 From PGA Tours Website:
 
@@ -12,27 +15,13 @@ From PGA Tours Website:
     
 Measurements:
 
-##### Stokes Gained
-
-    Off-the-tee + approach-the-green + around-the-green + putting = strokes gained: total
-
-##### Strokes Gained: Off-the-Tee
-
-    Strokes gained: off-the-tee measures player performance off the tee on all par-4s and par-5s. 
-
-##### Strokes Gained: Approach-the-Green
-
-    Strokes gained: approach-the-green measures player performance on approach shots. Approach shots include all shots that are not from the tee on par-4 and par-5 holes and are not included in strokes gained: around-the-green and strokes gained: putting. Approach shots include tee shots on par-3s.
-
-##### Strokes Gained: Around-the-Green
+*   Stokes Gained = Off-the-tee + approach-the-green + around-the-green + putting
+*   Strokes gained - off-the-tee: measures player performance off the tee on all par-4s and par-5s. 
+*   Strokes gained - approach-the-green: measures player performance on approach shots. Approach shots include all shots that are not from the tee on par-4 and par-5 holes and are not included in strokes gained: around-the-green and strokes gained: putting. Approach shots include tee shots on par-3s.
+*   Strokes gained - around-the-green: measures player performance on any shot within 30 yards of the edge of the green. This statistic does not include any shots taken on the putting green.    
+*   Strokes Gained - Putting: how many strokes you gained or lost vs. PGA Tour average for putting
     
-    Strokes gained: around-the-green measures player performance on any shot within 30 yards of the edge of the green. This statistic does not include any shots taken on the putting green.
-    
-#### Strokes Gained: Putting
-
-    TODO
-    
-#### Example
+Worked example:
     
 | Shot  | Location                                                  | Baseline from location | Next location       | Baseline from next location | Strokes gained               |
 |-------|-----------------------------------------------------------|------------------------|---------------------|-----------------------------|------------------------------|
@@ -44,8 +33,25 @@ Measurements:
 
 [Link](https://www.pgatour.com/news/2016/05/31/strokes-gained-defined.html)
 
-## DB
+## Setting up a local database
 
     docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres
     
     psql -h localhost -U postgres -d postgres
+
+## Http4s Server
+
+Not implemented
+
+TODO
+
+*   Registration
+*   Authentication
+*   Strokes gained
+*   Saving to database
+
+## Testing
+
+*   Unit tests - In Progress
+*   Integration tests - To start
+*   Pact tests - To start
