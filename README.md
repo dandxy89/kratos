@@ -55,3 +55,10 @@ TODO
 *   Unit tests - In Progress
 *   Integration tests - To start
 *   Pact tests - To start
+
+## Scalajs / Purescript UI
+
+TODO
+
+*   Decide on ScalaJs or Purescript
+*   Implement basic UI for demos
