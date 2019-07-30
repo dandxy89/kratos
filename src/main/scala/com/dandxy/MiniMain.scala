@@ -1,10 +1,10 @@
 package com.dandxy
 
-import cats.effect.{ContextShift, IO}
+import cats.effect.{ ContextShift, IO }
 import com.dandxy.db.Migration._
 import com.dandxy.db.PGAQueryTool
 import com.dandxy.model.AppConfig
-import com.dandxy.model.AppConfig.{ApplicationConfig, DBConfig}
+import com.dandxy.model.AppConfig.{ ApplicationConfig, DBConfig }
 import com.dandxy.model.golf.Distance
 import com.dandxy.model.golf.Location.OnTheGreen
 import com.dandxy.model.golf.Statistic.PGAStatistic

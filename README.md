@@ -28,6 +28,12 @@ Measurements:
     
     Strokes gained: around-the-green measures player performance on any shot within 30 yards of the edge of the green. This statistic does not include any shots taken on the putting green.
     
+#### Strokes Gained: Putting
+
+    TODO
+    
+#### Example
+    
 | Shot  | Location                                                  | Baseline from location | Next location       | Baseline from next location | Strokes gained               |
 |-------|-----------------------------------------------------------|------------------------|---------------------|-----------------------------|------------------------------|
 | 1     | 446 yards (tee box)                                       | 4.100                  | 116 yards (fairway) | 2.825                       | (4.100 - 2.825) - 1 = +0.275 |
