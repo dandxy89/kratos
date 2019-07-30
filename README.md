@@ -1,5 +1,5 @@
 
-TODO: Add Travis
+[![Build Status](https://travis-ci.com/dandxy89/kratos.svg?branch=master)](https://travis-ci.com/dandxy89/kratos)
 
 # Overview of Application
 
