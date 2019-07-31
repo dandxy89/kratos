@@ -26,7 +26,7 @@ class PGAExamplesSpec extends FlatSpec with Matchers with SimulationTestData {
   // This statistic does not include any shots taken on the putting green.
   "Strokes Gained: around-the-green" should "return 0.0" in {
     val strokesGainedAll = getAllStrokesGained(pgaExample)
-    getStrokesGainedAroundTheGreen(strokesGainedAll, ParFour) shouldBe 0.0
+    getStrokesGainedAroundTheGreen(strokesGainedAll) shouldBe 0.0
   }
 
   "Strokes Gained: Putting" should "return 0.826" in {
