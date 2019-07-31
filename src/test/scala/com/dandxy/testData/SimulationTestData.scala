@@ -1,7 +1,7 @@
 package com.dandxy.testData
 
 import cats.effect.IO
-import com.dandxy.model.golf.DistanceMetric.Feet
+import com.dandxy.model.golf.DistanceMeasurement.Feet
 import com.dandxy.model.golf.GolfClub._
 import com.dandxy.model.golf.Location.{Fairway, OnTheGreen, TeeBox}
 import com.dandxy.model.golf.Orientation.{LongLeft, MiddleLeft}

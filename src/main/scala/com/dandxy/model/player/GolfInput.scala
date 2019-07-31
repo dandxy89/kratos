@@ -18,13 +18,8 @@ object GolfInput {
   // Height
   // Stroke index
 
-  final case class UserGameInput(
-    userId: String,
-    puttingMetric: DistanceMetric,
-    hole: Hole,
-    par: Par,
-    golfInput: List[HoleInput]
-  ) extends GolfInput
+  final case class UserGameInput(userId: String, puttingMetric: DistanceMeasurement, hole: Hole, par: Par, golfInput: List[HoleInput])
+      extends GolfInput
 
   // Ball used
   // Handicap
