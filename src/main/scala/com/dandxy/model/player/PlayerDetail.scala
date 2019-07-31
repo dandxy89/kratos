@@ -1,6 +1,6 @@
 package com.dandxy.model.player
 
-trait PlayerDetail {
+sealed trait PlayerDetail {
   def playerId: PlayerId
 }
 

@@ -2,7 +2,7 @@ package com.dandxy.db
 
 import com.dandxy.model.golf.input.Distance
 
-trait DatabaseModel {
+sealed trait DatabaseModel {
   def distance: Distance
 }
 

@@ -29,9 +29,7 @@ object HealthCheck extends LazyLogging {
           Warning
       }
 
-  def databaseStatusPoll(
-    db: Transactor[IO]
-  )(implicit ec: ContextShift[IO], t: Timer[IO]): IO[Ref[IO, Status]] =
+  def databaseStatusPoll(db: Transactor[IO])(implicit ec: ContextShift[IO], t: Timer[IO]): IO[Ref[IO, Status]] =
     for {
       status <- Ref.of[IO, Status](OK)
       _ <- Stream

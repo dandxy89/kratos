@@ -1,6 +1,6 @@
 package com.dandxy.model.golf.input
 
-trait ShotHeight {
+sealed trait ShotHeight {
   def description: String
 }
 

@@ -1,6 +1,6 @@
 package com.dandxy.model.golf.entity
 
-trait Penalty {
+sealed trait Penalty {
   def name: String
   def shots: Int
 }

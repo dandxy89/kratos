@@ -1,6 +1,6 @@
 package com.dandxy.model.golf.input
 
-trait WindSpeed {
+sealed trait WindSpeed {
   def description: String
 }
 

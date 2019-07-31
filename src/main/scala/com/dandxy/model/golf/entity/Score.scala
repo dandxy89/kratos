@@ -1,6 +1,6 @@
 package com.dandxy.model.golf.entity
 
-trait Score {
+sealed trait Score {
   def name: String
 }
 
