@@ -1,4 +1,4 @@
-package com.dandxy.model.golf
+package com.dandxy.model.golf.input
 
 sealed trait Metric {
   def description: String

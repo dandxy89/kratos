@@ -1,4 +1,4 @@
-package com.dandxy.model.golf
+package com.dandxy.model.golf.entity
 
 sealed trait Par {
   def strokes: Int

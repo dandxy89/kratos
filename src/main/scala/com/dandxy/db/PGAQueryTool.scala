@@ -1,7 +1,8 @@
 package com.dandxy.db
 
-import com.dandxy.model.golf.Statistic.PGAStatistic
-import com.dandxy.model.golf.{ Distance, PGAStatistics }
+import com.dandxy.model.golf.entity.PGAStatistics
+import com.dandxy.model.golf.input.Distance
+import com.dandxy.model.golf.pga.Statistic.PGAStatistic
 import doobie.free.connection.ConnectionIO
 import doobie.implicits._
 import doobie.util.Meta

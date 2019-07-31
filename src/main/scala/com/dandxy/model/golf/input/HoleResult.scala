@@ -1,7 +1,7 @@
-package com.dandxy.model.player
+package com.dandxy.model.golf.input
 
-import com.dandxy.model.golf.Score
-import com.dandxy.model.player.GolfInput.HoleInput
+import com.dandxy.model.golf.entity.Score
+import com.dandxy.model.golf.input.GolfInput.HoleInput
 
 final case class HoleResult(
   score: Score,
@@ -12,10 +12,3 @@ final case class HoleResult(
   strokesGainedPutting: Double,
   userDate: List[HoleInput]
 )
-
-// TODO
-// Fairways in regulation
-// Greens in regulations
-// No. Bunkers hit
-// No. Putts
-// No. Drovers

@@ -1,6 +1,6 @@
-package com.dandxy.model.player
+package com.dandxy.model.golf.input
 
-import com.dandxy.model.golf._
+import com.dandxy.model.golf.entity._
 
 sealed trait GolfInput
 

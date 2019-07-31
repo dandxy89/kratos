@@ -1,9 +1,9 @@
 package com.dandxy.strokes
 
-import com.dandxy.model.golf.Par.{ParFour, ParThree}
+import com.dandxy.model.golf.entity.Par.{ ParFour, ParThree }
 import com.dandxy.strokes.StrokesGainedCalculator._
 import com.dandxy.testData.SimulationTestData
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{ FlatSpec, Matchers }
 
 class PGAExamplesSpec extends FlatSpec with Matchers with SimulationTestData {
 

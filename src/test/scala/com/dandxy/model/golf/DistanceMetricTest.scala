@@ -1,6 +1,6 @@
 package com.dandxy.model.golf
 
-import com.dandxy.model.golf.DistanceMeasurement.{ Feet, Meters, Yards }
+import com.dandxy.model.golf.input.DistanceMeasurement._
 import org.scalatest.{ FlatSpec, Matchers }
 
 class DistanceMetricTest extends FlatSpec with Matchers {
@@ -46,5 +46,4 @@ class DistanceMetricTest extends FlatSpec with Matchers {
   it should "correctly convert from meters" in {
     Meters.toMeters(5) shouldBe 5.0
   }
-
 }

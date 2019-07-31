@@ -1,4 +1,4 @@
-package com.dandxy.model.player
+package com.dandxy.strokes
 
 object GameEngine {
 

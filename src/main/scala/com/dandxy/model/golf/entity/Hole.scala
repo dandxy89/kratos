@@ -1,3 +1,3 @@
-package com.dandxy.model.golf
+package com.dandxy.model.golf.entity
 
 final case class Hole(number: Int) extends AnyVal

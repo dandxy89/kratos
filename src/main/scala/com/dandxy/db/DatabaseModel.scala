@@ -1,6 +1,6 @@
 package com.dandxy.db
 
-import com.dandxy.model.golf.Distance
+import com.dandxy.model.golf.input.Distance
 
 trait DatabaseModel {
   def distance: Distance
