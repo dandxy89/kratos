@@ -1,7 +1,7 @@
 package com.dandxy.model.golf.input
 
 import com.dandxy.model.golf.entity.Score
-import com.dandxy.model.golf.input.GolfInput.HoleInput
+import com.dandxy.model.golf.input.GolfInput.ShotInput
 
 final case class HoleResult(
   score: Score,
@@ -10,5 +10,5 @@ final case class HoleResult(
   strokesGainedApproach: Double,
   strokesGainedAround: Double,
   strokesGainedPutting: Double,
-  userDate: List[HoleInput]
+  userDate: List[ShotInput]
 )
