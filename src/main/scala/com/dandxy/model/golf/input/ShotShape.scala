@@ -1,6 +1,6 @@
 package com.dandxy.model.golf.input
 
-trait ShotShape {
+sealed trait ShotShape {
   def description: String
 }
 

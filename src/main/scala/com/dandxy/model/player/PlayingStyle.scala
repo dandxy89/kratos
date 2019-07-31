@@ -1,6 +1,6 @@
 package com.dandxy.model.player
 
-trait PlayingStyle {
+sealed trait PlayingStyle {
   def description: String
 }
 
