@@ -1,3 +1,3 @@
 package com.dandxy.model.player
 
-final case class PlayerId(uuid: String) extends AnyVal
+final case class PlayerId(uuid: Int) extends AnyVal
