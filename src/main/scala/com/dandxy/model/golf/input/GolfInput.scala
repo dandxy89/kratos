@@ -11,20 +11,22 @@ object GolfInput {
     shot: Int,
     location: Location,
     orientation: Option[Orientation],
-    club: GolfClub
+    club: GolfClub,
+    shotShape: Option[ShotShape],
+    shotHeight: Option[ShotHeight],
+    strokeIndex: Int
   ) extends GolfInput
 
-  // Shape
-  // Height
-  // Stroke index
-
-  final case class UserGameInput(userId: String, puttingMetric: DistanceMeasurement, hole: Hole, par: Par, golfInput: List[HoleInput])
-      extends GolfInput
-
-  // Ball used
-  // Handicap
-  // Green speed
-  // Temperature
-  // Wind
-
+  final case class UserGameInput(
+    userId: String,
+    puttingMetric: DistanceMeasurement,
+    hole: Hole,
+    par: Par,
+    golfInput: List[HoleInput],
+    handicap: Int,
+    ballUsed: Option[String],
+    greenSpeed: Option[Double],
+    temperature: Option[Temperature],
+    windSpeed: Option[WindSpeed]
+  ) extends GolfInput
 }
