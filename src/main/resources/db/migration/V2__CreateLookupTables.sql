@@ -1,4 +1,4 @@
-CREATE SCHEMA pga
+
 
 CREATE TABLE pga.FairwayLookup (
     distance INTEGER NOT NULL ,
