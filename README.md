@@ -49,6 +49,7 @@ TODO
 *   Authentication
 *   Strokes gained
 *   Saving to database
+*   Email verification
 
 ## Testing
 

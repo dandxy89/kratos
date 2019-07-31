@@ -3,20 +3,21 @@ package com.dandxy.testData
 import cats.effect.IO
 import com.dandxy.model.golf.DistanceMetric.Feet
 import com.dandxy.model.golf.GolfClub._
-import com.dandxy.model.golf.Location.{ Fairway, OnTheGreen, TeeBox }
-import com.dandxy.model.golf.Orientation.{ LongLeft, MiddleLeft }
-import com.dandxy.model.golf.Score.{ Birdie, DoubleBogey, HoleInOne, ParredHole }
+import com.dandxy.model.golf.Location.{Fairway, OnTheGreen, TeeBox}
+import com.dandxy.model.golf.Orientation.{LongLeft, MiddleLeft}
+import com.dandxy.model.golf.Score.{Birdie, DoubleBogey, HoleInOne, ParredHole}
 import com.dandxy.model.golf.Statistic.PGAStatistic
-import com.dandxy.model.golf.{ Distance, Hole, Location, Par }
-import com.dandxy.model.player.GolfInput.{ InputAndMetric, UserGolfInput, UserInput }
-import com.dandxy.model.player.UserGolfResult
+import com.dandxy.model.golf.{Distance, Hole, Location, Par}
+import com.dandxy.model.player.GolfInput.{HoleInput, UserGameInput}
+import com.dandxy.model.player.HoleResult
+import com.dandxy.strokes.StrokesGainedCalculator.InputAndMetric
 
 trait SimulationTestData {
 
   def runIO[A](io: IO[A]): A = io.unsafeRunSync()
 
-  def testUserInput(inputData: List[UserGolfInput], holePar: Par) =
-    UserInput("testID123", Feet, Hole(1), holePar, inputData)
+  def testUserInput(inputData: List[HoleInput], holePar: Par) =
+    UserGameInput("testID123", Feet, Hole(1), holePar, inputData)
 
   val dbCalled: Location => Distance => IO[PGAStatistic] = stat =>
     distance =>
@@ -57,13 +58,13 @@ trait SimulationTestData {
           }
       }
 
-  val parThreeExample: List[UserGolfInput] = List(
-    UserGolfInput(Distance(210), 1, TeeBox, Option(MiddleLeft), FourIron),
-    UserGolfInput(Distance(10), 2, OnTheGreen, Option(LongLeft), Putter),
-    UserGolfInput(Distance(2), 3, OnTheGreen, Option(MiddleLeft), Putter)
+  val parThreeExample: List[HoleInput] = List(
+    HoleInput(Distance(210), 1, TeeBox, Option(MiddleLeft), FourIron),
+    HoleInput(Distance(10), 2, OnTheGreen, Option(LongLeft), Putter),
+    HoleInput(Distance(2), 3, OnTheGreen, Option(MiddleLeft), Putter)
   )
 
-  val expectedParThreeExample = UserGolfResult(
+  val expectedParThreeExample = HoleResult(
     score = ParredHole(3),
     strokesGained = 0.15000000000000002,
     strokesGainedOffTheTee = 0.0,
@@ -71,21 +72,21 @@ trait SimulationTestData {
     strokesGainedAround = 0.0,
     strokesGainedPutting = -0.374,
     userDate = List(
-      UserGolfInput(Distance(210.0), 1, TeeBox, Some(MiddleLeft), FourIron),
-      UserGolfInput(Distance(10.0), 2, OnTheGreen, Some(LongLeft), Putter),
-      UserGolfInput(Distance(2.0), 3, OnTheGreen, Some(MiddleLeft), Putter)
+      HoleInput(Distance(210.0), 1, TeeBox, Some(MiddleLeft), FourIron),
+      HoleInput(Distance(10.0), 2, OnTheGreen, Some(LongLeft), Putter),
+      HoleInput(Distance(2.0), 3, OnTheGreen, Some(MiddleLeft), Putter)
     )
   )
 
-  val parThreeExampleBadGolfer: List[UserGolfInput] = List(
-    UserGolfInput(Distance(210), 1, TeeBox, Option(MiddleLeft), FourIron),
-    UserGolfInput(Distance(10), 2, OnTheGreen, Option(LongLeft), Putter),
-    UserGolfInput(Distance(2), 3, OnTheGreen, Option(MiddleLeft), Putter),
-    UserGolfInput(Distance(2), 4, OnTheGreen, Option(MiddleLeft), Putter),
-    UserGolfInput(Distance(2), 5, OnTheGreen, Option(MiddleLeft), Putter)
+  val parThreeExampleBadGolfer: List[HoleInput] = List(
+    HoleInput(Distance(210), 1, TeeBox, Option(MiddleLeft), FourIron),
+    HoleInput(Distance(10), 2, OnTheGreen, Option(LongLeft), Putter),
+    HoleInput(Distance(2), 3, OnTheGreen, Option(MiddleLeft), Putter),
+    HoleInput(Distance(2), 4, OnTheGreen, Option(MiddleLeft), Putter),
+    HoleInput(Distance(2), 5, OnTheGreen, Option(MiddleLeft), Putter)
   )
 
-  val expectedParThreeExampleBadGolfer = UserGolfResult(
+  val expectedParThreeExampleBadGolfer = HoleResult(
     score = DoubleBogey(5),
     strokesGained = -1.85,
     strokesGainedOffTheTee = 0.0,
@@ -93,20 +94,20 @@ trait SimulationTestData {
     strokesGainedAround = 0.0,
     strokesGainedPutting = -2.374,
     userDate = List(
-      UserGolfInput(Distance(210.0), 1, TeeBox, Some(MiddleLeft), FourIron),
-      UserGolfInput(Distance(10.0), 2, OnTheGreen, Some(LongLeft), Putter),
-      UserGolfInput(Distance(2.0), 3, OnTheGreen, Some(MiddleLeft), Putter),
-      UserGolfInput(Distance(2.0), 4, OnTheGreen, Some(MiddleLeft), Putter),
-      UserGolfInput(Distance(2.0), 5, OnTheGreen, Some(MiddleLeft), Putter)
+      HoleInput(Distance(210.0), 1, TeeBox, Some(MiddleLeft), FourIron),
+      HoleInput(Distance(10.0), 2, OnTheGreen, Some(LongLeft), Putter),
+      HoleInput(Distance(2.0), 3, OnTheGreen, Some(MiddleLeft), Putter),
+      HoleInput(Distance(2.0), 4, OnTheGreen, Some(MiddleLeft), Putter),
+      HoleInput(Distance(2.0), 5, OnTheGreen, Some(MiddleLeft), Putter)
     )
   )
 
-  val parThreeExampleGoodGolfer: List[UserGolfInput] = List(
-    UserGolfInput(Distance(210), 1, TeeBox, Option(MiddleLeft), FourIron),
-    UserGolfInput(Distance(10), 2, OnTheGreen, Option(LongLeft), Putter)
+  val parThreeExampleGoodGolfer: List[HoleInput] = List(
+    HoleInput(Distance(210), 1, TeeBox, Option(MiddleLeft), FourIron),
+    HoleInput(Distance(10), 2, OnTheGreen, Option(LongLeft), Putter)
   )
 
-  val expectedParThreeExampleGoodGolfer = UserGolfResult(
+  val expectedParThreeExampleGoodGolfer = HoleResult(
     score = Birdie(2),
     strokesGained = 1.15,
     strokesGainedOffTheTee = 0.0,
@@ -114,19 +115,19 @@ trait SimulationTestData {
     strokesGainedAround = 0.0,
     strokesGainedPutting = 0.626,
     userDate = List(
-      UserGolfInput(Distance(210.0), 1, TeeBox, Some(MiddleLeft), FourIron),
-      UserGolfInput(Distance(10.0), 2, OnTheGreen, Some(LongLeft), Putter)
+      HoleInput(Distance(210.0), 1, TeeBox, Some(MiddleLeft), FourIron),
+      HoleInput(Distance(10.0), 2, OnTheGreen, Some(LongLeft), Putter)
     )
   )
 
-  val parFourExample: List[UserGolfInput] = List(
-    UserGolfInput(Distance(430), 1, TeeBox, Option(MiddleLeft), Driver),
-    UserGolfInput(Distance(160), 2, Fairway, Option(MiddleLeft), FiveIron),
-    UserGolfInput(Distance(10), 3, OnTheGreen, Option(LongLeft), Putter),
-    UserGolfInput(Distance(2), 4, OnTheGreen, Option(MiddleLeft), Putter)
+  val parFourExample: List[HoleInput] = List(
+    HoleInput(Distance(430), 1, TeeBox, Option(MiddleLeft), Driver),
+    HoleInput(Distance(160), 2, Fairway, Option(MiddleLeft), FiveIron),
+    HoleInput(Distance(10), 3, OnTheGreen, Option(LongLeft), Putter),
+    HoleInput(Distance(2), 4, OnTheGreen, Option(MiddleLeft), Putter)
   )
 
-  val expectedParFourExample = UserGolfResult(
+  val expectedParFourExample = HoleResult(
     score = ParredHole(4),
     strokesGained = 0.07999999999999995,
     strokesGainedOffTheTee = 0.1,
@@ -134,37 +135,37 @@ trait SimulationTestData {
     strokesGainedAround = 0.0,
     strokesGainedPutting = -0.374,
     userDate = List(
-      UserGolfInput(Distance(430.0), 1, TeeBox, Some(MiddleLeft), Driver),
-      UserGolfInput(Distance(160.0), 2, Fairway, Some(MiddleLeft), FiveIron),
-      UserGolfInput(Distance(10.0), 3, OnTheGreen, Some(LongLeft), Putter),
-      UserGolfInput(Distance(2.0), 4, OnTheGreen, Some(MiddleLeft), Putter)
+      HoleInput(Distance(430.0), 1, TeeBox, Some(MiddleLeft), Driver),
+      HoleInput(Distance(160.0), 2, Fairway, Some(MiddleLeft), FiveIron),
+      HoleInput(Distance(10.0), 3, OnTheGreen, Some(LongLeft), Putter),
+      HoleInput(Distance(2.0), 4, OnTheGreen, Some(MiddleLeft), Putter)
     )
   )
 
-  val parFourExampleHoleInOne: List[UserGolfInput] = List(
-    UserGolfInput(Distance(430), 1, TeeBox, Option(MiddleLeft), Driver)
+  val parFourExampleHoleInOne: List[HoleInput] = List(
+    HoleInput(Distance(430), 1, TeeBox, Option(MiddleLeft), Driver)
   )
 
   val expectedParFourExampleHoleInOne =
-    UserGolfResult(
+    HoleResult(
       score = HoleInOne(1),
       strokesGained = 3.08,
       strokesGainedOffTheTee = 3.08,
       strokesGainedApproach = 0.0,
       strokesGainedAround = 0.0,
       strokesGainedPutting = 0.0,
-      userDate = List(UserGolfInput(Distance(430.0), 1, TeeBox, Some(MiddleLeft), Driver))
+      userDate = List(HoleInput(Distance(430.0), 1, TeeBox, Some(MiddleLeft), Driver))
     )
 
-  val parFiveExample: List[UserGolfInput] = List(
-    UserGolfInput(Distance(559), 1, TeeBox, Option(MiddleLeft), Driver),
-    UserGolfInput(Distance(320), 2, Fairway, Option(MiddleLeft), FiveWood),
-    UserGolfInput(Distance(160), 3, Fairway, Option(MiddleLeft), FourIron),
-    UserGolfInput(Distance(10), 4, OnTheGreen, Option(LongLeft), Putter),
-    UserGolfInput(Distance(2), 5, OnTheGreen, Option(MiddleLeft), Putter)
+  val parFiveExample: List[HoleInput] = List(
+    HoleInput(Distance(559), 1, TeeBox, Option(MiddleLeft), Driver),
+    HoleInput(Distance(320), 2, Fairway, Option(MiddleLeft), FiveWood),
+    HoleInput(Distance(160), 3, Fairway, Option(MiddleLeft), FourIron),
+    HoleInput(Distance(10), 4, OnTheGreen, Option(LongLeft), Putter),
+    HoleInput(Distance(2), 5, OnTheGreen, Option(MiddleLeft), Putter)
   )
 
-  val expectedParFiveExample = UserGolfResult(
+  val expectedParFiveExample = HoleResult(
     score = ParredHole(5),
     strokesGained = -0.26,
     strokesGainedOffTheTee = -0.1,
@@ -172,23 +173,23 @@ trait SimulationTestData {
     strokesGainedAround = 0.0,
     strokesGainedPutting = -0.374,
     userDate = List(
-      UserGolfInput(Distance(559.0), 1, TeeBox, Some(MiddleLeft), Driver),
-      UserGolfInput(Distance(320.0), 2, Fairway, Some(MiddleLeft), FiveWood),
-      UserGolfInput(Distance(160.0), 3, Fairway, Some(MiddleLeft), FourIron),
-      UserGolfInput(Distance(10.0), 4, OnTheGreen, Some(LongLeft), Putter),
-      UserGolfInput(Distance(2.0), 5, OnTheGreen, Some(MiddleLeft), Putter)
+      HoleInput(Distance(559.0), 1, TeeBox, Some(MiddleLeft), Driver),
+      HoleInput(Distance(320.0), 2, Fairway, Some(MiddleLeft), FiveWood),
+      HoleInput(Distance(160.0), 3, Fairway, Some(MiddleLeft), FourIron),
+      HoleInput(Distance(10.0), 4, OnTheGreen, Some(LongLeft), Putter),
+      HoleInput(Distance(2.0), 5, OnTheGreen, Some(MiddleLeft), Putter)
     )
   )
 
-  val parFiveExampleBigDrive: List[UserGolfInput] = List(
-    UserGolfInput(Distance(559), 1, TeeBox, Option(MiddleLeft), Driver),
-    UserGolfInput(Distance(200), 2, Fairway, Option(MiddleLeft), FiveWood),
-    UserGolfInput(Distance(160), 3, Fairway, Option(MiddleLeft), FourIron),
-    UserGolfInput(Distance(10), 4, OnTheGreen, Option(LongLeft), Putter),
-    UserGolfInput(Distance(2), 5, OnTheGreen, Option(MiddleLeft), Putter)
+  val parFiveExampleBigDrive: List[HoleInput] = List(
+    HoleInput(Distance(559), 1, TeeBox, Option(MiddleLeft), Driver),
+    HoleInput(Distance(200), 2, Fairway, Option(MiddleLeft), FiveWood),
+    HoleInput(Distance(160), 3, Fairway, Option(MiddleLeft), FourIron),
+    HoleInput(Distance(10), 4, OnTheGreen, Option(LongLeft), Putter),
+    HoleInput(Distance(2), 5, OnTheGreen, Option(MiddleLeft), Putter)
   )
 
-  val expectedParFiveExampleBigDrive = UserGolfResult(
+  val expectedParFiveExampleBigDrive = HoleResult(
     score = ParredHole(5),
     strokesGained = -0.26,
     strokesGainedOffTheTee = 0.55,
@@ -196,22 +197,22 @@ trait SimulationTestData {
     strokesGainedAround = 0.0,
     strokesGainedPutting = -0.374,
     userDate = List(
-      UserGolfInput(Distance(559.0), 1, TeeBox, Some(MiddleLeft), Driver),
-      UserGolfInput(Distance(200.0), 2, Fairway, Some(MiddleLeft), FiveWood),
-      UserGolfInput(Distance(160.0), 3, Fairway, Some(MiddleLeft), FourIron),
-      UserGolfInput(Distance(10.0), 4, OnTheGreen, Some(LongLeft), Putter),
-      UserGolfInput(Distance(2.0), 5, OnTheGreen, Some(MiddleLeft), Putter)
+      HoleInput(Distance(559.0), 1, TeeBox, Some(MiddleLeft), Driver),
+      HoleInput(Distance(200.0), 2, Fairway, Some(MiddleLeft), FiveWood),
+      HoleInput(Distance(160.0), 3, Fairway, Some(MiddleLeft), FourIron),
+      HoleInput(Distance(10.0), 4, OnTheGreen, Some(LongLeft), Putter),
+      HoleInput(Distance(2.0), 5, OnTheGreen, Some(MiddleLeft), Putter)
     )
   )
 
   val pgaExample: List[InputAndMetric] = List(
-    InputAndMetric(UserGolfInput(Distance(446), 1, TeeBox, Option(MiddleLeft), Driver), PGAStatistic(Distance(446), 4.100), 0),
-    InputAndMetric(UserGolfInput(Distance(116), 2, Fairway, Option(MiddleLeft), FiveWood), PGAStatistic(Distance(116), 2.825), 0),
-    InputAndMetric(UserGolfInput(Distance(17), 4, OnTheGreen, Option(LongLeft), Putter), PGAStatistic(Distance(17), 1.826), 0)
+    InputAndMetric(HoleInput(Distance(446), 1, TeeBox, Option(MiddleLeft), Driver), PGAStatistic(Distance(446), 4.100), 0),
+    InputAndMetric(HoleInput(Distance(116), 2, Fairway, Option(MiddleLeft), FiveWood), PGAStatistic(Distance(116), 2.825), 0),
+    InputAndMetric(HoleInput(Distance(17), 4, OnTheGreen, Option(LongLeft), Putter), PGAStatistic(Distance(17), 1.826), 0)
   )
 
-  val pgaExpectedResult: UserGolfResult =
-    UserGolfResult(
+  val pgaExpectedResult: HoleResult =
+    HoleResult(
       score = Birdie(3),
       strokesGained = 1.1,
       strokesGainedOffTheTee = 0.275,
@@ -219,9 +220,9 @@ trait SimulationTestData {
       strokesGainedAround = 0.0,
       strokesGainedPutting = 0.83,
       userDate = List(
-        UserGolfInput(Distance(446.0), 1, TeeBox, Some(MiddleLeft), Driver),
-        UserGolfInput(Distance(116.0), 2, Fairway, Some(MiddleLeft), FiveWood),
-        UserGolfInput(Distance(17.0), 4, OnTheGreen, Some(LongLeft), Putter)
+        HoleInput(Distance(446.0), 1, TeeBox, Some(MiddleLeft), Driver),
+        HoleInput(Distance(116.0), 2, Fairway, Some(MiddleLeft), FiveWood),
+        HoleInput(Distance(17.0), 4, OnTheGreen, Some(LongLeft), Putter)
       )
     )
 }

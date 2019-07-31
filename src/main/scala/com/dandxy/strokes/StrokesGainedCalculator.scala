@@ -2,20 +2,22 @@ package com.dandxy.strokes
 
 import cats.Monad
 import cats.implicits._
-import com.dandxy.model.golf.Location.{ OnTheGreen, TeeBox }
+import com.dandxy.model.golf.Location.{OnTheGreen, TeeBox}
 import com.dandxy.model.golf.Par.ParThree
 import com.dandxy.model.golf.Score.findScore
 import com.dandxy.model.golf.Statistic.PGAStatistic
-import com.dandxy.model.golf.{ Distance, Location, Par }
-import com.dandxy.model.player.GolfInput.{ InputAndMetric, UserGolfInput }
-import com.dandxy.model.player.UserGolfResult
+import com.dandxy.model.golf.{Distance, Location, Par}
+import com.dandxy.model.player.GolfInput.HoleInput
+import com.dandxy.model.player.HoleResult
 
 import scala.annotation.tailrec
 import scala.language.higherKinds
 
 object StrokesGainedCalculator {
 
-  def getMetrics[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[UserGolfInput]): F[List[InputAndMetric]] =
+  final case class InputAndMetric(data: HoleInput, statistic: PGAStatistic, result: Double)
+
+  def getMetrics[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[HoleInput]): F[List[InputAndMetric]] =
     input.map { v =>
       dbOp(v.location)(v.distance).map(s => InputAndMetric(v, s, 0))
     }.sequence
@@ -64,10 +66,10 @@ object StrokesGainedCalculator {
   def getStrokesGainedAroundTheGreen(in: List[InputAndMetric], par: Par): Double =
     filterApproachShots(in).filter(v => v.data.distance.value <= 30).map(_.result).sum
 
-  def calculate[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[UserGolfInput], par: Par): F[UserGolfResult] =
+  def calculate[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[HoleInput], par: Par): F[HoleResult] =
     getMetrics(dbOp)(input).map(getAllStrokesGained).map { userAndMetrics =>
       val run = getAllStrokesGained(userAndMetrics)
-      UserGolfResult(
+      HoleResult(
         score = findScore(input.size, par),
         strokesGained = run.map(_.result).sum,
         strokesGainedOffTheTee = getStrokesGainedOffTheTee(run, par),

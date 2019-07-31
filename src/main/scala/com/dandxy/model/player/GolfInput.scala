@@ -1,13 +1,12 @@
 package com.dandxy.model.player
 
-import com.dandxy.model.golf.Statistic.PGAStatistic
-import com.dandxy.model.golf.{ Distance, DistanceMetric, GolfClub, Hole, Location, Orientation, Par }
+import com.dandxy.model.golf._
 
-trait GolfInput
+sealed trait GolfInput
 
 object GolfInput {
 
-  final case class UserGolfInput(
+  final case class HoleInput(
     distance: Distance,
     shot: Int,
     location: Location,
@@ -15,16 +14,22 @@ object GolfInput {
     club: GolfClub
   ) extends GolfInput
 
-  final case class UserInput(
+  // Shape
+  // Height
+  // Stroke index
+
+  final case class UserGameInput(
     userId: String,
     puttingMetric: DistanceMetric,
     hole: Hole,
     par: Par,
-    golfInput: List[UserGolfInput]
+    golfInput: List[HoleInput]
   ) extends GolfInput
 
-  final case class UserProfile(playerId: PlayerId, firstName: String, lastName: String, handicap: Double) extends GolfInput
-
-  final case class InputAndMetric(data: UserGolfInput, statistic: PGAStatistic, result: Double) extends GolfInput
+  // Ball used
+  // Handicap
+  // Green speed
+  // Temperature
+  // Wind
 
 }
