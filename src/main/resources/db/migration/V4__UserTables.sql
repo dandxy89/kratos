@@ -6,8 +6,9 @@ CREATE TABLE player.playerlookup (
     last_name VARCHAR(200) NOT NULL,
 
     CONSTRAINT master_player_id_pkey PRIMARY KEY(player_id)
-    -- TODO: Add index for the email
 );
+
+CREATE UNIQUE INDEX player_email_index on player.playerlookup (player_email);
 
 CREATE TABLE userSecurity.hashedpassword (
     player_email VARCHAR(200) NOT NULL,
@@ -17,16 +18,17 @@ CREATE TABLE userSecurity.hashedpassword (
     CONSTRAINT player_email_pkey PRIMARY KEY(player_email)
 );
 
+CREATE UNIQUE INDEX player_sec_email_index on userSecurity.hashedpassword (player_email);
+
 CREATE TABLE player.club_data (
+    club_data_serial SERIAL PRIMARY KEY,
     player_id INTEGER REFERENCES player.playerlookup,
     club INTEGER NOT NULL,
     typical_shape INTEGER NOT NULL,
     typical_height INTEGER NOT NULL,
     manufacturer INTEGER NOT NULL,
     typical_distance INTEGER NOT NULL,
-    distanceType INTEGER NOT NULL,
-
-    CONSTRAINT club_data_player_id_pkey PRIMARY KEY(player_id)
+    distanceType INTEGER NOT NULL
 );
 
 CREATE TABLE player.game (
@@ -42,6 +44,7 @@ CREATE TABLE player.game (
 );
 
 CREATE TABLE player.shot (
+    shot_serial SERIAL PRIMARY KEY,
     game_id INTEGER REFERENCES player.game,
     hole INTEGER NOT NULL,
     shot INTEGER NOT NULL,
@@ -53,7 +56,7 @@ CREATE TABLE player.shot (
     orientation VARCHAR(200),
     shot_shape VARCHAR(200),
     shot_height VARCHAR(200),
-    stroke_index VARCHAR(200),
-
-    CONSTRAINT player_shot_pkey PRIMARY KEY(game_id, hole, shot)
+    stroke_index VARCHAR(200)
 );
+
+CREATE UNIQUE INDEX player_shot_index on player.shot (game_id, hole, shot);

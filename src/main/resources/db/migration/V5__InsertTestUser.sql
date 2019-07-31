@@ -19,4 +19,3 @@ VALUES (1, 1, 2, 4, 116, 2, 22, -0.001);
 
 INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained)
 VALUES (1, 2, 3, 4, 17, 6, 25, 0.826);
-

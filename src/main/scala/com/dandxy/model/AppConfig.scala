@@ -1,7 +1,7 @@
 package com.dandxy.model
 
-import com.typesafe.config.{ Config, ConfigFactory }
-import io.circe
+import com.typesafe.config.{Config, ConfigFactory}
+import io.circe.Error
 import io.circe.config.syntax._
 import io.circe.generic.auto._
 
@@ -19,9 +19,9 @@ object AppConfig {
   // Loading Config
   private val config: Config = ConfigFactory.load()
 
-  private val jdbcConfig: Either[circe.Error, DBConfig] = config.as[DBConfig]("jdbc")
+  private val jdbcConfig: Either[Error, DBConfig] = config.as[DBConfig]("jdbc")
 
-  def apply(): Either[circe.Error, ApplicationConfig] =
+  def apply(): Either[Error, ApplicationConfig] =
     for {
       db <- jdbcConfig
     } yield ApplicationConfig(db, "TODO")
