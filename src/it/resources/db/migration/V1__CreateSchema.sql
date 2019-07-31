@@ -1,0 +1,5 @@
+CREATE SCHEMA pga;
+
+CREATE SCHEMA player;
+
+CREATE SCHEMA userSecurity;

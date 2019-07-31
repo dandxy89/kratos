@@ -63,7 +63,7 @@ object StrokesGainedCalculator {
     interim.filter(v => v.data.distance.value > 30).map(_.result).sum
   }
 
-  def getStrokesGainedAroundTheGreen(in: List[InputAndMetric], par: Par): Double =
+  def getStrokesGainedAroundTheGreen(in: List[InputAndMetric]): Double =
     filterApproachShots(in).filter(v => v.data.distance.value <= 30).map(_.result).sum
 
   def calculate[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[ShotInput], par: Par): F[HoleResult] =
@@ -74,7 +74,7 @@ object StrokesGainedCalculator {
         strokesGained = run.map(_.result).sum,
         strokesGainedOffTheTee = getStrokesGainedOffTheTee(run, par),
         strokesGainedApproach = getStrokesGainedApproachTheGreen(run, par),
-        strokesGainedAround = getStrokesGainedAroundTheGreen(run, par),
+        strokesGainedAround = getStrokesGainedAroundTheGreen(run),
         strokesGainedPutting = getStrokesGainedPutting(run),
         userDate = input
       )
