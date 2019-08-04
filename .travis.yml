@@ -1,3 +1,10 @@
+sudo: true
+services:
+  - docker
+
+before_install:
+  - docker pull postgres:latest
+
 language: scala
 
 scala:
@@ -5,6 +12,7 @@ scala:
 
 script:
    - sbt ++$TRAVIS_SCALA_VERSION test
+   - sbt ++$TRAVIS_SCALA_VERSION it:test
 
 cache:
   directories:
