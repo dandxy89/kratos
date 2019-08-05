@@ -16,47 +16,38 @@ import scala.sys.ShutdownHookThread
 import scala.sys.process._
 import scala.util.Try
 
-object PostgresDockerService extends Eventually with Matchers {
+class PostgresDockerService(customPort: Int) extends Eventually with Matchers {
 
   override implicit val patienceConfig: PatienceConfig = PatienceConfig(timeout = Span(60, Seconds), interval = Span(1, Seconds))
 
-  val url      = "jdbc:postgresql://localhost:5432/"
-  val user     = "postgres"
-  val password = "docker"
-  val driver   = "org.postgresql.Driver"
+  private implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
+  val user        = "postgres"
+  val password    = "docker"
+  val driver      = "org.postgresql.Driver"
+  val url         = s"jdbc:postgresql://localhost:$customPort/"
   val containerId = s"test-container-${UUID.randomUUID()}"
 
   def startUpPostgresDocker(): Assertion = {
-    val _ = s"docker run --rm --name $containerId -p 5432:5432 -e POSTGRES_PASSWORD=docker postgres:latest".run
+    val _ = s"docker run --rm --name $containerId -p $customPort:5432 -e POSTGRES_PASSWORD=docker postgres:latest".run
     eventually(isPostgresRunning shouldBe true)
   }
 
   startUpPostgresDocker()
   initialiseShutdownHook()
 
-  def isPostgresRunning: Boolean = {
-    println("Connecting to postgres to see if it is up and running...")
+  def isPostgresRunning: Boolean =
     Try {
-      Option(DriverManager.getConnection(url, user, password)).map(_ close ()).isDefined
+      Option(DriverManager.getConnection(url, user, password)).map(_.close).isDefined
     }.getOrElse(false)
+
+  private def initialiseShutdownHook(): ShutdownHookThread = sys.addShutdownHook {
+    s"docker rm -f $containerId".run()
+    eventually(isPostgresRunning shouldBe false)
   }
 
-  private def initialiseShutdownHook(): ShutdownHookThread =
-    sys.addShutdownHook {
-      s"docker rm -f $containerId".run()
-      eventually(isPostgresRunning shouldBe false)
-    }
-
-  private implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
-
-  val config: DBConfig = DBConfig("postgres", "password", "localhost", 5432, "postgresdb")
+  val config: DBConfig = DBConfig(user, password, "localhost", customPort)
 
   val postgresTransactor: Aux[IO, Unit] = Transactor
-    .fromDriverManager[IO](
-      PostgresDockerService.driver,
-      PostgresDockerService.url,
-      PostgresDockerService.user,
-      PostgresDockerService.password
-    )
+    .fromDriverManager[IO](driver, url, user, password)
 }

@@ -7,8 +7,8 @@ import io.circe.generic.auto._
 
 object AppConfig {
 
-  final case class DBConfig(user: String, password: String, host: String, port: Int, databaseName: String) {
-    val url: String    = s"jdbc:postgresql://$host:$port/$databaseName"
+  final case class DBConfig(user: String, password: String, host: String, port: Int) {
+    val url: String    = s"jdbc:postgresql://$host:$port/"
     val driver: String = "org.postgresql.Driver"
   }
 

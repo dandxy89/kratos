@@ -19,7 +19,7 @@ object MiniMain extends App {
   // Check Apply DB Migrations
   println(
     flywayMigrateDatabase(
-      DBConfig("postgres", "docker", "localhost", 5432, "postgres")
+      DBConfig("postgres", "docker", "localhost", 5432)
     )
   )
 
