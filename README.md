@@ -39,6 +39,12 @@ Worked example:
     
     psql -h localhost -U postgres -d postgres
 
+## Testing
+
+*   Unit tests - In Progress
+*   Integration tests - In Progress
+*   Pact tests - To start
+
 ## Http4s Server
 
 Not implemented
@@ -50,12 +56,6 @@ TODO
 *   Strokes gained
 *   Saving to database
 *   Email verification
-
-## Testing
-
-*   Unit tests - In Progress
-*   Integration tests - To start
-*   Pact tests - To start
 
 ## Scalajs / Purescript UI
 

@@ -21,8 +21,6 @@ object ProjectDependencies extends {
   }
 
   def apply(): Seq[ModuleID] = Seq(
-    "com.whisk"                  %% "docker-testkit-scalatest"        % Version.dockerITVersion,
-    "com.whisk"                  %% "docker-testkit-impl-docker-java" % Version.dockerITVersion,
     "co.fs2"                     %% "fs2-core"                        % Version.fS2Version,
     "co.fs2"                     %% "fs2-io"                          % Version.fS2Version,
     "org.http4s"                 %% "http4s-blaze-server"             % Version.http4sVersion,
@@ -44,7 +42,7 @@ object ProjectDependencies extends {
     "eu.timepit"                 %% "refined-cats"                    % Version.refindedVersion,
     "org.scalaz"                 %% "scalaz-zio"                      % Version.zioVersion,
     "org.scalaz"                 %% "scalaz-zio-interop-cats"         % Version.zioVersion,
-    "org.scalatest"              %% "scalatest"                       % Version.scalaTestVersion % "test",
+    "org.scalatest"              %% "scalatest"                       % Version.scalaTestVersion % "it, test",
     compilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.4"),
     compilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.3.0-M4")
   )
