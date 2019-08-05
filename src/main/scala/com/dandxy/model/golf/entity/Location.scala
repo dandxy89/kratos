@@ -1,6 +1,7 @@
 package com.dandxy.model.golf.entity
 
 import cats.Eq
+import com.dandxy.model.golf.entity.Penalty._
 import doobie.implicits._
 import doobie.util.fragment.Fragment
 
@@ -11,6 +12,62 @@ sealed trait Location {
 
 sealed trait PGAStatistics {
   def dbLocation: Fragment
+}
+
+sealed trait Penalty extends Location {
+  def description: String
+  def shots: Int
+}
+
+object Penalty {
+
+  case object Hazard extends Penalty {
+    val description: String = "Water hazards of all types"
+    val shots: Int          = 1
+
+    val name: String    = "Penalty - hazard"
+    val locationId: Int = 7
+  }
+
+  case object OutOfBounds extends Penalty {
+    val description: String = "Out of bounds"
+    val shots: Int          = 1
+
+    val name: String    = "Penalty - out of bounds"
+    val locationId: Int = 8
+  }
+
+  case object LostBall extends Penalty {
+    val description: String = "Lost ball"
+    val shots: Int          = 1
+
+    val name: String    = "Penalty - lost ball"
+    val locationId: Int = 9
+  }
+
+  case object UnplayableLie extends Penalty {
+    val description: String = "Unplayable lie"
+    val shots: Int          = 1
+
+    val name: String    = "Penalty - unplayable lie"
+    val locationId: Int = 10
+  }
+
+  case object OneShotPenalty extends Penalty {
+    val description: String = "Technical: One shot penalty"
+    val shots: Int          = 1
+
+    val name: String    = "Penalty - one shot penalty"
+    val locationId: Int = 11
+  }
+
+  case object TwoShotPenalty extends Penalty {
+    val description: String = "Technical: Two shot penalty"
+    val shots: Int          = 2
+
+    val name: String    = "Penalty - two shot penalty"
+    val locationId: Int = 12
+  }
 }
 
 object Location {
@@ -55,5 +112,20 @@ object Location {
 
   implicit val locationEq: Eq[Location] = Eq.instance { (a, b) =>
     a.name == b.name
+  }
+
+  def locationIdToLocation(value: Int): Location = value match {
+    case 1  => TeeBox
+    case 2  => Fairway
+    case 3  => Rough
+    case 4  => Bunker
+    case 5  => Recovery
+    case 6  => OnTheGreen
+    case 7  => Hazard
+    case 8  => OutOfBounds
+    case 9  => LostBall
+    case 10 => UnplayableLie
+    case 11 => OneShotPenalty
+    case _  => TwoShotPenalty
   }
 }
