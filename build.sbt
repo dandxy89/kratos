@@ -10,3 +10,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= ProjectDependencies(),
     ScalacOptions.settings
   )
+
+Test / fork := false
+Test / testForkedParallel := false
+IntegrationTest / fork := false
+IntegrationTest / testForkedParallel := false
