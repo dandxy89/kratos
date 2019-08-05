@@ -9,7 +9,6 @@ import doobie.util.Meta
 
 object PGAQueryTool {
 
-
   implicit val metaTranslator: Meta[Distance] = Meta[Int].timap(v => Distance(v.toDouble))(v => v.value.toInt)
 
   def findStatistic(distance: Distance, stat: PGAStatistics): ConnectionIO[Option[PGAStatistic]] =
