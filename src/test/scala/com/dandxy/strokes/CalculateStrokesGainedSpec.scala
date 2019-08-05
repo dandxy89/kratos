@@ -36,4 +36,8 @@ class CalculateStrokesGainedSpec extends FlatSpec with Matchers with SimulationT
   it should "parFiveExampleBigDrive" in {
     runIO(calculate(dbCalled)(parFiveExampleBigDrive, ParFive)) shouldBe expectedParFiveExampleBigDrive
   }
+
+  it should "parFiveExampleBigDriveOutofBounds" in {
+    runIO(calculate(dbCalled)(parFiveExampleBigDriveOutOfBounds, ParFive)) shouldBe expectedParFiveExampleBigDriveOutOfBounds
+  }
 }

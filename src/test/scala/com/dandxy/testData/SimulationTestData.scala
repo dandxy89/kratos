@@ -4,6 +4,7 @@ import cats.effect.IO
 import com.dandxy.model.golf.entity.GolfClub._
 import com.dandxy.model.golf.entity.Location.{ Fairway, OnTheGreen, TeeBox }
 import com.dandxy.model.golf.entity.Orientation._
+import com.dandxy.model.golf.entity.Penalty.OutOfBounds
 import com.dandxy.model.golf.entity.Score._
 import com.dandxy.model.golf.entity.{ Hole, Location, Par }
 import com.dandxy.model.golf.input.DistanceMeasurement._
@@ -214,6 +215,34 @@ trait SimulationTestData {
     strokesGainedAround = 0.0,
     strokesGainedPutting = -0.374,
     userDate = List(
+      ShotInput(Distance(559.0), 1, TeeBox, Some(MiddleLeft), Driver, None, None, 1),
+      ShotInput(Distance(200.0), 2, Fairway, Some(MiddleLeft), FiveWood, None, None, 1),
+      ShotInput(Distance(160.0), 3, Fairway, Some(MiddleLeft), FourIron, None, None, 1),
+      ShotInput(Distance(10.0), 4, OnTheGreen, Some(LongLeft), Putter, None, None, 1),
+      ShotInput(Distance(2.0), 5, OnTheGreen, Some(MiddleLeft), Putter, None, None, 1)
+    )
+  )
+
+  val parFiveExampleBigDriveOutOfBounds: List[ShotInput] = List(
+    ShotInput(Distance(559), 1, TeeBox, Option(MiddleLeft), Driver, None, None, 1),
+    ShotInput(Distance(559), 1, OutOfBounds, Option(MiddleLeft), Driver, None, None, 1),
+    ShotInput(Distance(559), 1, TeeBox, Option(MiddleLeft), Driver, None, None, 1),
+    ShotInput(Distance(200), 2, Fairway, Option(MiddleLeft), FiveWood, None, None, 1),
+    ShotInput(Distance(160), 3, Fairway, Option(MiddleLeft), FourIron, None, None, 1),
+    ShotInput(Distance(10), 4, OnTheGreen, Option(LongLeft), Putter, None, None, 1),
+    ShotInput(Distance(2), 5, OnTheGreen, Option(MiddleLeft), Putter, None, None, 1)
+  )
+
+  val expectedParFiveExampleBigDriveOutOfBounds = HoleResult(
+    score = DoubleBogey(7),
+    strokesGained = -1.2600000000000002,
+    strokesGainedOffTheTee = -1.0,
+    strokesGainedApproach = -0.43600000000000005,
+    strokesGainedAround = 0.0,
+    strokesGainedPutting = -0.374,
+    userDate = List(
+      ShotInput(Distance(559.0), 1, TeeBox, Some(MiddleLeft), Driver, None, None, 1),
+      ShotInput(Distance(559.0), 1, OutOfBounds, Some(MiddleLeft), Driver, None, None, 1),
       ShotInput(Distance(559.0), 1, TeeBox, Some(MiddleLeft), Driver, None, None, 1),
       ShotInput(Distance(200.0), 2, Fairway, Some(MiddleLeft), FiveWood, None, None, 1),
       ShotInput(Distance(160.0), 3, Fairway, Some(MiddleLeft), FourIron, None, None, 1),
