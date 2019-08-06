@@ -1,5 +1,7 @@
 package com.dandxy.model.golf.input
 
+import doobie.util.Meta
+
 sealed trait DistanceMeasurement {
   def toYards(input: Double): Double
   def toFeet(input: Double): Double
@@ -35,4 +37,7 @@ object DistanceMeasurement {
     case 2 => Meters
     case _ => Feet
   }
+
+  implicit val meta: Meta[DistanceMeasurement] = Meta[Int].imap(fromId)(_.id)
+
 }

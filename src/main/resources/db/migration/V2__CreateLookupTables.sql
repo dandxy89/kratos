@@ -1,4 +1,4 @@
-
+-- AVERAGE SHOTS TAKEN FROM DISTANCE X - FROM PGA WEBSITE
 CREATE TABLE pga.FairwayLookup (
     distance INTEGER NOT NULL,
     strokes NUMERIC(6, 3) NOT NULL,
@@ -41,6 +41,7 @@ CREATE TABLE pga.TeeLookup (
     CONSTRAINT tee_pkey PRIMARY KEY (distance)
 );
 
+-- PROBABILITIES FROM DISTANCE X - TAKEN FROM PGA WEBSITE
 CREATE TABLE pga.PuttingProb (
     distance INTEGER NOT NULL,
     one_putt NUMERIC(6, 3) NOT NULL,

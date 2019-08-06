@@ -1,7 +1,7 @@
 package com.dandxy.db
 
 import cats.implicits._
-import com.dandxy.model.AppConfig.DBConfig
+import com.dandxy.config.AppConfig.DBConfig
 import com.typesafe.scalalogging.LazyLogging
 import org.flywaydb.core.Flyway
 

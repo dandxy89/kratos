@@ -4,7 +4,7 @@ import java.sql.DriverManager
 import java.util.UUID
 
 import cats.effect.{ ContextShift, IO }
-import com.dandxy.model.AppConfig.DBConfig
+import com.dandxy.config.AppConfig.DBConfig
 import doobie.util.transactor.Transactor
 import doobie.util.transactor.Transactor.Aux
 import org.scalatest.concurrent.Eventually

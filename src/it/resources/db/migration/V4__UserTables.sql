@@ -1,14 +1,12 @@
 CREATE TABLE player.playerlookup (
     player_id SERIAL,
-    player_email VARCHAR(200) NOT NULL,
+    player_email VARCHAR(200) NOT NULL CONSTRAINT unique_email_only UNIQUE,
     update_time TIMESTAMP NOT NULL,
     first_name VARCHAR(200) NOT NULL,
     last_name VARCHAR(200) NOT NULL,
 
     CONSTRAINT master_player_id_pkey PRIMARY KEY(player_id)
 );
-
-CREATE UNIQUE INDEX player_email_index on player.playerlookup (player_email);
 
 CREATE TABLE userSecurity.hashedpassword (
     player_email VARCHAR(200) NOT NULL,
@@ -24,9 +22,9 @@ CREATE TABLE player.club_data (
     club_data_serial SERIAL PRIMARY KEY,
     player_id INTEGER REFERENCES player.playerlookup,
     club INTEGER NOT NULL,
-    typical_shape INTEGER NOT NULL,
-    typical_height INTEGER NOT NULL,
-    manufacturer INTEGER NOT NULL,
+    typical_shape INTEGER,
+    typical_height INTEGER,
+    manufacturer INTEGER,
     typical_distance INTEGER NOT NULL,
     distanceType INTEGER NOT NULL
 );

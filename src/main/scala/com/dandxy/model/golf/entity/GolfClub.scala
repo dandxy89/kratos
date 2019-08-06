@@ -1,5 +1,7 @@
 package com.dandxy.model.golf.entity
 
+import doobie.util.Meta
+
 sealed trait GolfClub {
   def displayName: String
   def dbIndex: Int
@@ -132,7 +134,7 @@ object GolfClub {
     val dbIndex: Int        = 25
   }
 
-  def fromIndex(value: Int): GolfClub =
+  def fromInt(value: Int): GolfClub =
     value match {
       case 1  => Driver
       case 2  => ThreeWood
@@ -160,4 +162,7 @@ object GolfClub {
       case 24 => LobWedge
       case _  => Putter
     }
+
+  implicit val meta: Meta[GolfClub] = Meta[Int].imap(fromInt)(_.dbIndex)
+
 }
