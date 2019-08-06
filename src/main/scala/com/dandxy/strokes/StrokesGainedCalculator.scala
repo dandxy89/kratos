@@ -66,11 +66,14 @@ object StrokesGainedCalculator {
   def getStrokesGainedAroundTheGreen(in: List[InputAndMetric]): Double =
     filterApproachShots(in).filter(v => v.data.distance.value <= 30).map(_.result).sum
 
+  def countShots(input: List[ShotInput]): Int =
+    input.foldLeft[Int](0) { case (a, b) => a + b.location.shots }
+
   def calculate[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[ShotInput], par: Par): F[HoleResult] =
     getMetrics(dbOp)(input.filter(_.location.locationId <= 6)).map(getAllStrokesGained).map { userAndMetrics =>
       val run = getAllStrokesGained(userAndMetrics)
       HoleResult(
-        score = findScore(input.size, par), // Inclusive of Penalties
+        score = findScore(countShots(input), par),
         strokesGained = run.map(_.result).sum,
         strokesGainedOffTheTee = getStrokesGainedOffTheTee(run, par),
         strokesGainedApproach = getStrokesGainedApproachTheGreen(run, par),

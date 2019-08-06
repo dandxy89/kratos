@@ -1,15 +1,21 @@
-package com.dandxy.db
+package com.dandxy.db.sql
 
 import java.sql.Timestamp
 
+import cats.implicits._
 import com.dandxy.model.user._
 import doobie._
 import doobie.implicits._
 
 object UserQueryToolSQL {
 
-  private[db] def purgeByPlayerId(playerId: PlayerId, tableName: String): Update0 =
-    sql" DELETE FROM $tableName WHERE player_id = ${playerId.uuid}".update
+  private[db] def purgeByPlayerId(playerId: PlayerId, tableName: Fragment): Update0 =
+    (fr" DELETE FROM " ++ tableName ++ fr" WHERE player_id = ${playerId.uuid}").update
+
+  private[db] def purgeShotsByPlayerId(playerId: PlayerId, tableName: Fragment): Update0 =
+    (fr" DELETE FROM "
+      ++ tableName
+      ++ fr" WHERE shot.game_id IN (SELECT g.game_id FROM player.game g WHERE g.player_id = ${playerId.uuid})").update
 
   private[db] def addUser(registration: UserRegistration, updateTime: Timestamp): ConnectionIO[Int] =
     sql""" INSERT INTO player.playerlookup (player_email, update_time, first_name, last_name)
@@ -26,19 +32,21 @@ object UserQueryToolSQL {
          | WHERE player_email = $email AND hashed_password = $hashPassword
        """.stripMargin.query[PlayerId].option
 
-  private[db] def insertClubData(clubData: GolfClubData): ConnectionIO[Int] =
-    sql""" INSERT INTO player.club_data (player_id, club, typical_shape, typical_height,
-         |                               manufacturer, typical_distance, distanceType)
-         | VALUES (${clubData.playerId.uuid}, ${clubData.club.dbIndex}, ${clubData.typicalShape},
-         |         ${clubData.typicalHeight}, ${clubData.manufacturer},
-         |         ${clubData.typicalDistance}, ${clubData.distanceType})
-       """.stripMargin.update.withUniqueGeneratedKeys[Int]("club_data_serial")
+  private[db] def insertClubData(clubData: List[GolfClubData]): ConnectionIO[Int] = {
+    val sql =
+      """ INSERT INTO player.club_data (player_id, club, typical_shape, typical_height,
+        |                               manufacturer, typical_distance, distanceType)
+        | VALUES (?, ?, ?, ?, ?, ?, ?)
+      """.stripMargin
 
-  private[db] def getClubData(clubSerialId: Int): Query0[GolfClubData] =
+    Update[GolfClubData](sql).updateMany(clubData)
+  }
+
+  private[db] def getClubData(playerId: PlayerId): ConnectionIO[List[GolfClubData]] =
     sql""" SELECT player_id, club, typical_shape, typical_height, manufacturer, typical_distance, distanceType
          | FROM player.club_data
-         | WHERE club_data_serial = $clubSerialId 
-       """.stripMargin.query[GolfClubData]
+         | WHERE player_id = $playerId
+       """.stripMargin.query[GolfClubData].to[List]
 
   // CREATE TABLE player.game (
   //    game_id SERIAL PRIMARY KEY,
