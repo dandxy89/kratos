@@ -1,9 +1,10 @@
 package com.dandxy.db
 
-import com.dandxy.db.HealthCheck.OK
+import com.dandxy.db.util.{HealthCheck, Migration}
+import com.dandxy.db.util.HealthCheck.OK
 import com.dandxy.util.PostgresDockerService
 import org.scalatest.concurrent.Eventually
-import org.scalatest.{ BeforeAndAfterAll, FlatSpec, Matchers }
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
 class BasicDockerSpec extends FlatSpec with Matchers with Eventually with BeforeAndAfterAll {
 

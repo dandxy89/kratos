@@ -4,15 +4,23 @@ import com.dandxy.model.golf.entity.PGAStatistics
 import com.dandxy.model.golf.input.Distance
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
 import doobie.free.connection.ConnectionIO
-import doobie.implicits._
-import doobie.util.Meta
 
 object PGAQueryTool {
 
-  implicit val metaTranslator: Meta[Distance] = Meta[Int].timap(v => Distance(v.toDouble))(v => v.value.toInt)
+  import com.dandxy.db.sql.PGAQueryToolSQL._
 
-  def findStatistic(distance: Distance, stat: PGAStatistics): ConnectionIO[Option[PGAStatistic]] =
-    (fr"SELECT distance, strokes FROM " ++ stat.dbLocation ++ fr" WHERE distance = $distance").stripMargin
-      .query[PGAStatistic]
-      .option
+  def getStatistic(distance: Distance, stat: PGAStatistics): ConnectionIO[Option[PGAStatistic]] =
+    findStatistic(distance, stat)
+
+  // TODO: Need to add more data
+  // TODO: Finish queries
+  //  def getProbability(distance: Distance, stat: PGAStatistics) = stat match {
+  //    case Location.Fairway    => 1
+  //    case Location.Rough      => 1
+  //    case Location.Bunker     => 1
+  //    case Location.Recovery   => 1
+  //    case Location.OnTheGreen => 1
+  //    case _                   => 1
+  //  }
+
 }

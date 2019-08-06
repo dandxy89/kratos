@@ -1,7 +1,7 @@
-package com.dandxy.db
+package com.dandxy.db.util
 
 import cats.effect.concurrent.Ref
-import cats.effect.{ ContextShift, IO, Timer }
+import cats.effect.{ContextShift, IO, Timer}
 import cats.implicits._
 import com.typesafe.scalalogging.LazyLogging
 import doobie.implicits._

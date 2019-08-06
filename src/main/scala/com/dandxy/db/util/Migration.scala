@@ -1,4 +1,4 @@
-package com.dandxy.db
+package com.dandxy.db.util
 
 import cats.implicits._
 import com.dandxy.config.AppConfig.DBConfig

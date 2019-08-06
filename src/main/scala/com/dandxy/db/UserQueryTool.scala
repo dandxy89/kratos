@@ -2,22 +2,22 @@ package com.dandxy.db
 
 import java.sql.Timestamp
 
-import cats.implicits._
+import com.dandxy.db.sql.TableName._
 import com.dandxy.model.user._
 import doobie._
-import doobie.implicits._
 
 object UserQueryTool {
 
-  import UserQueryToolSQL._
+  import com.dandxy.db.sql.UserQueryToolSQL._
 
-  def gdprDeleteByPlayerId(playerId: PlayerId): ConnectionIO[Int] =
+  def gdprPurge(playerId: PlayerId): ConnectionIO[Int] =
     for {
-      g <- purgeByPlayerId(playerId, "player.game").run
-      c <- purgeByPlayerId(playerId, "player.club_data").run
-      p <- purgeByPlayerId(playerId, "userSecurity.hashedpassword").run
-      l <- purgeByPlayerId(playerId, "player.playerlookup").run
-    } yield g + c + p + l
+      s <- purgeShotsByPlayerId(playerId, PlayerShot.name).run
+      g <- purgeByPlayerId(playerId, PlayerGame.name).run
+      c <- purgeByPlayerId(playerId, PlayerClubData.name).run
+      p <- purgeByPlayerId(playerId, UserSecurity.name).run
+      l <- purgeByPlayerId(playerId, PlayerLookup.name).run
+    } yield g + c + p + l + s
 
   def registerUser(registration: UserRegistration, hashPassword: Password, updateTime: Timestamp): ConnectionIO[PlayerId] =
     for {
@@ -28,22 +28,17 @@ object UserQueryTool {
   def attemptLogin(email: UserEmail, hashPassword: Password): ConnectionIO[Option[PlayerId]] =
     checkLogin(email, hashPassword)
 
-  // TODO: Improve this!
-  def addClubData(input: List[GolfClubData]): ConnectionIO[List[Int]] =
-    input.map(insertClubData).sequence
+  def addClubData(playerId: PlayerId, input: List[GolfClubData]): ConnectionIO[Int] =
+    for {
+      _ <- purgeByPlayerId(playerId, PlayerClubData.name).run
+      c <- insertClubData(input)
+    } yield c
 
-  //  def getUserGame: Unit = ???
-  //
+  def getUserClubs(playerId: PlayerId): ConnectionIO[List[GolfClubData]] =
+    getClubData(playerId)
+
   //  def upsertUserGame: Unit = ???
-  //
   //  def getUserShot: Unit = ???
-  //
   //  def upsertUserShot: Unit = ???
-  //
-  //  def deleteUserForGDPR: Unit = ???
-  //
-  //  def upsertClubData: Unit = ???
-  //
-  //  def getClubData: Unit = ???
 
 }

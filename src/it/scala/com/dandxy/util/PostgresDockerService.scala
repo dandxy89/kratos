@@ -5,6 +5,8 @@ import java.util.UUID
 
 import cats.effect.{ ContextShift, IO }
 import com.dandxy.config.AppConfig.DBConfig
+import doobie.free.connection.ConnectionIO
+import doobie.implicits._
 import doobie.util.transactor.Transactor
 import doobie.util.transactor.Transactor.Aux
 import org.scalatest.concurrent.Eventually
@@ -50,4 +52,7 @@ class PostgresDockerService(customPort: Int) extends Eventually with Matchers {
 
   val postgresTransactor: Aux[IO, Unit] = Transactor
     .fromDriverManager[IO](driver, url, user, password)
+
+  def transactQuery[A](op: ConnectionIO[A]): A = op.transact(postgresTransactor).unsafeRunSync()
+
 }
