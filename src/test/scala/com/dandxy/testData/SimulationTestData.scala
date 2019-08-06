@@ -2,16 +2,16 @@ package com.dandxy.testData
 
 import cats.effect.IO
 import com.dandxy.model.golf.entity.GolfClub._
-import com.dandxy.model.golf.entity.Location.{ Fairway, OnTheGreen, TeeBox }
+import com.dandxy.model.golf.entity.Location.{Fairway, OnTheGreen, TeeBox}
 import com.dandxy.model.golf.entity.Orientation._
 import com.dandxy.model.golf.entity.Penalty.OutOfBounds
 import com.dandxy.model.golf.entity.Score._
-import com.dandxy.model.golf.entity.{ Hole, Location, Par }
+import com.dandxy.model.golf.entity.{Hole, Location, Par}
 import com.dandxy.model.golf.input.DistanceMeasurement._
-import com.dandxy.model.golf.input.GolfInput.{ ShotInput, UserCourseInput, UserHoleInput }
-import com.dandxy.model.golf.input.{ Distance, HoleResult }
+import com.dandxy.model.golf.input.GolfInput.{ShotInput, UserCourseInput, UserHoleInput}
+import com.dandxy.model.golf.input.{Distance, HoleResult}
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
-import com.dandxy.model.player.PlayerId
+import com.dandxy.model.user.PlayerId
 import com.dandxy.strokes.StrokesGainedCalculator.InputAndMetric
 
 trait SimulationTestData {

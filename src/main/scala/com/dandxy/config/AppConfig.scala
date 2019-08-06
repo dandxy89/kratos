@@ -1,6 +1,6 @@
-package com.dandxy.model
+package com.dandxy.config
 
-import com.typesafe.config.{ Config, ConfigFactory }
+import com.typesafe.config.{Config, ConfigFactory}
 import io.circe.Error
 import io.circe.config.syntax._
 import io.circe.generic.auto._

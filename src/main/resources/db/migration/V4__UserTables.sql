@@ -24,9 +24,9 @@ CREATE TABLE player.club_data (
     club_data_serial SERIAL PRIMARY KEY,
     player_id INTEGER REFERENCES player.playerlookup,
     club INTEGER NOT NULL,
-    typical_shape INTEGER NOT NULL,
-    typical_height INTEGER NOT NULL,
-    manufacturer INTEGER NOT NULL,
+    typical_shape INTEGER,
+    typical_height INTEGER,
+    manufacturer INTEGER,
     typical_distance INTEGER NOT NULL,
     distanceType INTEGER NOT NULL
 );

@@ -1,5 +1,7 @@
 package com.dandxy.model.golf.input
 
+import doobie.util.Meta
+
 sealed trait ShotShape {
   def description: String
   def id: Int
@@ -69,4 +71,7 @@ object ShotShape {
     case 9  => RoofedIt
     case 10 => Stinger
   }
+
+  implicit val meta: Meta[ShotShape] = Meta[Int].imap(fromId)(_.id)
+
 }
