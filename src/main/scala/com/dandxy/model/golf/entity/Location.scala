@@ -3,6 +3,7 @@ package com.dandxy.model.golf.entity
 import cats.Eq
 import com.dandxy.db.sql.TableName
 import com.dandxy.model.golf.entity.Penalty._
+import doobie.util.Meta
 import doobie.util.fragment.Fragment
 
 sealed trait Location {
@@ -68,54 +69,52 @@ object Penalty {
 object Location {
 
   case object TeeBox extends Location with PGAStatistics {
-    val name: String         = "Tee"
+    val name: String        = "Tee"
     val tableName: Fragment = TableName.TeeLookUp.name
-    val locationId: Int      = 1
-    val shots: Int           = 1
+    val locationId: Int     = 1
+    val shots: Int          = 1
   }
 
   case object Fairway extends Location with PGAStatistics {
-    val name: String         = "Fairway"
+    val name: String        = "Fairway"
     val tableName: Fragment = TableName.FairwayLookup.name
-    val locationId: Int      = 2
-    val shots: Int           = 1
+    val locationId: Int     = 2
+    val shots: Int          = 1
   }
 
   case object Rough extends Location with PGAStatistics {
-    val name: String         = "Rough"
+    val name: String        = "Rough"
     val tableName: Fragment = TableName.RoughLookup.name
-    val locationId: Int      = 3
-    val shots: Int           = 1
+    val locationId: Int     = 3
+    val shots: Int          = 1
   }
 
   case object Bunker extends Location with PGAStatistics {
-    val name: String         = "Bunker"
+    val name: String        = "Bunker"
     val tableName: Fragment = TableName.SandLookup.name
-    val locationId: Int      = 4
-    val shots: Int           = 1
+    val locationId: Int     = 4
+    val shots: Int          = 1
   }
 
   case object Recovery extends Location with PGAStatistics {
-    val name: String         = "Recovery shot"
+    val name: String        = "Recovery shot"
     val tableName: Fragment = TableName.RecoveryLookup.name
-    val locationId: Int      = 5
-    val shots: Int           = 1
+    val locationId: Int     = 5
+    val shots: Int          = 1
   }
 
   case object OnTheGreen extends Location with PGAStatistics {
-    val name: String         = "Green"
+    val name: String        = "Green"
     val tableName: Fragment = TableName.GreenLookup.name
-    val locationId: Int      = 6
-    val shots: Int           = 1
+    val locationId: Int     = 6
+    val shots: Int          = 1
   }
 
   val approachLies: Set[Location] = Set(Bunker, Rough, Fairway, Recovery, TeeBox)
 
-  implicit val locationEq: Eq[Location] = Eq.instance { (a, b) =>
-    a.name == b.name
-  }
+  implicit val locationEq: Eq[Location] = Eq.instance((a, b) => a.name == b.name)
 
-  def locationIdToLocation(value: Int): Location = value match {
+  def fromId(value: Int): Location = value match {
     case 1  => TeeBox
     case 2  => Fairway
     case 3  => Rough
@@ -129,4 +128,7 @@ object Location {
     case 11 => OneShotPenalty
     case _  => TwoShotPenalty
   }
+
+  implicit val meta: Meta[Location] = Meta[Int].imap(fromId)(_.locationId)
+
 }

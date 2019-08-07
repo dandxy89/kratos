@@ -1,5 +1,7 @@
 package com.dandxy.model.golf.entity
 
+import doobie.util.Meta
+
 sealed trait Orientation {
   def description: String
   def code: Int
@@ -51,4 +53,19 @@ object Orientation {
     val description: String = "Short right"
     val code: Int           = 3
   }
+
+  def fromId(value: Int): Orientation = value match {
+    case 1 => ShortLeft
+    case 2 => Short
+    case 3 => ShortRight
+    case 4 => MiddleLeft
+    case 5 => Middle
+    case 6 => MiddleRight
+    case 7 => LongLeft
+    case 8 => Long
+    case _ => LongRight
+  }
+
+  implicit val meta: Meta[Orientation] = Meta[Int].imap(fromId)(_.code)
+
 }

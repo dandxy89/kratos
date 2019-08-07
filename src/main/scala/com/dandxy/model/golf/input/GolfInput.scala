@@ -11,15 +11,15 @@ object GolfInput {
 
   final case class UserGameInput(
     playerId: PlayerId,
-    distanceMeasurement: DistanceMeasurement,
     gameStartTime: Timestamp,
     courseName: String,
     handicap: Double,
     ballUsed: Option[String],
     greenSpeed: Option[Double],
     temperature: Option[Temperature],
-    windSpeed: Option[WindSpeed]
-  ) extends GolfInput // RETURNS A GameId
+    windSpeed: Option[WindSpeed],
+    gameId: Option[GameId],
+  ) extends GolfInput
 
   final case class UserShotInput(
     gameId: GameId,
@@ -34,5 +34,5 @@ object GolfInput {
     orientation: Option[Orientation],
     shotShape: Option[ShotShape],
     shotHeight: Option[ShotHeight]
-  ) extends GolfInput // RETURNS ShotSerialId
+  ) extends GolfInput
 }

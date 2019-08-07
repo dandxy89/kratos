@@ -1,5 +1,7 @@
 package com.dandxy.model.golf.input
 
+import doobie.util.Meta
+
 sealed trait WindSpeed {
   def description: String
   def id: Int
@@ -26,4 +28,14 @@ object WindSpeed {
     val description: String = "Strong wind"
     val id: Int             = 4
   }
+
+  def fromId(value: Int): WindSpeed = value match {
+    case 1 => LightWind
+    case 2 => NoWind
+    case 3 => MediumWindy
+    case _ => StrongWindy
+  }
+
+  implicit val meta: Meta[WindSpeed] = Meta[Int].imap(fromId)(_.id)
+
 }
