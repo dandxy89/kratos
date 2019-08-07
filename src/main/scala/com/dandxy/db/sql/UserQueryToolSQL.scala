@@ -3,6 +3,7 @@ package com.dandxy.db.sql
 import java.sql.Timestamp
 
 import cats.implicits._
+import com.dandxy.db.UserQueryTool.PlayerHash
 import com.dandxy.model.user._
 import doobie._
 import doobie.implicits._
@@ -27,10 +28,11 @@ object UserQueryToolSQL {
          | VALUES ($email, $hashPassword, $playerId)
        """.stripMargin.update
 
-  private[db] def checkLogin(email: UserEmail, hashPassword: Password): ConnectionIO[Option[PlayerId]] =
-    sql""" SELECT player_id FROM userSecurity.hashedpassword
-         | WHERE player_email = $email AND hashed_password = $hashPassword
-       """.stripMargin.query[PlayerId].option
+  private[db] def checkLogin(email: UserEmail): ConnectionIO[Option[PlayerHash]] =
+    sql""" SELECT player_id, hashed_password
+         | FROM userSecurity.hashedpassword
+         | WHERE player_email = $email
+       """.stripMargin.query[PlayerHash].option
 
   private[db] def insertClubData(clubData: List[GolfClubData]): ConnectionIO[Int] = {
     val sql =

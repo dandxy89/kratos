@@ -1,26 +1,22 @@
 package com.dandxy.config
 
-import com.typesafe.config.{Config, ConfigFactory}
+import com.dandxy.config.AppModels.{ AppName, ApplicationConfig, AuthSalt, DBConfig }
+import com.typesafe.config.{ Config, ConfigFactory }
 import io.circe.Error
 import io.circe.config.syntax._
 import io.circe.generic.auto._
 
 object AppConfig {
 
-  final case class DBConfig(user: String, password: String, host: String, port: Int) {
-    val url: String    = s"jdbc:postgresql://$host:$port/"
-    val driver: String = "org.postgresql.Driver"
-  }
-
-  final case class ApplicationConfig(jdbc: DBConfig, name: String)
-
-  private val config: Config = ConfigFactory.load()
-
-  private val jdbcConfig: Either[Error, DBConfig] = config.as[DBConfig]("jdbc")
+  private[this] val config: Config                        = ConfigFactory.load()
+  private[this] val jdbcConfig: Either[Error, DBConfig]   = config.as[DBConfig]("jdbc")
+  private[this] val saltConfig: Either[Error, AuthSalt]   = config.as[AuthSalt]("auth")
+  private[this] val appNameConfig: Either[Error, AppName] = config.as[AppName]("app")
 
   def apply(): Either[Error, ApplicationConfig] =
     for {
-      db <- jdbcConfig
-    } yield ApplicationConfig(db, "TODO")
-
+      dbA <- jdbcConfig
+      aut <- saltConfig
+      app <- appNameConfig
+    } yield ApplicationConfig(dbA, app, aut)
 }
