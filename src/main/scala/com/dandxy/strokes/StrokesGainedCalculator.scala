@@ -6,80 +6,78 @@ import com.dandxy.model.golf.entity.Location.{ OnTheGreen, TeeBox }
 import com.dandxy.model.golf.entity.Par.ParThree
 import com.dandxy.model.golf.entity.Score.findScore
 import com.dandxy.model.golf.entity.{ Location, Par }
-import com.dandxy.model.golf.input.GolfInput.ShotInput
-import com.dandxy.model.golf.input.{ Distance, HoleResult }
+import com.dandxy.model.golf.input.GolfInput.UserShotInput
+import com.dandxy.model.golf.input.{ Distance, HoleResult, Strokes }
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
+import com.dandxy.util.Helpers.{ combineAll, roundAt3 }
 
 import scala.annotation.tailrec
 import scala.language.higherKinds
+import scala.language.higherKinds._
 
 object StrokesGainedCalculator {
 
-  final case class InputAndMetric(data: ShotInput, statistic: PGAStatistic, result: Double)
-
-  def getMetrics[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[ShotInput]): F[List[InputAndMetric]] =
+  def getMetrics[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[UserShotInput]): F[List[UserShotInput]] =
     input.map { v =>
-      dbOp(v.location)(v.distance).map(s => InputAndMetric(v, s, 0))
+      dbOp(v.location)(v.distance).map(s => v.copy(strokesGained = Option(Strokes(s.strokes))))
     }.sequence
 
-  private def roundAt3(n: Double): Double = {
-    val s = math pow (10, 3)
-    (math round n * s) / s
-  }
+  def calculateStrokesGained(a: Option[Strokes], b: Option[Strokes]): Option[Strokes] =
+    a.map(v1 => b.fold(Strokes(roundAt3((v1.value - 0) - 1)))(v2 => Strokes(roundAt3((v1.value - v2.value) - 1))))
 
   @tailrec
-  private[this] def tailRecResults(in: List[InputAndMetric], out: List[InputAndMetric]): List[InputAndMetric] = in match {
-    case Nil =>
-      out
-    case oneResult :: Nil =>
-      oneResult.copy(result = roundAt3((oneResult.statistic.strokes - 0) - 1)) :: out
-    case f :: s :: t =>
-      tailRecResults(s :: t, InputAndMetric(f.data, f.statistic, roundAt3((f.statistic.strokes - s.statistic.strokes) - 1)) :: out)
+  private[this] def tailRecResults(in: List[UserShotInput], out: List[UserShotInput]): List[UserShotInput] = in match {
+    case Nil              => out
+    case oneResult :: Nil => oneResult.copy(strokesGained = calculateStrokesGained(oneResult.strokesGained, None)) :: out
+    case f :: s :: t      => tailRecResults(s :: t, f.copy(strokesGained = calculateStrokesGained(f.strokesGained, s.strokesGained)) :: out)
   }
 
-  def getAllStrokesGained(in: List[InputAndMetric]): List[InputAndMetric] = tailRecResults(in, Nil).reverse
+  def getAllStrokesGained(in: List[UserShotInput]): List[UserShotInput] = tailRecResults(in, Nil).reverse
 
-  def getStrokesGainedPutting(in: List[InputAndMetric]): Double =
-    in.filter(_.data.location == OnTheGreen).map(_.result).sum
+  def getStrokesGainedPutting(in: List[UserShotInput]): Option[Strokes] =
+    combineAll(in.filter(_.location == OnTheGreen).map(_.strokesGained))
 
-  def getStrokesGainedOffTheTee(in: List[InputAndMetric], par: Par): Double =
-    if (par == ParThree) 0.0
+  def getStrokesGainedOffTheTee(in: List[UserShotInput], par: Par): Option[Strokes] =
+    if (par == ParThree) Option(Strokes(0.0))
     else {
       in match {
-        case head :: _ => head.result
-        case _         => 0.0
+        case head :: _ => head.strokesGained
+        case _         => Option(Strokes(0.0))
       }
     }
 
-  private def filterApproachShots(in: List[InputAndMetric]): List[InputAndMetric] = in.filter { v =>
-    Set(v.data.location).subsetOf(Location.approachLies)
+  private def filterApproachShots(in: List[UserShotInput]): List[UserShotInput] = in.filter { v =>
+    Set(v.location).subsetOf(Location.approachLies)
   }
 
-  def getStrokesGainedApproachTheGreen(in: List[InputAndMetric], par: Par): Double = {
+  def getStrokesGainedApproachTheGreen(in: List[UserShotInput], par: Par): Option[Strokes] = {
     val interim =
       if (par == ParThree) filterApproachShots(in)
-      else filterApproachShots(in).filter(_.data.location != TeeBox)
+      else filterApproachShots(in).filter(_.location != TeeBox)
 
-    interim.filter(v => v.data.distance.value > 30).map(_.result).sum
+    combineAll(interim.filter(v => v.distance.value > 30).map(_.strokesGained))
   }
 
-  def getStrokesGainedAroundTheGreen(in: List[InputAndMetric]): Double =
-    filterApproachShots(in).filter(v => v.data.distance.value <= 30).map(_.result).sum
+  def getStrokesGainedAroundTheGreen(in: List[UserShotInput]): Option[Strokes] =
+    combineAll(filterApproachShots(in).filter(v => v.distance.value <= 30).map(_.strokesGained))
 
-  def countShots(input: List[ShotInput]): Int =
+  def countShots(input: List[UserShotInput]): Int =
     input.foldLeft[Int](0) { case (a, b) => a + b.location.shots }
 
-  def calculate[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[ShotInput], par: Par): F[HoleResult] =
-    getMetrics(dbOp)(input.filter(_.location.locationId <= 6)).map(getAllStrokesGained).map { userAndMetrics =>
-      val run = getAllStrokesGained(userAndMetrics)
-      HoleResult(
-        score = findScore(countShots(input), par),
-        strokesGained = run.map(_.result).sum,
-        strokesGainedOffTheTee = getStrokesGainedOffTheTee(run, par),
-        strokesGainedApproach = getStrokesGainedApproachTheGreen(run, par),
-        strokesGainedAround = getStrokesGainedAroundTheGreen(run),
-        strokesGainedPutting = getStrokesGainedPutting(run),
-        userDate = input
-      )
-    }
+  private[this] def aggregateResults(userAndMetrics: List[UserShotInput], input: List[UserShotInput]): HoleResult =
+    HoleResult(
+      score = findScore(countShots(input), input.head.par),
+      strokesGained = combineAll(userAndMetrics.map(_.strokesGained)),
+      strokesGainedOffTheTee = getStrokesGainedOffTheTee(userAndMetrics, input.head.par),
+      strokesGainedApproach = getStrokesGainedApproachTheGreen(userAndMetrics, input.head.par),
+      strokesGainedAround = getStrokesGainedAroundTheGreen(userAndMetrics),
+      strokesGainedPutting = getStrokesGainedPutting(userAndMetrics),
+      userDate = userAndMetrics
+    )
+
+  def calculate[F[_]](dbOp: Location => Distance => F[PGAStatistic])(input: List[UserShotInput])(implicit F: Monad[F]): F[HoleResult] =
+    for {
+      met <- getMetrics(dbOp)(input.filter(_.location.locationId <= 6))
+      stg <- F.map(F.point(met))(getAllStrokesGained)
+    } yield aggregateResults(stg, input)
 }
