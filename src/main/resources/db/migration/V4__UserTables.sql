@@ -39,8 +39,8 @@ CREATE TABLE player.game (
     handicap NUMERIC(6, 1) NOT NULL,
     ball_used VARCHAR(200),
     green_speed VARCHAR(200),
-    temperature VARCHAR(200),
-    wind_speed VARCHAR(200)
+    temperature NUMERIC(6, 3),
+    wind_speed INTEGER
 );
 
 CREATE TABLE player.shot (
@@ -51,12 +51,12 @@ CREATE TABLE player.shot (
     par INTEGER NOT NULL,
     distance INTEGER NOT NULL,
     ball_location INTEGER NOT NULL,
-    club VARCHAR(200) NOT NULL,
+    club INTEGER NOT NULL,
     strokes_gained NUMERIC(6, 3) NOT NULL,
-    orientation VARCHAR(200),
-    shot_shape VARCHAR(200),
-    shot_height VARCHAR(200),
-    stroke_index VARCHAR(200)
+    stroke_index INTEGER NOT NULL,
+    orientation INTEGER,
+    shot_shape INTEGER,
+    shot_height INTEGER
 );
 
 CREATE UNIQUE INDEX player_shot_index on player.shot (game_id, hole, shot);

@@ -37,20 +37,20 @@ VALUES (2, 1, 1, 1, 1, 200, 1);
 -- SHOT DATA
 ------------
 -- P1
-INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained)
-VALUES (1, 1, 1, 4, 446, 1, 1, 0.275);
+INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index)
+VALUES (1, 1, 1, 4, 446, 1, 1, 0.275, 2);
 
-INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained)
-VALUES (1, 1, 2, 4, 116, 2, 22, -0.001);
+INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index)
+VALUES (1, 1, 2, 4, 116, 2, 22, -0.001, 2);
 
-INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained)
-VALUES (1, 2, 3, 4, 17, 6, 25, 0.826);
+INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index)
+VALUES (1, 2, 3, 4, 17, 6, 25, 0.826, 2);
 -- P2
-INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained)
-VALUES (2, 1, 1, 4, 446, 1, 1, 0.275);
+INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index)
+VALUES (2, 1, 1, 4, 446, 1, 1, 0.275, 2);
 
-INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained)
-VALUES (2, 1, 2, 4, 116, 2, 22, -0.001);
+INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index)
+VALUES (2, 1, 2, 4, 116, 2, 22, -0.001, 2);
 
-INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained)
-VALUES (2, 2, 3, 4, 17, 6, 25, 0.826);
+INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index)
+VALUES (2, 2, 3, 4, 17, 6, 25, 0.826, 2);
