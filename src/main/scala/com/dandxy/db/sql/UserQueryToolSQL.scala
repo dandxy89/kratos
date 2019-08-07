@@ -4,6 +4,8 @@ import java.sql.Timestamp
 
 import cats.implicits._
 import com.dandxy.db.UserQueryTool.PlayerHash
+import com.dandxy.model.golf.entity.Hole
+import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.model.user._
 import doobie._
 import doobie.implicits._
@@ -44,46 +46,53 @@ object UserQueryToolSQL {
     Update[GolfClubData](sql).updateMany(clubData)
   }
 
-  private[db] def getClubData(playerId: PlayerId): ConnectionIO[List[GolfClubData]] =
+  private[db] def fetchClubData(playerId: PlayerId): ConnectionIO[List[GolfClubData]] =
     sql""" SELECT player_id, club, typical_shape, typical_height, manufacturer, typical_distance, distanceType
          | FROM player.club_data
          | WHERE player_id = $playerId
        """.stripMargin.query[GolfClubData].to[List]
 
-  // CREATE TABLE player.game (
-  //    game_id SERIAL PRIMARY KEY,
-  //    player_id INTEGER REFERENCES player.playerlookup,
-  //    course VARCHAR(200) NOT NULL,
-  //    game_start_time TIMESTAMP NOT NULL,
-  //    handicap NUMERIC(6, 1) NOT NULL,
-  //    ball_used VARCHAR(200),
-  //    green_speed VARCHAR(200),
-  //    temperature VARCHAR(200),
-  //    wind_speed VARCHAR(200)
-  //);
+  private[db] def insertPlayerGame(game: UserGameInput): Update0 =
+    sql""" INSERT INTO player.game (player_id, course, game_start_time, handicap, ball_used, 
+         |                          green_speed, temperature, wind_speed)
+         | VALUES (${game.playerId}, ${game.courseName}, ${game.gameStartTime}, ${game.handicap},
+         |         ${game.ballUsed}, ${game.greenSpeed}, ${game.temperature}, ${game.windSpeed})
+       """.stripMargin.update
 
-  private[db] def addPlayerGame() = ???
+  private[db] def fetchPlayerGame(gameId: GameId): Query0[UserGameInput] =
+    sql""" SELECT player_id, game_start_time, handicap, ball_used, green_speed, temperature, wind_speed, game_id
+         | FROM player.game
+         | WHERE game_id = $gameId
+       """.stripMargin.query[UserGameInput]
 
-  private[db] def getPlayerGame() = ???
+  private[db] def fetchAllPlayerGames(playerId: PlayerId): ConnectionIO[List[UserGameInput]] =
+    sql""" SELECT player_id, game_start_time, handicap, ball_used, green_speed, temperature, wind_speed, game_id
+         | FROM player.game
+         | WHERE player_id = $playerId
+       """.stripMargin.query[UserGameInput].to[List]
 
-  //CREATE TABLE player.shot (
-  //    shot_serial SERIAL PRIMARY KEY,
-  //    game_id INTEGER REFERENCES player.game,
-  //    hole INTEGER NOT NULL,
-  //    shot INTEGER NOT NULL,
-  //    par INTEGER NOT NULL,
-  //    distance INTEGER NOT NULL,
-  //    ball_location INTEGER NOT NULL,
-  //    club VARCHAR(200) NOT NULL,
-  //    strokes_gained NUMERIC(6, 3) NOT NULL,
-  //    orientation VARCHAR(200),
-  //    shot_shape VARCHAR(200),
-  //    shot_height VARCHAR(200),
-  //    stroke_index VARCHAR(200)
-  //);
+  private[db] def dropShotsByHole(gameId: GameId, hole: Hole): Update0 =
+    sql""" DELETE FROM player.shot WHERE game_id = $gameId AND hole = $hole """.update
 
-  private[db] def addPlayerShot() = ???
+  private[db] def insertPlayerShots(input: List[UserShotInput]): ConnectionIO[Int] = {
+    val sql =
+      """ INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club,
+        |                          strokes_gained, stroke_index, orientation, shot_shape, shot_height)
+        | VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      """.stripMargin
 
-  private[db] def getPlayerShot() = ???
+    Update[UserShotInput](sql).updateMany(input)
+  }
 
+  private[this] def holeClause(hole: Option[Hole]): Fragment = hole match {
+    case Some(h) => fr" AND hole = $h"
+    case None    => fr""
+  }
+
+  private[db] def fetchPlayerShot(gameId: GameId, hole: Option[Hole]): ConnectionIO[List[UserShotInput]] =
+    (fr"""SELECT games_id, hole, shot, par, distance, ball_location, 
+         |       club, strokes_gained, stroke_index, orientation, shot_shape, shot_height
+         | FROM player.shot WHERE game_id = $gameId""".stripMargin ++ holeClause(hole))
+      .query[UserShotInput]
+      .to[List]
 }

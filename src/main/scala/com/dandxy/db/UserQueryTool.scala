@@ -5,6 +5,9 @@ import java.sql.Timestamp
 import com.dandxy.auth.PasswordAuth
 import com.dandxy.config.AppModels.AuthSalt
 import com.dandxy.db.sql.TableName._
+import com.dandxy.model.golf.entity.Hole
+import com.dandxy.model.golf.input.GolfInput
+import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.model.user._
 import doobie._
 
@@ -23,10 +26,10 @@ object UserQueryTool {
       l <- purgeByPlayerId(playerId, PlayerLookup.name).run
     } yield g + c + p + l + s
 
-  def registerUser(registration: UserRegistration, hashPassword: Password, updateTime: Timestamp): ConnectionIO[PlayerId] =
+  def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): ConnectionIO[PlayerId] =
     for {
       id <- addUser(registration, updateTime)
-      _  <- addHashedPassword(registration.email, hashPassword, PlayerId(id)).run
+      _  <- addHashedPassword(registration.email, hashedPassword, PlayerId(id)).run
     } yield PlayerId(id)
 
   def attemptLogin(config: AuthSalt)(email: UserEmail, rawPassword: Password): ConnectionIO[Option[PlayerId]] =
@@ -42,10 +45,24 @@ object UserQueryTool {
     } yield c
 
   def getUserClubs(playerId: PlayerId): ConnectionIO[List[GolfClubData]] =
-    getClubData(playerId)
+    fetchClubData(playerId)
 
-  //  def upsertUserGame: Unit = ???
-  //  def getUserShot: Unit = ???
-  //  def upsertUserShot: Unit = ???
+  def getAllPlayerGames(playerId: PlayerId): ConnectionIO[List[GolfInput.UserGameInput]] =
+    fetchAllPlayerGames(playerId)
+
+  def getPlayerGames(gameId: GameId): Query0[GolfInput.UserGameInput] =
+    fetchPlayerGame(gameId)
+
+  def addPlayerGame(game: UserGameInput): Update0 =
+    insertPlayerGame(game)
+
+  def dropByHold(gameId: GameId, hole: Hole): Update0 =
+    dropShotsByHole(gameId, hole)
+
+  def addPlayerShots(input: List[UserShotInput]): ConnectionIO[Int] =
+    insertPlayerShots(input)
+
+  def fetchByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): ConnectionIO[List[UserShotInput]] =
+    fetchPlayerShot(gameId, hole)
 
 }
