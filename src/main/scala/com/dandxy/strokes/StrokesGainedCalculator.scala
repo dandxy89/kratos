@@ -13,7 +13,6 @@ import com.dandxy.util.Helpers.{ combineAll, roundAt3 }
 
 import scala.annotation.tailrec
 import scala.language.higherKinds
-import scala.language.higherKinds._
 
 object StrokesGainedCalculator {
 
@@ -46,7 +45,7 @@ object StrokesGainedCalculator {
       }
     }
 
-  private def filterApproachShots(in: List[UserShotInput]): List[UserShotInput] = in.filter { v =>
+  private[this] def filterApproachShots(in: List[UserShotInput]): List[UserShotInput] = in.filter { v =>
     Set(v.location).subsetOf(Location.approachLies)
   }
 
