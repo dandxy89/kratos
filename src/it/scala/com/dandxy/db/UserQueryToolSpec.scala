@@ -36,7 +36,7 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
   val testGolfClubs2 = List(GolfClubData(PlayerId(3), Driver, Some(Straight), Some(Low), Some(Miura), Distance(200.0), Yards))
   val testPlayer     = PlayerId(3)
   val fakeEmail      = UserEmail("fake@hacker.com")
-  val authSalt       = AuthSalt(Some(new Salt("testingSalt")))
+  val authSalt       = AuthSalt(Some(Salt("testingSalt")))
 
   "HealthCheck" should "return the Status of the Database OK if it has started correctly" in {
     HealthCheck.queryStatus(service.postgresTransactor).unsafeRunSync() shouldBe OK
