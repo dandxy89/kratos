@@ -1,5 +1,9 @@
 
-[![Build Status](https://travis-ci.com/dandxy89/kratos.svg?branch=master)](https://travis-ci.com/dandxy89/kratos)
+[![Build Status](https://travis-ci.com/dandxy89/kratos.svg?token=qdqFxUyNZxG8xHF5ajA4&branch=master)](https://travis-ci.com/dandxy89/kratos)
+
+
+[![codecov](https://codecov.io/gh/dandxy89/kratos/branch/master/graph/badge.svg?token=IvVbtdOVXS)](https://codecov.io/gh/dandxy89/kratos)
+
 
 # Overview of Application
 
