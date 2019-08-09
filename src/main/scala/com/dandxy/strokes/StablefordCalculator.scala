@@ -1,7 +1,7 @@
 package com.dandxy.strokes
 
 import com.dandxy.model.golf.entity.Par
-import com.dandxy.model.golf.input.Handicap
+import com.dandxy.model.golf.input.{ Handicap, Points }
 
 object StablefordCalculator {
 
@@ -17,8 +17,8 @@ object StablefordCalculator {
       case (a, b)                       => a + (if (index <= b) 1 else 0)
     }
 
-  def calculate(par: Par, handicap: Handicap, index: Int, shots: Int): Int =
-    (shots - (par.strokes + numberOfShots(handicap, index))) match {
+  def calculate(par: Par, handicap: Handicap, index: Int, shots: Int): Points =
+    Points((shots - (par.strokes + numberOfShots(handicap, index))) match {
       case 1  => 1
       case 0  => 2
       case -1 => 3
@@ -27,5 +27,5 @@ object StablefordCalculator {
       case -4 => 6
       case -5 => 7
       case _  => 0
-    }
+    })
 }

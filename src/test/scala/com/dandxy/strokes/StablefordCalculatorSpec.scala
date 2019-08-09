@@ -1,7 +1,7 @@
 package com.dandxy.strokes
 
 import com.dandxy.model.golf.entity.Par
-import com.dandxy.model.golf.input.Handicap
+import com.dandxy.model.golf.input.{ Handicap, Points }
 import com.dandxy.strokes.StablefordCalculator.{ calculate, numberOfShots }
 import org.scalatest.{ FlatSpec, Matchers }
 
@@ -12,33 +12,33 @@ class StablefordCalculatorSpec extends FlatSpec with Matchers {
   val indexA = 5
   val indexB = 1
 
-  it should "calculate" in {
+  it should "calculate the number of stableford points" in {
     val hA = Handicap(-2)
-    calculate(Par.ParFour, hA, indexB, 2) shouldBe 3
-    calculate(Par.ParFour, hA, indexB, 3) shouldBe 2
-    calculate(Par.ParFour, hA, indexB, 4) shouldBe 1
-    calculate(Par.ParFour, hA, indexB, 5) shouldBe 0
-    calculate(Par.ParFour, hA, indexB, 6) shouldBe 0
-    calculate(Par.ParFour, hA, indexB, 7) shouldBe 0
+    calculate(Par.ParFour, hA, indexB, 2).value shouldBe 3
+    calculate(Par.ParFour, hA, indexB, 3).value shouldBe 2
+    calculate(Par.ParFour, hA, indexB, 4).value shouldBe 1
+    calculate(Par.ParFour, hA, indexB, 5).value shouldBe 0
+    calculate(Par.ParFour, hA, indexB, 6).value shouldBe 0
+    calculate(Par.ParFour, hA, indexB, 7).value shouldBe 0
 
     val hB = Handicap(0)
-    calculate(Par.ParFour, hB, indexB, 2) shouldBe 4
-    calculate(Par.ParFour, hB, indexB, 3) shouldBe 3
-    calculate(Par.ParFour, hB, indexB, 4) shouldBe 2
-    calculate(Par.ParFour, hB, indexB, 5) shouldBe 1
-    calculate(Par.ParFour, hB, indexB, 6) shouldBe 0
-    calculate(Par.ParFour, hB, indexB, 7) shouldBe 0
+    calculate(Par.ParFour, hB, indexB, 2).value shouldBe 4
+    calculate(Par.ParFour, hB, indexB, 3).value shouldBe 3
+    calculate(Par.ParFour, hB, indexB, 4).value shouldBe 2
+    calculate(Par.ParFour, hB, indexB, 5).value shouldBe 1
+    calculate(Par.ParFour, hB, indexB, 6).value shouldBe 0
+    calculate(Par.ParFour, hB, indexB, 7).value shouldBe 0
 
     val hC = Handicap(38)
-    calculate(Par.ParFour, hC, indexB, 2) shouldBe 7
-    calculate(Par.ParFour, hC, indexB, 3) shouldBe 6
-    calculate(Par.ParFour, hC, indexB, 4) shouldBe 5
-    calculate(Par.ParFour, hC, indexB, 5) shouldBe 4
-    calculate(Par.ParFour, hC, indexB, 6) shouldBe 3
-    calculate(Par.ParFour, hC, indexB, 7) shouldBe 2
+    calculate(Par.ParFour, hC, indexB, 2).value shouldBe 7
+    calculate(Par.ParFour, hC, indexB, 3).value shouldBe 6
+    calculate(Par.ParFour, hC, indexB, 4).value shouldBe 5
+    calculate(Par.ParFour, hC, indexB, 5).value shouldBe 4
+    calculate(Par.ParFour, hC, indexB, 6).value shouldBe 3
+    calculate(Par.ParFour, hC, indexB, 7).value shouldBe 2
   }
 
-  it should "numberOfShots" in {
+  it should "calculate the number of shots to add onto the par" in {
     numberOfShots(Handicap(-2), indexA) shouldBe 0
     numberOfShots(Handicap(0), indexA) shouldBe 0
     numberOfShots(Handicap(2), indexA) shouldBe 0
