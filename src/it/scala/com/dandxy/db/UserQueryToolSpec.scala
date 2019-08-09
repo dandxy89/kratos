@@ -2,24 +2,25 @@ package com.dandxy.db
 
 import java.sql.Timestamp
 
+import cats.implicits._
 import com.dandxy.auth.Salt
 import com.dandxy.config.AppModels.AuthSalt
 import com.dandxy.db.util.Migration
-import com.dandxy.model.golf.entity.GolfClub.{ Driver, FourIron, Putter }
+import com.dandxy.model.golf.entity.GolfClub.{Driver, FourIron, Putter}
 import com.dandxy.model.golf.entity.Hole
-import com.dandxy.model.golf.entity.Location.{ OnTheGreen, TeeBox }
+import com.dandxy.model.golf.entity.Location.{OnTheGreen, TeeBox}
 import com.dandxy.model.golf.entity.Manufacturer.Miura
-import com.dandxy.model.golf.entity.Orientation.{ LongLeft, MiddleLeft }
+import com.dandxy.model.golf.entity.Orientation.{LongLeft, MiddleLeft}
 import com.dandxy.model.golf.entity.Par.ParThree
 import com.dandxy.model.golf.input.DistanceMeasurement.Yards
-import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
+import com.dandxy.model.golf.input.GolfInput.{UserGameInput, UserShotInput}
 import com.dandxy.model.golf.input.ShotHeight.Low
 import com.dandxy.model.golf.input.ShotShape.Straight
-import com.dandxy.model.golf.input.{ Distance, Handicap, WindSpeed }
+import com.dandxy.model.golf.input.{Distance, Handicap, WindSpeed}
 import com.dandxy.model.user._
-import com.dandxy.util.PostgresDockerService
+import com.dandxy.util.{Helpers, PostgresDockerService}
 import org.scalatest.concurrent.Eventually
-import org.scalatest.{ BeforeAndAfterAll, FlatSpec, Matchers }
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
 class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with BeforeAndAfterAll {
 
@@ -107,7 +108,7 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
   }
 
   it should "fetch shots by Game - shouldBe Nil" in {
-    service.transactQuery(UserQueryTool.fetchByGameAndMaybeHole(GameId(4), None)) shouldBe Nil
+    service.transactQuery(UserQueryTool.getByGameAndMaybeHole(GameId(4), None)) shouldBe Nil
   }
 
   it should "add Player Shots" in {
@@ -120,26 +121,49 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
   }
 
   it should "fetch shots by Game" in {
-    service.transactQuery(UserQueryTool.fetchByGameAndMaybeHole(GameId(1), None)).size shouldBe 6
+    service.transactQuery(UserQueryTool.getByGameAndMaybeHole(GameId(1), None)).size shouldBe 6
   }
 
   it should "fetch shots by Game and Holes" in {
-    service.transactQuery(UserQueryTool.fetchByGameAndMaybeHole(GameId(1), Some(Hole(8)))).size shouldBe 3
-    service.transactQuery(UserQueryTool.fetchByGameAndMaybeHole(GameId(1), Some(Hole(10)))).size shouldBe 0
+    service.transactQuery(UserQueryTool.getByGameAndMaybeHole(GameId(1), Some(Hole(8)))).size shouldBe 3
+    service.transactQuery(UserQueryTool.getByGameAndMaybeHole(GameId(1), Some(Hole(10)))).size shouldBe 0
   }
 
   it should "Add some shots and then replace" in {
-    val parThreeExample: List[UserShotInput] = List(
+    val parThreeExampleA: List[UserShotInput] = List(
+      UserShotInput(GameId(1), Hole(11), 1, ParThree, Distance(310), TeeBox, FourIron, None, 17, Option(MiddleLeft), None, None, None),
+      UserShotInput(GameId(1), Hole(11), 2, ParThree, Distance(20), OnTheGreen, Putter, None, 17, Option(LongLeft), None, None, None),
+      UserShotInput(GameId(1), Hole(11), 3, ParThree, Distance(4), OnTheGreen, Putter, None, 17, Option(MiddleLeft), None, None, None)
+    )
+    val parThreeExampleB: List[UserShotInput] = List(
       UserShotInput(GameId(1), Hole(9), 1, ParThree, Distance(210), TeeBox, FourIron, None, 1, Option(MiddleLeft), None, None, None),
       UserShotInput(GameId(1), Hole(9), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 1, Option(LongLeft), None, None, None),
       UserShotInput(GameId(1), Hole(9), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 1, Option(MiddleLeft), None, None, None)
     )
-    val parThreeExample2: List[UserShotInput] = List(
+    val parThreeExampleC: List[UserShotInput] = List(
       UserShotInput(GameId(1), Hole(9), 1, ParThree, Distance(210), TeeBox, FourIron, None, 2, Option(MiddleLeft), None, None, None),
       UserShotInput(GameId(1), Hole(9), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 2, Option(LongLeft), None, None, None),
       UserShotInput(GameId(1), Hole(9), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None, None)
     )
-    service.transactQuery(UserQueryTool.addPlayerShots(parThreeExample)) shouldBe 3
-    service.transactQuery(UserQueryTool.addPlayerShots(parThreeExample2)) shouldBe 3
+    val parThreeExampleD: List[UserShotInput] = List(
+      UserShotInput(GameId(1), Hole(2), 1, ParThree, Distance(210), TeeBox, FourIron, None, 2, Option(MiddleLeft), None, None, None),
+      UserShotInput(GameId(1), Hole(2), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 2, Option(LongLeft), None, None, None)
+    )
+
+    service.transactQuery(UserQueryTool.addPlayerShots(parThreeExampleA)) shouldBe 3
+    service.transactQuery(UserQueryTool.addPlayerShots(parThreeExampleB)) shouldBe 3
+    service.transactQuery(UserQueryTool.addPlayerShots(parThreeExampleC)) shouldBe 3
+    service.transactQuery(UserQueryTool.addPlayerShots(parThreeExampleD)) shouldBe 2
+    service.transactQuery(UserQueryTool.getByGameAndMaybeHole(GameId(1), Some(Hole(9)))).map(_.strokeIndex) shouldBe List(2, 2, 2)
+  }
+
+  it should "fetch all of the handicap histories" in {
+    val expectedResult = List(Handicap(1.1), Handicap(7.1), Handicap(7.5))
+    service.transactQuery(UserQueryTool.getHandicapHistory(PlayerId(1))).map(_.value) shouldBe expectedResult
+  }
+
+  it should "aggregate a games result correctly" in {
+    val res = service.transactQuery(UserQueryTool.aggregateGameResult(GameId(1)))
+    Helpers.combineAll(res.map(_.shotCount)) shouldBe 14
   }
 }

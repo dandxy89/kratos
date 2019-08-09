@@ -6,7 +6,8 @@ import com.dandxy.auth.PasswordAuth
 import com.dandxy.config.AppModels.AuthSalt
 import com.dandxy.db.sql.TableName._
 import com.dandxy.model.golf.entity.Hole
-import com.dandxy.model.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
+import com.dandxy.model.golf.input.HandicapWithDate
 import com.dandxy.model.user._
 import doobie._
 
@@ -61,7 +62,13 @@ object UserQueryTool {
   def addPlayerShots(input: List[UserShotInput]): ConnectionIO[Int] =
     insertPlayerShots(input)
 
-  def fetchByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): ConnectionIO[List[UserShotInput]] =
+  def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): ConnectionIO[List[UserShotInput]] =
     fetchPlayerShot(gameId, hole)
+
+  def getHandicapHistory(playerId: PlayerId): ConnectionIO[List[HandicapWithDate]] =
+    fetchHandicapHistory(playerId)
+
+  def aggregateGameResult(gameId: GameId): ConnectionIO[List[AggregateGameResult]] =
+    fetchAggregateGameResult(gameId)
 
 }
