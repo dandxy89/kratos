@@ -4,7 +4,7 @@ object ProjectDependencies extends {
 
   private[this] object Version {
     val argonPass          = "2.5"
-    val circeVersion       = "0.12.0-M1"
+    val circeVersion       = "0.11.1"
     val doobieVersion      = "0.7.0-M5"
     val fS2Version         = "1.0.4"
     val http4sVersion      = "0.20.1"
@@ -30,6 +30,9 @@ object ProjectDependencies extends {
     "org.http4s"                 %% "http4s-circe"            % Version.http4sVersion,
     "org.http4s"                 %% "http4s-dsl"              % Version.http4sVersion,
     "io.circe"                   %% "circe-generic"           % Version.circeVersion,
+    "io.circe"                   %% "circe-core"              % Version.circeVersion,
+    "io.circe"                   %% "circe-parser"            % Version.circeVersion,
+    "io.circe"                   %% "circe-generic-extras"    % Version.circeVersion,
     "io.circe"                   %% "circe-config"            % Version.circeConfigVersion,
     "org.tpolecat"               %% "doobie-core"             % Version.doobieVersion,
     "org.tpolecat"               %% "doobie-hikari"           % Version.doobieVersion,
