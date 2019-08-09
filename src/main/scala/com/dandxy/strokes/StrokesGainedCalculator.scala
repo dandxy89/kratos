@@ -4,12 +4,13 @@ import cats.Monad
 import cats.implicits._
 import com.dandxy.model.golf.entity.Location.{ OnTheGreen, TeeBox }
 import com.dandxy.model.golf.entity.Par.ParThree
-import com.dandxy.model.golf.entity.Score.findScore
+import com.dandxy.model.golf.entity.Score
 import com.dandxy.model.golf.entity.{ Location, Par }
 import com.dandxy.model.golf.input.GolfInput.UserShotInput
-import com.dandxy.model.golf.input.{ Distance, HoleResult, Strokes }
+import com.dandxy.model.golf.input.{ Distance, Handicap, HoleResult, Strokes }
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
 import com.dandxy.util.Helpers.{ combineAll, roundAt3 }
+import StablefordCalculator.{ calculate => StablefordPoints }
 
 import scala.annotation.tailrec
 import scala.language.higherKinds
@@ -63,20 +64,23 @@ object StrokesGainedCalculator {
   def countShots(input: List[UserShotInput]): Int =
     input.foldLeft[Int](0) { case (a, b) => a + b.location.shots }
 
-  private[this] def aggregateResults(userAndMetrics: List[UserShotInput], input: List[UserShotInput]): HoleResult =
+  private[this] def aggregateResults(input: List[UserShotInput], h: Handicap, shotCount: Int): HoleResult =
     HoleResult(
-      score = findScore(countShots(input), input.head.par),
-      strokesGained = combineAll(userAndMetrics.map(_.strokesGained)),
-      strokesGainedOffTheTee = getStrokesGainedOffTheTee(userAndMetrics, input.head.par),
-      strokesGainedApproach = getStrokesGainedApproachTheGreen(userAndMetrics, input.head.par),
-      strokesGainedAround = getStrokesGainedAroundTheGreen(userAndMetrics),
-      strokesGainedPutting = getStrokesGainedPutting(userAndMetrics),
-      userDate = userAndMetrics
+      score = Score.findScore(shotCount, input.head.par),
+      strokesGained = combineAll(input.map(_.strokesGained)),
+      strokesGainedOffTheTee = getStrokesGainedOffTheTee(input, input.head.par),
+      strokesGainedApproach = getStrokesGainedApproachTheGreen(input, input.head.par),
+      strokesGainedAround = getStrokesGainedAroundTheGreen(input),
+      strokesGainedPutting = getStrokesGainedPutting(input),
+      stablefordPoints = StablefordPoints(input.head.par, h, input.head.strokeIndex, shotCount),
+      userDate = input
     )
 
-  def calculate[F[_]](dbOp: Location => Distance => F[PGAStatistic])(input: List[UserShotInput])(implicit F: Monad[F]): F[HoleResult] =
+  type GetStatistic[F[_]] = Location => Distance => F[PGAStatistic]
+
+  def calculate[F[_]](dbOp: GetStatistic[F])(h: Handicap, input: List[UserShotInput])(implicit F: Monad[F]): F[HoleResult] =
     for {
       met <- getMetrics(dbOp)(input.filter(_.location.locationId <= 6))
       stg <- F.map(F.point(met))(getAllStrokesGained)
-    } yield aggregateResults(stg, input)
+    } yield aggregateResults(stg, h, countShots(input))
 }

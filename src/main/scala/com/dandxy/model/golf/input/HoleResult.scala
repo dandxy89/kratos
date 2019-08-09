@@ -10,5 +10,6 @@ final case class HoleResult(
   strokesGainedApproach: Option[Strokes],
   strokesGainedAround: Option[Strokes],
   strokesGainedPutting: Option[Strokes],
+  stablefordPoints: Int,
   userDate: List[UserShotInput]
 )
