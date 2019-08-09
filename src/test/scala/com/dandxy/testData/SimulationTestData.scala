@@ -69,6 +69,7 @@ trait SimulationTestData {
     Some(Strokes(0.524)),
     None,
     Some(Strokes(-0.374)),
+    3,
     List(
       UserShotInput(
         GameId(1),
@@ -133,6 +134,7 @@ trait SimulationTestData {
     Some(Strokes(0.524)),
     None,
     Some(Strokes(-2.374)),
+    1,
     List(
       UserShotInput(
         GameId(1),
@@ -224,6 +226,7 @@ trait SimulationTestData {
     Some(Strokes(0.524)),
     None,
     Some(Strokes(0.626)),
+    4,
     List(
       UserShotInput(
         GameId(1),
@@ -272,6 +275,7 @@ trait SimulationTestData {
     Some(Strokes(0.354)),
     None,
     Some(Strokes(-0.374)),
+    3,
     List(
       UserShotInput(
         GameId(1),
@@ -347,6 +351,7 @@ trait SimulationTestData {
     None,
     None,
     None,
+    6,
     List(
       UserShotInput(
         GameId(1),
@@ -381,6 +386,7 @@ trait SimulationTestData {
     Some(Strokes(0.21399999999999997)),
     None,
     Some(Strokes(-0.374)),
+    3,
     List(
       UserShotInput(
         GameId(1),
@@ -475,6 +481,7 @@ trait SimulationTestData {
     Some(Strokes(-0.43600000000000005)),
     None,
     Some(Strokes(-0.374)),
+    3,
     List(
       UserShotInput(
         GameId(1),
@@ -571,6 +578,7 @@ trait SimulationTestData {
     Some(Strokes(-3.626)),
     None,
     Some(Strokes(-0.374)),
+    0,
     List(
       UserShotInput(
         GameId(1),
@@ -721,6 +729,7 @@ trait SimulationTestData {
       Some(Strokes(0.27)),
       None,
       Some(Strokes(0.83)),
+      2,
       List(
         UserShotInput(
           GameId(2),
