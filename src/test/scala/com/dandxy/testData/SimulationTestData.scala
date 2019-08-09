@@ -2,14 +2,14 @@ package com.dandxy.testData
 
 import cats.effect.IO
 import com.dandxy.model.golf.entity.GolfClub._
-import com.dandxy.model.golf.entity.Location.{ Fairway, OnTheGreen, TeeBox }
+import com.dandxy.model.golf.entity.Location.{Fairway, OnTheGreen, TeeBox}
 import com.dandxy.model.golf.entity.Orientation._
-import com.dandxy.model.golf.entity.Par.{ ParFive, ParFour, ParThree }
+import com.dandxy.model.golf.entity.Par.{ParFive, ParFour, ParThree}
 import com.dandxy.model.golf.entity.Penalty.OutOfBounds
 import com.dandxy.model.golf.entity.Score._
-import com.dandxy.model.golf.entity.{ Hole, Location }
+import com.dandxy.model.golf.entity.{Hole, Location}
 import com.dandxy.model.golf.input.GolfInput.UserShotInput
-import com.dandxy.model.golf.input.{ Distance, HoleResult, Strokes }
+import com.dandxy.model.golf.input.{Distance, HoleResult, Points, Strokes}
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user.GameId
 
@@ -69,7 +69,7 @@ trait SimulationTestData {
     Some(Strokes(0.524)),
     None,
     Some(Strokes(-0.374)),
-    3,
+    Points(3),
     List(
       UserShotInput(
         GameId(1),
@@ -134,7 +134,7 @@ trait SimulationTestData {
     Some(Strokes(0.524)),
     None,
     Some(Strokes(-2.374)),
-    1,
+    Points(1),
     List(
       UserShotInput(
         GameId(1),
@@ -226,7 +226,7 @@ trait SimulationTestData {
     Some(Strokes(0.524)),
     None,
     Some(Strokes(0.626)),
-    4,
+    Points(4),
     List(
       UserShotInput(
         GameId(1),
@@ -275,7 +275,7 @@ trait SimulationTestData {
     Some(Strokes(0.354)),
     None,
     Some(Strokes(-0.374)),
-    3,
+    Points(3),
     List(
       UserShotInput(
         GameId(1),
@@ -351,7 +351,7 @@ trait SimulationTestData {
     None,
     None,
     None,
-    6,
+    Points(6),
     List(
       UserShotInput(
         GameId(1),
@@ -386,7 +386,7 @@ trait SimulationTestData {
     Some(Strokes(0.21399999999999997)),
     None,
     Some(Strokes(-0.374)),
-    3,
+    Points(3),
     List(
       UserShotInput(
         GameId(1),
@@ -481,7 +481,7 @@ trait SimulationTestData {
     Some(Strokes(-0.43600000000000005)),
     None,
     Some(Strokes(-0.374)),
-    3,
+    Points(3),
     List(
       UserShotInput(
         GameId(1),
@@ -578,7 +578,7 @@ trait SimulationTestData {
     Some(Strokes(-3.626)),
     None,
     Some(Strokes(-0.374)),
-    0,
+    Points(0),
     List(
       UserShotInput(
         GameId(1),
@@ -729,7 +729,7 @@ trait SimulationTestData {
       Some(Strokes(0.27)),
       None,
       Some(Strokes(0.83)),
-      2,
+      Points(2),
       List(
         UserShotInput(
           GameId(2),
