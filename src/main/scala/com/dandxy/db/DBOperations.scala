@@ -2,55 +2,56 @@ package com.dandxy.db
 
 import java.sql.Timestamp
 
-import cats.effect.IO
-import com.dandxy.model.golf.entity.{ Hole, PGAStatistics }
-import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.model.golf.input.{ Distance, HandicapWithDate }
+import com.dandxy.model.golf.entity.{Hole, PGAStatistics}
+import com.dandxy.model.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.model.golf.input.{Distance, HandicapWithDate}
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user._
 
-class DBOperations(pgaOps: PGAPostgresQueryTool[IO], userOps: UserPostgresQueryTool[IO]) extends PGAStore[IO] with UserStore[IO] {
+import scala.language.higherKinds
 
-  override def getStatistic(distance: Distance, stat: PGAStatistics): IO[Option[PGAStatistic]] =
+class DBOperations[F[_]](pgaOps: PGAPostgresQueryTool[F], userOps: UserPostgresQueryTool[F]) extends PGAStore[F] with UserStore[F] {
+
+  override def getStatistic(distance: Distance, stat: PGAStatistics): F[Option[PGAStatistic]] =
     pgaOps.getStatistic(distance, stat)
 
-  override def gdprPurge(playerId: PlayerId): IO[Int] =
+  override def gdprPurge(playerId: PlayerId): F[Int] =
     userOps.gdprPurge(playerId)
 
-  override def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): IO[PlayerId] =
+  override def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): F[PlayerId] =
     userOps.registerUser(registration, hashedPassword, updateTime)
 
-  override def attemptLogin(email: UserEmail, rawPassword: Password): IO[Option[PlayerId]] =
+  override def attemptLogin(email: UserEmail, rawPassword: Password): F[Option[PlayerId]] =
     userOps.attemptLogin(email, rawPassword)
 
-  override def addClubData(playerId: PlayerId, input: List[GolfClubData]): IO[Int] =
+  override def addClubData(playerId: PlayerId, input: List[GolfClubData]): F[Int] =
     userOps.addClubData(playerId, input)
 
-  override def getUserClubs(playerId: PlayerId): IO[List[GolfClubData]] =
+  override def getUserClubs(playerId: PlayerId): F[List[GolfClubData]] =
     userOps.getUserClubs(playerId)
 
-  override def getAllPlayerGames(playerId: PlayerId): IO[List[UserGameInput]] =
+  override def getAllPlayerGames(playerId: PlayerId): F[List[UserGameInput]] =
     userOps.getAllPlayerGames(playerId)
 
-  override def getPlayerGame(gameId: GameId): IO[Option[UserGameInput]] =
+  override def getPlayerGame(gameId: GameId): F[Option[UserGameInput]] =
     userOps.getPlayerGame(gameId)
 
-  override def addPlayerGame(game: UserGameInput): IO[GameId] =
+  override def addPlayerGame(game: UserGameInput): F[GameId] =
     userOps.addPlayerGame(game)
 
-  override def dropByHole(gameId: GameId, hole: Hole): IO[Int] =
+  override def dropByHole(gameId: GameId, hole: Hole): F[Int] =
     userOps.dropByHole(gameId, hole)
 
-  override def addPlayerShots(input: List[UserShotInput]): IO[Int] =
+  override def addPlayerShots(input: List[UserShotInput]): F[Int] =
     userOps.addPlayerShots(input)
 
-  override def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): IO[List[UserShotInput]] =
+  override def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): F[List[UserShotInput]] =
     userOps.getByGameAndMaybeHole(gameId, hole)
 
-  override def getHandicapHistory(playerId: PlayerId): IO[List[HandicapWithDate]] =
+  override def getHandicapHistory(playerId: PlayerId): F[List[HandicapWithDate]] =
     userOps.getHandicapHistory(playerId)
 
-  override def aggregateGameResult(gameId: GameId): IO[List[AggregateGameResult]] =
+  override def aggregateGameResult(gameId: GameId): F[List[AggregateGameResult]] =
     userOps.aggregateGameResult(gameId)
 
 }
