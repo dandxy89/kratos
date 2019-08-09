@@ -6,7 +6,7 @@ import cats.implicits._
 import com.dandxy.db.UserQueryTool.PlayerHash
 import com.dandxy.model.golf.entity._
 import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.model.golf.input.{ Distance, ShotHeight, ShotShape, Strokes }
+import com.dandxy.model.golf.input.{ Distance, HandicapWithDate, ShotHeight, ShotShape, Strokes }
 import com.dandxy.model.user._
 import doobie._
 import doobie.implicits._
@@ -75,7 +75,7 @@ object UserQueryToolSQL {
   private[db] def dropShotsByHole(gameId: GameId, hole: Hole): Update0 =
     sql""" DELETE FROM player.shot WHERE game_id = $gameId AND hole = $hole """.update
 
-  // TODO: Must be a better way to do this!
+  // TODO: Must be a better way to do this! Lenses?
   private[this] final case class Intermediate(
     gameId: GameId,
     hole: Hole,
@@ -139,5 +139,28 @@ object UserQueryToolSQL {
          | FROM player.shot WHERE game_id = $gameId""".stripMargin ++ holeClause(hole))
       .query[UserShotInput]
       .to[List]
+
+  private[db] def fetchHandicapHistory(playerId: PlayerId): ConnectionIO[List[HandicapWithDate]] =
+    sql""" SELECT handicap, game_start_time 
+         | FROM player.game
+         | WHERE player_id = $playerId
+         | ORDER BY game_start_time DESC
+         |""".stripMargin.query[HandicapWithDate].to[List]
+
+  private[db] def fetchAggregateGameResult(gameId: GameId): ConnectionIO[List[AggregateGameResult]] =
+    sql""" SELECT agg.game_id, agg.hole, s.distance, s.par, s.stroke_index, agg.shot_count, agg.strokes_gained_sum
+         | FROM
+         | (
+         |    SELECT game_id, hole, MAX(shot) AS shot_count, SUM(strokes_gained) strokes_gained_sum
+         |    FROM player.shot
+         |    WHERE game_id = $gameId
+         |    GROUP BY game_id, hole
+         | ) agg
+         | LEFT JOIN (
+         |    SELECT game_id, hole, par, stroke_index, distance
+         |    FROM player.shot
+         |    WHERE game_id = $gameId AND shot = 1
+         | ) s ON agg.game_id = s.game_id AND agg.hole = s.hole
+         |""".stripMargin.query[AggregateGameResult].to[List]
 
 }
