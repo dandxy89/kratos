@@ -57,9 +57,9 @@ trait SimulationTestData {
       }
 
   val parThreeExample: List[UserShotInput] = List(
-    UserShotInput(GameId(1), Hole(1), 1, ParThree, Distance(210), TeeBox, FourIron, None, 1, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(1), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 1, Option(LongLeft), None, None),
-    UserShotInput(GameId(1), Hole(1), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 1, Option(MiddleLeft), None, None)
+    UserShotInput(GameId(1), Hole(1), 1, ParThree, Distance(210), TeeBox, FourIron, None, 1, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(1), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 1, Option(LongLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(1), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 1, Option(MiddleLeft), None, None, None)
   )
 
   val expectedParThreeExample = HoleResult(
@@ -71,7 +71,7 @@ trait SimulationTestData {
     Some(Strokes(-0.374)),
     List(
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(1),
         1,
         ParThree,
@@ -82,10 +82,11 @@ trait SimulationTestData {
         1,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(1),
         2,
         ParThree,
@@ -96,10 +97,11 @@ trait SimulationTestData {
         1,
         Some(LongLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(1),
         3,
         ParThree,
@@ -110,17 +112,18 @@ trait SimulationTestData {
         1,
         Some(MiddleLeft),
         None,
+        None,
         None
       )
     )
   )
 
   val parThreeExampleBadGolfer: List[UserShotInput] = List(
-    UserShotInput(GameId(1), Hole(2), 1, ParThree, Distance(210), TeeBox, FourIron, None, 2, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(2), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(2), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(2), 4, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(2), 5, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None)
+    UserShotInput(GameId(1), Hole(2), 1, ParThree, Distance(210), TeeBox, FourIron, None, 2, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(2), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(2), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(2), 4, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(2), 5, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None, None)
   )
 
   val expectedParThreeExampleBadGolfer = HoleResult(
@@ -132,7 +135,7 @@ trait SimulationTestData {
     Some(Strokes(-2.374)),
     List(
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(2),
         1,
         ParThree,
@@ -143,10 +146,11 @@ trait SimulationTestData {
         2,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(2),
         2,
         ParThree,
@@ -157,10 +161,11 @@ trait SimulationTestData {
         2,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(2),
         3,
         ParThree,
@@ -171,10 +176,11 @@ trait SimulationTestData {
         2,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(2),
         4,
         ParThree,
@@ -185,10 +191,11 @@ trait SimulationTestData {
         2,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(2),
         5,
         ParThree,
@@ -199,14 +206,15 @@ trait SimulationTestData {
         2,
         Some(MiddleLeft),
         None,
+        None,
         None
       )
     )
   )
 
   val parThreeExampleGoodGolfer: List[UserShotInput] = List(
-    UserShotInput(GameId(1), Hole(3), 1, ParThree, Distance(210), TeeBox, FourIron, None, 3, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(3), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 3, Option(MiddleLeft), None, None)
+    UserShotInput(GameId(1), Hole(3), 1, ParThree, Distance(210), TeeBox, FourIron, None, 3, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(3), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 3, Option(MiddleLeft), None, None, None)
   )
 
   val expectedParThreeExampleGoodGolfer = HoleResult(
@@ -218,7 +226,7 @@ trait SimulationTestData {
     Some(Strokes(0.626)),
     List(
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(3),
         1,
         ParThree,
@@ -229,10 +237,11 @@ trait SimulationTestData {
         3,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(3),
         2,
         ParThree,
@@ -243,16 +252,17 @@ trait SimulationTestData {
         3,
         Some(MiddleLeft),
         None,
+        None,
         None
       )
     )
   )
 
   val parFourExample: List[UserShotInput] = List(
-    UserShotInput(GameId(1), Hole(4), 1, ParFour, Distance(430), TeeBox, Driver, None, 4, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(4), 2, ParFour, Distance(160), Fairway, FiveIron, None, 4, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(4), 3, ParFour, Distance(10), OnTheGreen, Putter, None, 4, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(4), 4, ParFour, Distance(2), OnTheGreen, Putter, None, 4, Option(MiddleLeft), None, None)
+    UserShotInput(GameId(1), Hole(4), 1, ParFour, Distance(430), TeeBox, Driver, None, 4, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(4), 2, ParFour, Distance(160), Fairway, FiveIron, None, 4, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(4), 3, ParFour, Distance(10), OnTheGreen, Putter, None, 4, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(4), 4, ParFour, Distance(2), OnTheGreen, Putter, None, 4, Option(MiddleLeft), None, None, None)
   )
 
   val expectedParFourExample = HoleResult(
@@ -264,7 +274,7 @@ trait SimulationTestData {
     Some(Strokes(-0.374)),
     List(
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(4),
         1,
         ParFour,
@@ -275,10 +285,11 @@ trait SimulationTestData {
         4,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(4),
         2,
         ParFour,
@@ -289,10 +300,11 @@ trait SimulationTestData {
         4,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(4),
         3,
         ParFour,
@@ -303,10 +315,11 @@ trait SimulationTestData {
         4,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(4),
         4,
         ParFour,
@@ -317,13 +330,14 @@ trait SimulationTestData {
         4,
         Some(MiddleLeft),
         None,
+        None,
         None
       )
     )
   )
 
   val parFourExampleHoleInOne: List[UserShotInput] = List(
-    UserShotInput(GameId(1), Hole(5), 1, ParFour, Distance(430), TeeBox, Driver, None, 4, Option(MiddleLeft), None, None)
+    UserShotInput(GameId(1), Hole(5), 1, ParFour, Distance(430), TeeBox, Driver, None, 4, Option(MiddleLeft), None, None, None)
   )
 
   val expectedParFourExampleHoleInOne = HoleResult(
@@ -335,7 +349,7 @@ trait SimulationTestData {
     None,
     List(
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(5),
         1,
         ParFour,
@@ -346,17 +360,18 @@ trait SimulationTestData {
         4,
         Some(MiddleLeft),
         None,
+        None,
         None
       )
     )
   )
 
   val parFiveExample: List[UserShotInput] = List(
-    UserShotInput(GameId(1), Hole(6), 1, ParFive, Distance(559), TeeBox, Driver, None, 6, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(6), 2, ParFive, Distance(320), Fairway, FiveWood, None, 6, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(6), 3, ParFive, Distance(160), Fairway, FourIron, None, 6, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(6), 4, ParFive, Distance(10), OnTheGreen, Putter, None, 6, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(6), 5, ParFive, Distance(2), OnTheGreen, Putter, None, 6, Option(MiddleLeft), None, None)
+    UserShotInput(GameId(1), Hole(6), 1, ParFive, Distance(559), TeeBox, Driver, None, 6, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(6), 2, ParFive, Distance(320), Fairway, FiveWood, None, 6, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(6), 3, ParFive, Distance(160), Fairway, FourIron, None, 6, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(6), 4, ParFive, Distance(10), OnTheGreen, Putter, None, 6, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(6), 5, ParFive, Distance(2), OnTheGreen, Putter, None, 6, Option(MiddleLeft), None, None, None)
   )
 
   val expectedParFiveExample = HoleResult(
@@ -368,7 +383,7 @@ trait SimulationTestData {
     Some(Strokes(-0.374)),
     List(
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(6),
         1,
         ParFive,
@@ -379,10 +394,11 @@ trait SimulationTestData {
         6,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(6),
         2,
         ParFive,
@@ -393,10 +409,11 @@ trait SimulationTestData {
         6,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(6),
         3,
         ParFive,
@@ -407,10 +424,11 @@ trait SimulationTestData {
         6,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(6),
         4,
         ParFive,
@@ -421,10 +439,11 @@ trait SimulationTestData {
         6,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(6),
         5,
         ParFive,
@@ -435,17 +454,18 @@ trait SimulationTestData {
         6,
         Some(MiddleLeft),
         None,
+        None,
         None
       )
     )
   )
 
   val parFiveExampleBigDrive: List[UserShotInput] = List(
-    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(559), TeeBox, Driver, None, 7, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(200), Fairway, FiveWood, None, 7, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(160), Fairway, FourIron, None, 7, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(10), OnTheGreen, Putter, None, 7, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(2), OnTheGreen, Putter, None, 7, Option(MiddleLeft), None, None)
+    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(559), TeeBox, Driver, None, 7, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(200), Fairway, FiveWood, None, 7, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(160), Fairway, FourIron, None, 7, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(10), OnTheGreen, Putter, None, 7, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(2), OnTheGreen, Putter, None, 7, Option(MiddleLeft), None, None, None)
   )
 
   val expectedParFiveExampleBigDrive = HoleResult(
@@ -457,7 +477,7 @@ trait SimulationTestData {
     Some(Strokes(-0.374)),
     List(
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(7),
         1,
         ParFive,
@@ -468,10 +488,11 @@ trait SimulationTestData {
         7,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(7),
         1,
         ParFive,
@@ -482,10 +503,11 @@ trait SimulationTestData {
         7,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(7),
         1,
         ParFive,
@@ -496,10 +518,11 @@ trait SimulationTestData {
         7,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(7),
         1,
         ParFive,
@@ -510,10 +533,11 @@ trait SimulationTestData {
         7,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(7),
         1,
         ParFive,
@@ -524,19 +548,20 @@ trait SimulationTestData {
         7,
         Some(MiddleLeft),
         None,
+        None,
         None
       )
     )
   )
 
   val parFiveExampleBigDriveOutOfBounds: List[UserShotInput] = List(
-    UserShotInput(GameId(1), Hole(8), 1, ParFive, Distance(559), TeeBox, Driver, None, 8, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(8), 2, ParFive, Distance(559), OutOfBounds, Driver, None, 8, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(8), 3, ParFive, Distance(559), TeeBox, Driver, None, 8, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(8), 4, ParFive, Distance(559), Fairway, FiveWood, None, 8, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(8), 5, ParFive, Distance(559), Fairway, FourIron, None, 8, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(8), 6, ParFive, Distance(559), OnTheGreen, Putter, None, 8, Option(MiddleLeft), None, None),
-    UserShotInput(GameId(1), Hole(8), 7, ParFive, Distance(559), OnTheGreen, Putter, None, 8, Option(MiddleLeft), None, None)
+    UserShotInput(GameId(1), Hole(8), 1, ParFive, Distance(559), TeeBox, Driver, None, 8, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(8), 2, ParFive, Distance(559), OutOfBounds, Driver, None, 8, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(8), 3, ParFive, Distance(559), TeeBox, Driver, None, 8, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(8), 4, ParFive, Distance(559), Fairway, FiveWood, None, 8, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(8), 5, ParFive, Distance(559), Fairway, FourIron, None, 8, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(8), 6, ParFive, Distance(559), OnTheGreen, Putter, None, 8, Option(MiddleLeft), None, None, None),
+    UserShotInput(GameId(1), Hole(8), 7, ParFive, Distance(559), OnTheGreen, Putter, None, 8, Option(MiddleLeft), None, None, None)
   )
 
   val expectedParFiveExampleBigDriveOutOfBounds = HoleResult(
@@ -548,7 +573,7 @@ trait SimulationTestData {
     Some(Strokes(-0.374)),
     List(
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(8),
         1,
         ParFive,
@@ -559,10 +584,11 @@ trait SimulationTestData {
         8,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(8),
         3,
         ParFive,
@@ -573,10 +599,11 @@ trait SimulationTestData {
         8,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(8),
         4,
         ParFive,
@@ -587,10 +614,11 @@ trait SimulationTestData {
         8,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(8),
         5,
         ParFive,
@@ -601,10 +629,11 @@ trait SimulationTestData {
         8,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(8),
         6,
         ParFive,
@@ -615,10 +644,11 @@ trait SimulationTestData {
         8,
         Some(MiddleLeft),
         None,
+        None,
         None
       ),
       UserShotInput(
-        GameId(1.0),
+        GameId(1),
         Hole(8),
         7,
         ParFive,
@@ -629,6 +659,7 @@ trait SimulationTestData {
         8,
         Some(MiddleLeft),
         None,
+        None,
         None
       )
     )
@@ -636,7 +667,7 @@ trait SimulationTestData {
 
   val pgaExample: List[UserShotInput] = List(
     UserShotInput(
-      GameId(2.0),
+      GameId(2),
       Hole(8),
       1,
       ParThree,
@@ -647,10 +678,11 @@ trait SimulationTestData {
       8,
       Some(MiddleLeft),
       None,
+      None,
       None
     ),
     UserShotInput(
-      GameId(2.0),
+      GameId(2),
       Hole(8),
       2,
       ParThree,
@@ -661,10 +693,11 @@ trait SimulationTestData {
       8,
       Some(MiddleLeft),
       None,
+      None,
       None
     ),
     UserShotInput(
-      GameId(2.0),
+      GameId(2),
       Hole(8),
       3,
       ParThree,
@@ -674,6 +707,7 @@ trait SimulationTestData {
       Some(Strokes(1.826)),
       8,
       Some(MiddleLeft),
+      None,
       None,
       None
     )
@@ -689,7 +723,7 @@ trait SimulationTestData {
       Some(Strokes(0.83)),
       List(
         UserShotInput(
-          GameId(2.0),
+          GameId(2),
           Hole(8),
           1,
           ParThree,
@@ -700,10 +734,11 @@ trait SimulationTestData {
           8,
           Some(MiddleLeft),
           None,
+          None,
           None
         ),
         UserShotInput(
-          GameId(2.0),
+          GameId(2),
           Hole(8),
           2,
           ParThree,
@@ -714,10 +749,11 @@ trait SimulationTestData {
           8,
           Some(MiddleLeft),
           None,
+          None,
           None
         ),
         UserShotInput(
-          GameId(2.0),
+          GameId(2),
           Hole(8),
           3,
           ParThree,
@@ -728,9 +764,9 @@ trait SimulationTestData {
           8,
           Some(MiddleLeft),
           None,
+          None,
           None
         )
       )
     )
-
 }

@@ -6,8 +6,7 @@ import com.dandxy.auth.PasswordAuth
 import com.dandxy.config.AppModels.AuthSalt
 import com.dandxy.db.sql.TableName._
 import com.dandxy.model.golf.entity.Hole
-import com.dandxy.model.golf.input.GolfInput
-import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
+import com.dandxy.model.golf.input.GolfInput.{UserGameInput, UserShotInput}
 import com.dandxy.model.user._
 import doobie._
 
@@ -47,16 +46,16 @@ object UserQueryTool {
   def getUserClubs(playerId: PlayerId): ConnectionIO[List[GolfClubData]] =
     fetchClubData(playerId)
 
-  def getAllPlayerGames(playerId: PlayerId): ConnectionIO[List[GolfInput.UserGameInput]] =
+  def getAllPlayerGames(playerId: PlayerId): ConnectionIO[List[UserGameInput]] =
     fetchAllPlayerGames(playerId)
 
-  def getPlayerGames(gameId: GameId): Query0[GolfInput.UserGameInput] =
+  def getPlayerGame(gameId: GameId): ConnectionIO[Option[UserGameInput]] =
     fetchPlayerGame(gameId)
 
-  def addPlayerGame(game: UserGameInput): Update0 =
+  def addPlayerGame(game: UserGameInput): ConnectionIO[GameId] =
     insertPlayerGame(game)
 
-  def dropByHold(gameId: GameId, hole: Hole): Update0 =
+  def dropByHole(gameId: GameId, hole: Hole): Update0 =
     dropShotsByHole(gameId, hole)
 
   def addPlayerShots(input: List[UserShotInput]): ConnectionIO[Int] =

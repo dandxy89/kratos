@@ -52,7 +52,7 @@ CREATE TABLE player.shot (
     distance INTEGER NOT NULL,
     ball_location INTEGER NOT NULL,
     club INTEGER NOT NULL,
-    strokes_gained NUMERIC(6, 3) NOT NULL,
+    strokes_gained NUMERIC(6, 3),
     stroke_index INTEGER NOT NULL,
     orientation INTEGER,
     shot_shape INTEGER,
