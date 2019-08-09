@@ -1,4 +1,6 @@
+
 sudo: true
+
 services:
   - docker
 
@@ -10,8 +12,11 @@ language: scala
 scala:
    - 2.12.8
 
+env:
+  - CODECOV_TOKEN="2136d990-e22d-4501-8293-501f554bf29f"
+
 script:
-   - sbt ++$TRAVIS_SCALA_VERSION test
+   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
    - sbt ++$TRAVIS_SCALA_VERSION it:test
 
 cache:
@@ -24,3 +29,6 @@ before_cache:
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
   - rm -f $HOME/.ivy2/.sbt.ivy.lock
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
