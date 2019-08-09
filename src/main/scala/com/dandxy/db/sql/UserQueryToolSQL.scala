@@ -4,8 +4,9 @@ import java.sql.Timestamp
 
 import cats.implicits._
 import com.dandxy.db.UserQueryTool.PlayerHash
-import com.dandxy.model.golf.entity.Hole
+import com.dandxy.model.golf.entity._
 import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
+import com.dandxy.model.golf.input.{ Distance, ShotHeight, ShotShape, Strokes }
 import com.dandxy.model.user._
 import doobie._
 import doobie.implicits._
@@ -52,21 +53,21 @@ object UserQueryToolSQL {
          | WHERE player_id = $playerId
        """.stripMargin.query[GolfClubData].to[List]
 
-  private[db] def insertPlayerGame(game: UserGameInput): Update0 =
+  private[db] def insertPlayerGame(game: UserGameInput): ConnectionIO[GameId] =
     sql""" INSERT INTO player.game (player_id, course, game_start_time, handicap, ball_used, 
          |                          green_speed, temperature, wind_speed)
          | VALUES (${game.playerId}, ${game.courseName}, ${game.gameStartTime}, ${game.handicap},
          |         ${game.ballUsed}, ${game.greenSpeed}, ${game.temperature}, ${game.windSpeed})
-       """.stripMargin.update
+       """.stripMargin.update.withUniqueGeneratedKeys[GameId]("game_id")
 
-  private[db] def fetchPlayerGame(gameId: GameId): Query0[UserGameInput] =
-    sql""" SELECT player_id, game_start_time, handicap, ball_used, green_speed, temperature, wind_speed, game_id
+  private[db] def fetchPlayerGame(gameId: GameId): ConnectionIO[Option[UserGameInput]] =
+    sql""" SELECT player_id, game_start_time, course, handicap, ball_used, green_speed, temperature, wind_speed, game_id
          | FROM player.game
          | WHERE game_id = $gameId
-       """.stripMargin.query[UserGameInput]
+       """.stripMargin.query[UserGameInput].option
 
   private[db] def fetchAllPlayerGames(playerId: PlayerId): ConnectionIO[List[UserGameInput]] =
-    sql""" SELECT player_id, game_start_time, handicap, ball_used, green_speed, temperature, wind_speed, game_id
+    sql""" SELECT player_id, game_start_time, course, handicap, ball_used, green_speed, temperature, wind_speed, game_id
          | FROM player.game
          | WHERE player_id = $playerId
        """.stripMargin.query[UserGameInput].to[List]
@@ -74,14 +75,57 @@ object UserQueryToolSQL {
   private[db] def dropShotsByHole(gameId: GameId, hole: Hole): Update0 =
     sql""" DELETE FROM player.shot WHERE game_id = $gameId AND hole = $hole """.update
 
+  // TODO: Must be a better way to do this!
+  private[this] final case class Intermediate(
+    gameId: GameId,
+    hole: Hole,
+    shot: Int,
+    par: Par,
+    distance: Distance,
+    location: Location,
+    club: GolfClub,
+    strokesGained: Option[Strokes],
+    strokeIndex: Int,
+    orientation: Option[Orientation],
+    shotShape: Option[ShotShape],
+    shotHeight: Option[ShotHeight]
+  )
+
+  private[this] def toIntermediate(value: UserShotInput): Intermediate =
+    Intermediate(
+      value.gameId,
+      value.hole,
+      value.shot,
+      value.par,
+      value.distance,
+      value.location,
+      value.club,
+      value.strokesGained,
+      value.strokeIndex,
+      value.orientation,
+      value.shotShape,
+      value.shotHeight
+    )
+
   private[db] def insertPlayerShots(input: List[UserShotInput]): ConnectionIO[Int] = {
     val sql =
       """ INSERT INTO player.shot (game_id, hole, shot, par, distance, ball_location, club,
         |                          strokes_gained, stroke_index, orientation, shot_shape, shot_height)
         | VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        | ON CONFLICT (game_id, hole, shot)
+        | DO UPDATE
+        |   SET
+        |       distance = EXCLUDED.distance,
+        |       ball_location = EXCLUDED.ball_location,
+        |       club = EXCLUDED.club,
+        |       strokes_gained = EXCLUDED.strokes_gained,
+        |       stroke_index = EXCLUDED.stroke_index,
+        |       orientation = EXCLUDED.orientation,
+        |       shot_shape = EXCLUDED.shot_shape,
+        |       shot_height = EXCLUDED.shot_height
       """.stripMargin
 
-    Update[UserShotInput](sql).updateMany(input)
+    Update[Intermediate](sql).updateMany(input.map(toIntermediate))
   }
 
   private[this] def holeClause(hole: Option[Hole]): Fragment = hole match {
@@ -90,9 +134,10 @@ object UserQueryToolSQL {
   }
 
   private[db] def fetchPlayerShot(gameId: GameId, hole: Option[Hole]): ConnectionIO[List[UserShotInput]] =
-    (fr"""SELECT games_id, hole, shot, par, distance, ball_location, 
-         |       club, strokes_gained, stroke_index, orientation, shot_shape, shot_height
+    (fr"""SELECT game_id, hole, shot, par, distance, ball_location,
+         |       club, strokes_gained, stroke_index, orientation, shot_shape, shot_height, shot_serial
          | FROM player.shot WHERE game_id = $gameId""".stripMargin ++ holeClause(hole))
       .query[UserShotInput]
       .to[List]
+
 }

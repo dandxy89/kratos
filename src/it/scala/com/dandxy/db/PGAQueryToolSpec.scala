@@ -1,18 +1,14 @@
 package com.dandxy.db
 
-import com.dandxy.db.sql.PGAQueryToolSQL
-import com.dandxy.db.util.HealthCheck.OK
-import com.dandxy.db.util.{ HealthCheck, Migration }
+import com.dandxy.db.util.Migration
 import com.dandxy.model.golf.entity.Location._
-import com.dandxy.model.golf.entity.{ Location, PGAStatistics }
+import com.dandxy.model.golf.entity.PGAStatistics
 import com.dandxy.model.golf.input.Distance
-import com.dandxy.model.golf.pga.Statistic
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
 import com.dandxy.util.PostgresDockerService
 import doobie.free.connection.ConnectionIO
-import doobie.implicits._
 import org.scalatest.concurrent.Eventually
-import org.scalatest.{ BeforeAndAfterAll, FlatSpec, Matchers }
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
 class PGAQueryToolSpec extends FlatSpec with Matchers with Eventually with BeforeAndAfterAll {
 
@@ -22,11 +18,9 @@ class PGAQueryToolSpec extends FlatSpec with Matchers with Eventually with Befor
 
   override def beforeAll(): Unit = Migration.flywayMigrateDatabase(service.config) match {
     case Left(error) => fail(error.getMessage)
-    case Right(_)    => assert(true)
-  }
-
-  "HealthCheck" should "return the Status of the Database OK if it has started correctly" in {
-    HealthCheck.queryStatus(service.postgresTransactor).unsafeRunSync() shouldBe OK
+    case Right(m)    =>
+      println(s"UserQueryToolSpec migrations applied: $m")
+      assert(true)
   }
 
   val pgaStats: (Distance, PGAStatistics) => ConnectionIO[Option[PGAStatistic]] =
