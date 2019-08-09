@@ -3,7 +3,7 @@ package com.dandxy.db.sql
 import java.sql.Timestamp
 
 import cats.implicits._
-import com.dandxy.db.UserQueryTool.PlayerHash
+import com.dandxy.auth.PlayerHash
 import com.dandxy.model.golf.entity._
 import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.model.golf.input.{ Distance, HandicapWithDate, ShotHeight, ShotShape, Strokes }
@@ -13,23 +13,23 @@ import doobie.implicits._
 
 object UserQueryToolSQL {
 
-  private[db] def purgeByPlayerId(playerId: PlayerId, tableName: Fragment): Update0 =
-    (fr" DELETE FROM " ++ tableName ++ fr" WHERE player_id = ${playerId.uuid}").update
+  private[db] def purgeByPlayerId(playerId: PlayerId, tableName: Fragment): ConnectionIO[Int] =
+    (fr" DELETE FROM " ++ tableName ++ fr" WHERE player_id = ${playerId.uuid}").update.run
 
-  private[db] def purgeShotsByPlayerId(playerId: PlayerId, tableName: Fragment): Update0 =
+  private[db] def purgeShotsByPlayerId(playerId: PlayerId, tableName: Fragment): ConnectionIO[Int] =
     (fr" DELETE FROM "
       ++ tableName
-      ++ fr" WHERE shot.game_id IN (SELECT g.game_id FROM player.game g WHERE g.player_id = ${playerId.uuid})").update
+      ++ fr" WHERE shot.game_id IN (SELECT g.game_id FROM player.game g WHERE g.player_id = ${playerId.uuid})").update.run
 
   private[db] def addUser(registration: UserRegistration, updateTime: Timestamp): ConnectionIO[Int] =
     sql""" INSERT INTO player.playerlookup (player_email, update_time, first_name, last_name)
          | VALUES (${registration.email}, $updateTime, ${registration.firstName}, ${registration.lastName})
          | """.stripMargin.update.withUniqueGeneratedKeys[Int]("player_id")
 
-  private[db] def addHashedPassword(email: UserEmail, hashPassword: Password, playerId: PlayerId): Update0 =
+  private[db] def addHashedPassword(email: UserEmail, hashPassword: Password, playerId: PlayerId): ConnectionIO[Int] =
     sql""" INSERT INTO userSecurity.hashedpassword (player_email, hashed_password, player_id)
          | VALUES ($email, $hashPassword, $playerId)
-       """.stripMargin.update
+       """.stripMargin.update.run
 
   private[db] def checkLogin(email: UserEmail): ConnectionIO[Option[PlayerHash]] =
     sql""" SELECT player_id, hashed_password
@@ -72,8 +72,8 @@ object UserQueryToolSQL {
          | WHERE player_id = $playerId
        """.stripMargin.query[UserGameInput].to[List]
 
-  private[db] def dropShotsByHole(gameId: GameId, hole: Hole): Update0 =
-    sql""" DELETE FROM player.shot WHERE game_id = $gameId AND hole = $hole """.update
+  private[db] def dropShotsByHole(gameId: GameId, hole: Hole): ConnectionIO[Int] =
+    sql""" DELETE FROM player.shot WHERE game_id = $gameId AND hole = $hole """.update.run
 
   // TODO: Must be a better way to do this! Lenses?
   private[this] final case class Intermediate(
