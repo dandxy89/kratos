@@ -1,13 +1,14 @@
 package com.dandxy.db
 
-import com.dandxy.db.util.Migration
+import com.dandxy.db.util.HealthCheck.OK
+import com.dandxy.db.util.{HealthCheck, Migration}
 import com.dandxy.model.golf.entity.Location._
 import com.dandxy.model.golf.entity.PGAStatistics
 import com.dandxy.model.golf.input.Distance
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
 import com.dandxy.util.PostgresDockerService
 import org.scalatest.concurrent.Eventually
-import org.scalatest.{ BeforeAndAfterAll, FlatSpec, Matchers }
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
 class PGAQueryToolSpec extends FlatSpec with Matchers with Eventually with BeforeAndAfterAll {
 
@@ -20,6 +21,10 @@ class PGAQueryToolSpec extends FlatSpec with Matchers with Eventually with Befor
     case Right(m) =>
       println(s"UserQueryToolSpec migrations applied: $m")
       assert(true)
+  }
+
+  "HealthCheck" should "return the Status of the Database OK if it has started correctly" in {
+    HealthCheck.queryStatus(service.postgresTransactor).unsafeRunSync() shouldBe OK
   }
 
   // Query Tool
