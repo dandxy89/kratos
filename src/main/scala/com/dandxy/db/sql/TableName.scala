@@ -17,6 +17,10 @@ object TableName {
     val name: Fragment = fr"player.game"
   }
 
+  case object PlayerGameResult extends TableName {
+    val name: Fragment = fr"player.game_result"
+  }
+
   case object PlayerClubData extends TableName {
     val name: Fragment = fr"player.club_data"
   }

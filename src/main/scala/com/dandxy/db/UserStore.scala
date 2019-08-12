@@ -3,12 +3,14 @@ package com.dandxy.db
 import java.sql.Timestamp
 
 import cats.effect.Bracket
+import cats.implicits._
 import com.dandxy.auth.{ PasswordAuth, PlayerHash }
 import com.dandxy.config.AppModels.AuthSalt
 import com.dandxy.db.sql.TableName._
-import com.dandxy.model.golf.entity.Hole
 import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.model.golf.input.HandicapWithDate
+import com.dandxy.model.golf.input.{ GolfResult, HandicapWithDate }
+import com.dandxy.model.player.PlayerId
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
 import doobie._
 import doobie.implicits._
@@ -29,6 +31,8 @@ trait UserStore[F[_]] {
   def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): F[List[UserShotInput]]
   def getHandicapHistory(playerId: PlayerId): F[List[HandicapWithDate]]
   def aggregateGameResult(gameId: GameId): F[List[AggregateGameResult]]
+  def addResultByIdentifier(result: GolfResult): F[Int]
+  def getResultByIdentifier(id: Identifier): F[List[GolfResult]]
 }
 
 class UserPostgresQueryTool[F[_]](xa: Transactor[F], config: AuthSalt)(implicit F: Bracket[F, Throwable]) extends UserStore[F] {
@@ -38,12 +42,13 @@ class UserPostgresQueryTool[F[_]](xa: Transactor[F], config: AuthSalt)(implicit 
   def gdprPurge(playerId: PlayerId): F[Int] =
     (
       for {
+        r <- purgeShotsByPlayerId(playerId, PlayerGameResult.name)
         s <- purgeShotsByPlayerId(playerId, PlayerShot.name)
         g <- purgeByPlayerId(playerId, PlayerGame.name)
         c <- purgeByPlayerId(playerId, PlayerClubData.name)
         p <- purgeByPlayerId(playerId, UserSecurity.name)
         l <- purgeByPlayerId(playerId, PlayerLookup.name)
-      } yield g + c + p + l + s
+      } yield g + c + p + l + s + r
     ).transact(xa)
 
   def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): F[PlayerId] =
@@ -96,4 +101,16 @@ class UserPostgresQueryTool[F[_]](xa: Transactor[F], config: AuthSalt)(implicit 
 
   def aggregateGameResult(gameId: GameId): F[List[AggregateGameResult]] =
     fetchAggregateGameResult(gameId).transact(xa)
+
+  def addResultByIdentifier(result: GolfResult): F[Int] = result.id match {
+    case GameId(_) => 1.pure[F]
+    case Hole(_)   => 1.pure[F]
+    case _         => 0.pure[F]
+  }
+
+  def getResultByIdentifier(id: Identifier): F[List[GolfResult]] = id match {
+    case GameId(_) => List.empty[GolfResult].pure[F]
+    case Hole(_)   => List.empty[GolfResult].pure[F]
+    case _         => List.empty[GolfResult].pure[F]
+  }
 }

@@ -6,7 +6,9 @@ import cats.implicits._
 import com.dandxy.auth.PlayerHash
 import com.dandxy.model.golf.entity._
 import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.model.golf.input.{ Distance, HandicapWithDate, ShotHeight, ShotShape, Strokes }
+import com.dandxy.model.golf.input._
+import com.dandxy.model.player.PlayerId
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
 import doobie._
 import doobie.implicits._
@@ -14,12 +16,12 @@ import doobie.implicits._
 object UserQueryToolSQL {
 
   private[db] def purgeByPlayerId(playerId: PlayerId, tableName: Fragment): ConnectionIO[Int] =
-    (fr" DELETE FROM " ++ tableName ++ fr" WHERE player_id = ${playerId.uuid}").update.run
+    (fr" DELETE FROM " ++ tableName ++ fr" WHERE player_id = ${playerId.id}").update.run
 
   private[db] def purgeShotsByPlayerId(playerId: PlayerId, tableName: Fragment): ConnectionIO[Int] =
     (fr" DELETE FROM "
       ++ tableName
-      ++ fr" WHERE shot.game_id IN (SELECT g.game_id FROM player.game g WHERE g.player_id = ${playerId.uuid})").update.run
+      ++ fr" WHERE game_id IN (SELECT g.game_id FROM player.game g WHERE g.player_id = ${playerId.id})").update.run
 
   private[db] def addUser(registration: UserRegistration, updateTime: Timestamp): ConnectionIO[Int] =
     sql""" INSERT INTO player.playerlookup (player_email, update_time, first_name, last_name)
@@ -162,5 +164,34 @@ object UserQueryToolSQL {
          |    WHERE game_id = $gameId AND shot = 1
          | ) s ON agg.game_id = s.game_id AND agg.hole = s.hole
          |""".stripMargin.query[AggregateGameResult].to[List]
+
+  // -- Players Game result
+  //CREATE TABLE player.game_result (
+  //    game_result_id SERIAL PRIMARY KEY,
+  //    game_id INTEGER REFERENCES player.game,
+  //    strokes_gained NUMERIC(6, 2) NOT NULL,
+  //    strokes_gained_off_tee NUMERIC(6, 2) NOT NULL,
+  //    strokes_gained_approach NUMERIC(6, 2) NOT NULL,
+  //    strokes_gained_around NUMERIC(6, 2) NOT NULL,
+  //    strokes_gained_putting NUMERIC(6, 2) NOT NULL,
+  //    points INTEGER NOT NULL
+  //);
+  //
+  //CREATE UNIQUE INDEX player_game_result_index on game_result.shot (game_id);
+  //
+  //-- Players hole result
+  //CREATE TABLE player.hole_result (
+  //    game_hole_result_id SERIAL PRIMARY KEY,
+  //    game_id INTEGER REFERENCES player.game,
+  //    hole INTEGER NOT NULL,
+  //    strokes_gained NUMERIC(6, 2) NOT NULL,
+  //    strokes_gained_off_tee NUMERIC(6, 2) NOT NULL,
+  //    strokes_gained_approach NUMERIC(6, 2) NOT NULL,
+  //    strokes_gained_around NUMERIC(6, 2) NOT NULL,
+  //    strokes_gained_putting NUMERIC(6, 2) NOT NULL,
+  //    points INTEGER NOT NULL
+  //);
+  //
+  //CREATE UNIQUE INDEX player_hole_result_index on player.hole_result (game_id, hole);
 
 }

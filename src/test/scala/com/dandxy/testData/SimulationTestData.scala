@@ -2,20 +2,23 @@ package com.dandxy.testData
 
 import cats.effect.IO
 import com.dandxy.model.golf.entity.GolfClub._
-import com.dandxy.model.golf.entity.Location.{Fairway, OnTheGreen, TeeBox}
+import com.dandxy.model.golf.entity.Location
+import com.dandxy.model.golf.entity.Location.{ Fairway, OnTheGreen, TeeBox }
 import com.dandxy.model.golf.entity.Orientation._
-import com.dandxy.model.golf.entity.Par.{ParFive, ParFour, ParThree}
+import com.dandxy.model.golf.entity.Par.{ ParFive, ParFour, ParThree }
 import com.dandxy.model.golf.entity.Penalty.OutOfBounds
 import com.dandxy.model.golf.entity.Score._
-import com.dandxy.model.golf.entity.{Hole, Location}
 import com.dandxy.model.golf.input.GolfInput.UserShotInput
-import com.dandxy.model.golf.input.{Distance, HoleResult, Points, Strokes}
+import com.dandxy.model.golf.input.{ Distance, GolfResult, Points, Strokes }
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
-import com.dandxy.model.user.GameId
+import com.dandxy.model.user.Identifier
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 
 trait SimulationTestData {
 
   def runIO[A](io: IO[A]): A = io.unsafeRunSync()
+
+  def asIdentifier(h: Hole): Identifier = h.asInstanceOf[Identifier]
 
   val dbCalled: Location => Distance => IO[PGAStatistic] = stat =>
     distance =>
@@ -62,7 +65,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(1), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 1, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExample = HoleResult(
+  val expectedParThreeExample = GolfResult(
+    Hole(1),
     ParredHole(3),
     Some(Strokes(0.15000000000000002)),
     Some(Strokes(0.0)),
@@ -127,7 +131,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(2), 5, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExampleBadGolfer = HoleResult(
+  val expectedParThreeExampleBadGolfer = GolfResult(
+    Hole(2),
     DoubleBogey(5),
     Some(Strokes(-1.85)),
     Some(Strokes(0.0)),
@@ -219,7 +224,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(3), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 3, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExampleGoodGolfer = HoleResult(
+  val expectedParThreeExampleGoodGolfer = GolfResult(
+    Hole(3),
     Birdie(2),
     Some(Strokes(1.15)),
     Some(Strokes(0.0)),
@@ -268,7 +274,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(4), 4, ParFour, Distance(2), OnTheGreen, Putter, None, 4, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFourExample = HoleResult(
+  val expectedParFourExample = GolfResult(
+    Hole(4),
     ParredHole(4),
     Some(Strokes(0.07999999999999995)),
     Some(Strokes(0.1)),
@@ -344,7 +351,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(5), 1, ParFour, Distance(430), TeeBox, Driver, None, 4, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFourExampleHoleInOne = HoleResult(
+  val expectedParFourExampleHoleInOne = GolfResult(
+    Hole(5),
     HoleInOne(1),
     Some(Strokes(3.08)),
     Some(Strokes(3.08)),
@@ -379,7 +387,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(6), 5, ParFive, Distance(2), OnTheGreen, Putter, None, 6, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExample = HoleResult(
+  val expectedParFiveExample = GolfResult(
+    Hole(6),
     ParredHole(5),
     Some(Strokes(-0.26)),
     Some(Strokes(-0.1)),
@@ -474,7 +483,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(2), OnTheGreen, Putter, None, 7, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExampleBigDrive = HoleResult(
+  val expectedParFiveExampleBigDrive = GolfResult(
+    Hole(7),
     ParredHole(5),
     Some(Strokes(-0.26)),
     Some(Strokes(0.55)),
@@ -571,7 +581,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(8), 7, ParFive, Distance(559), OnTheGreen, Putter, None, 8, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExampleBigDriveOutOfBounds = HoleResult(
+  val expectedParFiveExampleBigDriveOutOfBounds = GolfResult(
+    Hole(8),
     DoubleBogey(7),
     Some(Strokes(-1.2599999999999998)),
     Some(Strokes(-1.0)),
@@ -721,8 +732,9 @@ trait SimulationTestData {
     )
   )
 
-  val pgaExpectedResult: HoleResult =
-    HoleResult(
+  val pgaExpectedResult: GolfResult =
+    GolfResult(
+      Hole(8),
       ParredHole(3),
       Some(Strokes(1.1)),
       Some(Strokes(0.0)),

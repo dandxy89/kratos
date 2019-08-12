@@ -1,3 +1,4 @@
+-- Player Lookup
 CREATE TABLE player.playerlookup (
     player_id SERIAL,
     player_email VARCHAR(200) NOT NULL,
@@ -10,6 +11,7 @@ CREATE TABLE player.playerlookup (
 
 CREATE UNIQUE INDEX player_email_index on player.playerlookup (player_email);
 
+-- Password Storage
 CREATE TABLE userSecurity.hashedpassword (
     player_email VARCHAR(200) NOT NULL,
     hashed_password VARCHAR(200) NOT NULL,
@@ -20,6 +22,7 @@ CREATE TABLE userSecurity.hashedpassword (
 
 CREATE UNIQUE INDEX player_sec_email_index on userSecurity.hashedpassword (player_email);
 
+-- Players clubs
 CREATE TABLE player.club_data (
     club_data_serial SERIAL PRIMARY KEY,
     player_id INTEGER REFERENCES player.playerlookup,
@@ -31,6 +34,7 @@ CREATE TABLE player.club_data (
     distanceType INTEGER NOT NULL
 );
 
+-- Players Games
 CREATE TABLE player.game (
     game_id SERIAL PRIMARY KEY,
     player_id INTEGER REFERENCES player.playerlookup,
@@ -43,6 +47,38 @@ CREATE TABLE player.game (
     wind_speed INTEGER
 );
 
+CREATE UNIQUE INDEX player_game_index on player.game (player_id, course, game_start_time);
+
+-- Players Game result
+CREATE TABLE player.game_result (
+    game_result_id SERIAL PRIMARY KEY,
+    game_id INTEGER REFERENCES player.game,
+    strokes_gained NUMERIC(6, 2) NOT NULL,
+    strokes_gained_off_tee NUMERIC(6, 2) NOT NULL,
+    strokes_gained_approach NUMERIC(6, 2) NOT NULL,
+    strokes_gained_around NUMERIC(6, 2) NOT NULL,
+    strokes_gained_putting NUMERIC(6, 2) NOT NULL,
+    points INTEGER NOT NULL
+);
+
+CREATE UNIQUE INDEX player_game_result_index on player.game_result (game_id);
+
+-- Players hole result
+CREATE TABLE player.hole_result (
+    game_hole_result_id SERIAL PRIMARY KEY,
+    game_id INTEGER REFERENCES player.game,
+    hole INTEGER NOT NULL,
+    strokes_gained NUMERIC(6, 2) NOT NULL,
+    strokes_gained_off_tee NUMERIC(6, 2) NOT NULL,
+    strokes_gained_approach NUMERIC(6, 2) NOT NULL,
+    strokes_gained_around NUMERIC(6, 2) NOT NULL,
+    strokes_gained_putting NUMERIC(6, 2) NOT NULL,
+    points INTEGER NOT NULL
+);
+
+CREATE UNIQUE INDEX player_hole_result_index on player.hole_result (game_id, hole);
+
+-- Players shot
 CREATE TABLE player.shot (
     shot_serial SERIAL PRIMARY KEY,
     game_id INTEGER REFERENCES player.game,

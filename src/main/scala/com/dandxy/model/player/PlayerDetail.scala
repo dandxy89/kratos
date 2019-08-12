@@ -1,7 +1,5 @@
 package com.dandxy.model.player
 
-import com.dandxy.model.user.PlayerId
-
 sealed trait PlayerDetail {
   def playerId: PlayerId
 }

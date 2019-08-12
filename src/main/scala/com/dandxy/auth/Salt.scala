@@ -1,3 +1,3 @@
 package com.dandxy.auth
 
-final case class Salt(val base64: String) extends AnyVal
+final case class Salt(base64: String) extends AnyVal
