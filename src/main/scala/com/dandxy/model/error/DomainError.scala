@@ -15,5 +15,4 @@ object DomainError {
   final case class StatisticNotKnown(distance: Distance) extends DomainError {
     def msg: String = s" Statistic distance not known: $distance"
   }
-
 }

@@ -5,9 +5,7 @@ import com.dandxy.model.golf.input.Distance
 sealed trait Statistic
 
 object Statistic {
-
   final case class PGAStatistic(distance: Distance, strokes: Double) extends Statistic
-
 }
 
 sealed trait Probabilities extends Statistic {

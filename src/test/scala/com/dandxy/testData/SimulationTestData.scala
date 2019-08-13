@@ -1,21 +1,26 @@
 package com.dandxy.testData
 
 import cats.effect.IO
+import cats.implicits._
 import com.dandxy.model.golf.entity.GolfClub._
+import com.dandxy.model.golf.entity.Location
 import com.dandxy.model.golf.entity.Location.{Fairway, OnTheGreen, TeeBox}
 import com.dandxy.model.golf.entity.Orientation._
 import com.dandxy.model.golf.entity.Par.{ParFive, ParFour, ParThree}
 import com.dandxy.model.golf.entity.Penalty.OutOfBounds
 import com.dandxy.model.golf.entity.Score._
-import com.dandxy.model.golf.entity.{Hole, Location}
 import com.dandxy.model.golf.input.GolfInput.UserShotInput
-import com.dandxy.model.golf.input.{Distance, HoleResult, Points, Strokes}
+import com.dandxy.model.golf.input.{Distance, Points, Strokes}
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
-import com.dandxy.model.user.GameId
+import com.dandxy.model.user.Identifier
+import com.dandxy.model.user.Identifier.{GameId, Hole}
+import com.dandxy.strokes.GolfResult
 
 trait SimulationTestData {
 
   def runIO[A](io: IO[A]): A = io.unsafeRunSync()
+
+  def asIdentifier(h: Hole): Identifier = h.asInstanceOf[Identifier]
 
   val dbCalled: Location => Distance => IO[PGAStatistic] = stat =>
     distance =>
@@ -26,8 +31,7 @@ trait SimulationTestData {
             case Distance(10) => IO.pure(PGAStatistic(Distance(10), 1.626))
             case Distance(2)  => IO.pure(PGAStatistic(Distance(2), 1.009))
             case _ =>
-              println(s"Putting Miss: $distance")
-              IO.pure(PGAStatistic(Distance(10), 1.626))
+              IO(println(s"Putting Miss: $distance")) *> IO.pure(PGAStatistic(Distance(10), 1.626))
           }
 
         case TeeBox =>
@@ -39,8 +43,7 @@ trait SimulationTestData {
             case Distance(310.0) => IO.pure(PGAStatistic(Distance(310), 3.75))
             case Distance(210.0) => IO.pure(PGAStatistic(Distance(210), 3.15))
             case _ =>
-              println(s"Tee Miss: $distance")
-              IO.pure(PGAStatistic(Distance(100), 0))
+              IO(println(s"Tee Miss: $distance")) *> IO.pure(PGAStatistic(Distance(100), 0))
           }
 
         case _ =>
@@ -51,8 +54,7 @@ trait SimulationTestData {
             case Distance(160.0) => IO.pure(PGAStatistic(Distance(160), 2.98))
             case Distance(200.0) => IO.pure(PGAStatistic(Distance(200), 3.19))
             case _ =>
-              println(s"Other Miss: $distance")
-              IO.pure(PGAStatistic(Distance(100), 0))
+              IO(println(s"Other Miss: $distance")) *> IO.pure(PGAStatistic(Distance(100), 0))
           }
       }
 
@@ -62,14 +64,17 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(1), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 1, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExample = HoleResult(
-    ParredHole(3),
-    Some(Strokes(0.15000000000000002)),
-    Some(Strokes(0.0)),
-    Some(Strokes(0.524)),
-    None,
-    Some(Strokes(-0.374)),
-    Points(3),
+  val expectedParThreeExample = (
+    GolfResult(
+      GameId(1),
+      ParredHole,
+      Some(Strokes(0.15000000000000002)),
+      Some(Strokes(0.0)),
+      Some(Strokes(0.524)),
+      None,
+      Some(Strokes(-0.374)),
+      Points(3)
+    ),
     List(
       UserShotInput(
         GameId(1),
@@ -127,14 +132,17 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(2), 5, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExampleBadGolfer = HoleResult(
-    DoubleBogey(5),
-    Some(Strokes(-1.85)),
-    Some(Strokes(0.0)),
-    Some(Strokes(0.524)),
-    None,
-    Some(Strokes(-2.374)),
-    Points(1),
+  val expectedParThreeExampleBadGolfer = (
+    GolfResult(
+      GameId(1),
+      DoubleBogey,
+      Some(Strokes(-1.85)),
+      Some(Strokes(0.0)),
+      Some(Strokes(0.524)),
+      None,
+      Some(Strokes(-2.374)),
+      Points(1)
+    ),
     List(
       UserShotInput(
         GameId(1),
@@ -219,14 +227,17 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(3), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 3, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExampleGoodGolfer = HoleResult(
-    Birdie(2),
-    Some(Strokes(1.15)),
-    Some(Strokes(0.0)),
-    Some(Strokes(0.524)),
-    None,
-    Some(Strokes(0.626)),
-    Points(4),
+  val expectedParThreeExampleGoodGolfer = (
+    GolfResult(
+      GameId(1),
+      Birdie,
+      Some(Strokes(1.15)),
+      Some(Strokes(0.0)),
+      Some(Strokes(0.524)),
+      None,
+      Some(Strokes(0.626)),
+      Points(4)
+    ),
     List(
       UserShotInput(
         GameId(1),
@@ -268,14 +279,17 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(4), 4, ParFour, Distance(2), OnTheGreen, Putter, None, 4, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFourExample = HoleResult(
-    ParredHole(4),
-    Some(Strokes(0.07999999999999995)),
-    Some(Strokes(0.1)),
-    Some(Strokes(0.354)),
-    None,
-    Some(Strokes(-0.374)),
-    Points(3),
+  val expectedParFourExample = (
+    GolfResult(
+      GameId(1),
+      ParredHole,
+      Some(Strokes(0.07999999999999995)),
+      Some(Strokes(0.1)),
+      Some(Strokes(0.354)),
+      None,
+      Some(Strokes(-0.374)),
+      Points(3)
+    ),
     List(
       UserShotInput(
         GameId(1),
@@ -344,14 +358,8 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(5), 1, ParFour, Distance(430), TeeBox, Driver, None, 4, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFourExampleHoleInOne = HoleResult(
-    HoleInOne(1),
-    Some(Strokes(3.08)),
-    Some(Strokes(3.08)),
-    None,
-    None,
-    None,
-    Points(6),
+  val expectedParFourExampleHoleInOne = (
+    GolfResult(GameId(1), HoleInOne, Some(Strokes(3.08)), Some(Strokes(3.08)), None, None, None, Points(6)),
     List(
       UserShotInput(
         GameId(1),
@@ -379,14 +387,17 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(6), 5, ParFive, Distance(2), OnTheGreen, Putter, None, 6, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExample = HoleResult(
-    ParredHole(5),
-    Some(Strokes(-0.26)),
-    Some(Strokes(-0.1)),
-    Some(Strokes(0.21399999999999997)),
-    None,
-    Some(Strokes(-0.374)),
-    Points(3),
+  val expectedParFiveExample = (
+    GolfResult(
+      GameId(1),
+      ParredHole,
+      Some(Strokes(-0.26)),
+      Some(Strokes(-0.1)),
+      Some(Strokes(0.21399999999999997)),
+      None,
+      Some(Strokes(-0.374)),
+      Points(3)
+    ),
     List(
       UserShotInput(
         GameId(1),
@@ -474,14 +485,17 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(2), OnTheGreen, Putter, None, 7, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExampleBigDrive = HoleResult(
-    ParredHole(5),
-    Some(Strokes(-0.26)),
-    Some(Strokes(0.55)),
-    Some(Strokes(-0.43600000000000005)),
-    None,
-    Some(Strokes(-0.374)),
-    Points(3),
+  val expectedParFiveExampleBigDrive = (
+    GolfResult(
+      GameId(1),
+      ParredHole,
+      Some(Strokes(-0.26)),
+      Some(Strokes(0.55)),
+      Some(Strokes(-0.43600000000000005)),
+      None,
+      Some(Strokes(-0.374)),
+      Points(3)
+    ),
     List(
       UserShotInput(
         GameId(1),
@@ -571,14 +585,17 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(8), 7, ParFive, Distance(559), OnTheGreen, Putter, None, 8, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExampleBigDriveOutOfBounds = HoleResult(
-    DoubleBogey(7),
-    Some(Strokes(-1.2599999999999998)),
-    Some(Strokes(-1.0)),
-    Some(Strokes(-3.626)),
-    None,
-    Some(Strokes(-0.374)),
-    Points(0),
+  val expectedParFiveExampleBigDriveOutOfBounds = (
+    GolfResult(
+      GameId(1),
+      DoubleBogey,
+      Some(Strokes(-1.2599999999999998)),
+      Some(Strokes(-1.0)),
+      Some(Strokes(-3.626)),
+      None,
+      Some(Strokes(-0.374)),
+      Points(0)
+    ),
     List(
       UserShotInput(
         GameId(1),
@@ -721,61 +738,64 @@ trait SimulationTestData {
     )
   )
 
-  val pgaExpectedResult: HoleResult =
-    HoleResult(
-      ParredHole(3),
+  val pgaExpectedResult = (
+    GolfResult(
+      GameId(2),
+      ParredHole,
       Some(Strokes(1.1)),
       Some(Strokes(0.0)),
       Some(Strokes(0.27)),
       None,
       Some(Strokes(0.83)),
-      Points(2),
-      List(
-        UserShotInput(
-          GameId(2),
-          Hole(8),
-          1,
-          ParThree,
-          Distance(446.0),
-          TeeBox,
-          Driver,
-          Some(Strokes(0.275)),
-          8,
-          Some(MiddleLeft),
-          None,
-          None,
-          None
-        ),
-        UserShotInput(
-          GameId(2),
-          Hole(8),
-          2,
-          ParThree,
-          Distance(116.0),
-          Fairway,
-          FiveWood,
-          Some(Strokes(-0.005)),
-          8,
-          Some(MiddleLeft),
-          None,
-          None,
-          None
-        ),
-        UserShotInput(
-          GameId(2),
-          Hole(8),
-          3,
-          ParThree,
-          Distance(17.0),
-          OnTheGreen,
-          Putter,
-          Some(Strokes(0.83)),
-          8,
-          Some(MiddleLeft),
-          None,
-          None,
-          None
-        )
+      Points(2)
+    ),
+    List(
+      UserShotInput(
+        GameId(2),
+        Hole(8),
+        1,
+        ParThree,
+        Distance(446.0),
+        TeeBox,
+        Driver,
+        Some(Strokes(0.275)),
+        8,
+        Some(MiddleLeft),
+        None,
+        None,
+        None
+      ),
+      UserShotInput(
+        GameId(2),
+        Hole(8),
+        2,
+        ParThree,
+        Distance(116.0),
+        Fairway,
+        FiveWood,
+        Some(Strokes(-0.005)),
+        8,
+        Some(MiddleLeft),
+        None,
+        None,
+        None
+      ),
+      UserShotInput(
+        GameId(2),
+        Hole(8),
+        3,
+        ParThree,
+        Distance(17.0),
+        OnTheGreen,
+        Putter,
+        Some(Strokes(0.83)),
+        8,
+        Some(MiddleLeft),
+        None,
+        None,
+        None
       )
     )
+  )
+
 }

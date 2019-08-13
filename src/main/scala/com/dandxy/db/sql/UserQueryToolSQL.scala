@@ -6,20 +6,23 @@ import cats.implicits._
 import com.dandxy.auth.PlayerHash
 import com.dandxy.model.golf.entity._
 import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.model.golf.input.{ Distance, HandicapWithDate, ShotHeight, ShotShape, Strokes }
+import com.dandxy.model.golf.input._
+import com.dandxy.model.player.PlayerId
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
+import com.dandxy.strokes.GolfResult
 import doobie._
 import doobie.implicits._
 
 object UserQueryToolSQL {
 
   private[db] def purgeByPlayerId(playerId: PlayerId, tableName: Fragment): ConnectionIO[Int] =
-    (fr" DELETE FROM " ++ tableName ++ fr" WHERE player_id = ${playerId.uuid}").update.run
+    (fr" DELETE FROM " ++ tableName ++ fr" WHERE player_id = ${playerId.id}").update.run
 
   private[db] def purgeShotsByPlayerId(playerId: PlayerId, tableName: Fragment): ConnectionIO[Int] =
     (fr" DELETE FROM "
       ++ tableName
-      ++ fr" WHERE shot.game_id IN (SELECT g.game_id FROM player.game g WHERE g.player_id = ${playerId.uuid})").update.run
+      ++ fr" WHERE game_id IN (SELECT g.game_id FROM player.game g WHERE g.player_id = ${playerId.id})").update.run
 
   private[db] def addUser(registration: UserRegistration, updateTime: Timestamp): ConnectionIO[Int] =
     sql""" INSERT INTO player.playerlookup (player_email, update_time, first_name, last_name)
@@ -163,4 +166,53 @@ object UserQueryToolSQL {
          | ) s ON agg.game_id = s.game_id AND agg.hole = s.hole
          |""".stripMargin.query[AggregateGameResult].to[List]
 
+  def insertGameIdentifier(result: GolfResult): ConnectionIO[Int] =
+    sql""" INSERT INTO  player.game_result (game_id, score, strokes_gained, strokes_gained_off_tee,
+         |                                  strokes_gained_approach, strokes_gained_around, strokes_gained_putting,
+         |                                  points)
+         | VALUES (${result.id}, ${result.score}, ${result.strokesGained}, ${result.strokesGainedOffTheTee},
+         |         ${result.strokesGainedApproach}, ${result.strokesGainedAround}, 
+         |         ${result.strokesGainedPutting}, ${result.stablefordPoints})
+         | ON CONFLICT (game_id)
+         | DO UPDATE
+         |    SET
+         |      score = EXCLUDED.score,
+         |      strokes_gained = EXCLUDED.strokes_gained,
+         |      strokes_gained_off_tee = EXCLUDED.strokes_gained_off_tee,
+         |      strokes_gained_approach = EXCLUDED.strokes_gained_approach,
+         |      strokes_gained_around = EXCLUDED.strokes_gained_around,
+         |      strokes_gained_putting = EXCLUDED.strokes_gained_putting
+         |""".stripMargin.update.run
+
+  def insertHoleIdentifier(result: GolfResult, hole: Hole): ConnectionIO[Int] =
+    sql""" INSERT INTO  player.hole_result (game_id, hole, score, strokes_gained, strokes_gained_off_tee,
+         |                                  strokes_gained_approach, strokes_gained_around, strokes_gained_putting,
+         |                                  points)
+         | VALUES (${result.id}, ${hole.id}, ${result.score}, ${result.strokesGained}, ${result.strokesGainedOffTheTee},
+         |         ${result.strokesGainedApproach}, ${result.strokesGainedAround}, 
+         |         ${result.strokesGainedPutting}, ${result.stablefordPoints})
+         | ON CONFLICT (game_id, hole)
+         | DO UPDATE
+         |    SET
+         |      score = EXCLUDED.score,
+         |      strokes_gained = EXCLUDED.strokes_gained,
+         |      strokes_gained_off_tee = EXCLUDED.strokes_gained_off_tee,
+         |      strokes_gained_approach = EXCLUDED.strokes_gained_approach,
+         |      strokes_gained_around = EXCLUDED.strokes_gained_around,
+         |      strokes_gained_putting = EXCLUDED.strokes_gained_putting
+         |""".stripMargin.update.run
+
+  def fetchGameResult(gameId: GameId): ConnectionIO[Option[GolfResult]] =
+    sql""" SELECT game_id, score, strokes_gained, strokes_gained_off_tee, strokes_gained_approach, strokes_gained_around,
+         |        strokes_gained_putting, points
+         | FROM player.game_result
+         | WHERE game_id = ${gameId.id}
+         |""".stripMargin.query[GolfResult].option
+
+  def fetchHoleResult(gameId: GameId, h: Hole): ConnectionIO[Option[GolfResult]] =
+    sql""" SELECT game_id, score, strokes_gained, strokes_gained_off_tee, strokes_gained_approach,
+         |        strokes_gained_around, strokes_gained_putting, points
+         | FROM player.hole_result
+         | WHERE game_id = $gameId AND hole = $h
+         |""".stripMargin.query[GolfResult].option
 }

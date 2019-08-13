@@ -1,12 +1,13 @@
 package com.dandxy.strokes
 
 import cats.implicits._
-import com.dandxy.model.golf.entity.Par.{ ParFour, ParThree }
-import com.dandxy.model.golf.input.{ Handicap, Strokes }
+import com.dandxy.model.golf.entity.Par.{ParFour, ParThree}
+import com.dandxy.model.golf.input.{Handicap, Strokes}
+import com.dandxy.model.user.Identifier.Hole
 import com.dandxy.strokes.StrokesGainedCalculator._
 import com.dandxy.testData.SimulationTestData
 import com.dandxy.util.Helpers
-import org.scalatest.{ FlatSpec, Matchers }
+import org.scalatest.{FlatSpec, Matchers}
 
 class PGAExamplesSpec extends FlatSpec with Matchers with SimulationTestData {
 
@@ -44,6 +45,6 @@ class PGAExamplesSpec extends FlatSpec with Matchers with SimulationTestData {
   }
 
   "Calculate" should "return all of the metrics in one case class" in {
-    calculate(dbCalled)(Handicap(0), pgaExample).unsafeRunSync() shouldBe pgaExpectedResult
+    calculate(dbCalled)(Handicap(0), pgaExample, Some(Hole(8))).unsafeRunSync() shouldBe pgaExpectedResult
   }
 }

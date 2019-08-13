@@ -2,11 +2,14 @@ package com.dandxy.db
 
 import java.sql.Timestamp
 
-import com.dandxy.model.golf.entity.{Hole, PGAStatistics}
+import com.dandxy.model.golf.entity.PGAStatistics
 import com.dandxy.model.golf.input.GolfInput.{UserGameInput, UserShotInput}
 import com.dandxy.model.golf.input.{Distance, HandicapWithDate}
 import com.dandxy.model.golf.pga.Statistic.PGAStatistic
+import com.dandxy.model.player.PlayerId
+import com.dandxy.model.user.Identifier.{GameId, Hole}
 import com.dandxy.model.user._
+import com.dandxy.strokes.GolfResult
 
 import scala.language.higherKinds
 
@@ -53,5 +56,11 @@ class DBOperations[F[_]](pgaOps: PGAPostgresQueryTool[F], userOps: UserPostgresQ
 
   override def aggregateGameResult(gameId: GameId): F[List[AggregateGameResult]] =
     userOps.aggregateGameResult(gameId)
+
+  override def addResultByIdentifier(result: GolfResult, h: Option[Hole]): F[Int] =
+    userOps.addResultByIdentifier(result, h)
+
+  override def getResultByIdentifier(gameId: GameId, hole: Option[Hole]): F[Option[GolfResult]] =
+    userOps.getResultByIdentifier(gameId, hole)
 
 }

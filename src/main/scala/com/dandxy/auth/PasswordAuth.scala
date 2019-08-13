@@ -42,7 +42,7 @@ object PasswordAuth {
     val salt         = new Array[Byte](bytes)
     secureRandom.nextBytes(salt)
     val base64 = Base64.getEncoder.encodeToString(salt)
-    new Salt(base64)
+    Salt(base64)
   }
 
   private def salted(password: String, salt: Option[Salt]): String = salt.map(s => s"${s.base64}$password").getOrElse(password)

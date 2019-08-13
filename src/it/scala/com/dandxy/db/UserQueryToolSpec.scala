@@ -7,17 +7,20 @@ import com.dandxy.auth.Salt
 import com.dandxy.config.AppModels.AuthSalt
 import com.dandxy.db.util.Migration
 import com.dandxy.model.golf.entity.GolfClub.{ Driver, FourIron, Putter }
-import com.dandxy.model.golf.entity.Hole
 import com.dandxy.model.golf.entity.Location.{ OnTheGreen, TeeBox }
 import com.dandxy.model.golf.entity.Manufacturer.Miura
 import com.dandxy.model.golf.entity.Orientation.{ LongLeft, MiddleLeft }
 import com.dandxy.model.golf.entity.Par.ParThree
+import com.dandxy.model.golf.entity.Score.Birdie
 import com.dandxy.model.golf.input.DistanceMeasurement.Yards
 import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.model.golf.input.ShotHeight.Low
 import com.dandxy.model.golf.input.ShotShape.Straight
-import com.dandxy.model.golf.input.{ Distance, Handicap, WindSpeed }
+import com.dandxy.model.golf.input.{ Distance, Handicap, Points, Strokes, WindSpeed }
+import com.dandxy.model.player.PlayerId
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
+import com.dandxy.strokes.GolfResult
 import com.dandxy.util.{ Helpers, PostgresDockerService }
 import org.scalatest.concurrent.Eventually
 import org.scalatest.{ BeforeAndAfterAll, FlatSpec, Matchers }
@@ -170,5 +173,30 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
   it should "aggregate a games result correctly" in {
     val res = queryTool.aggregateGameResult(GameId(1)).unsafeRunSync()
     Helpers.combineAll(res.map(_.shotCount)) shouldBe 14
+  }
+
+  it should "add and get results" in {
+    val gameRes = GolfResult(
+      GameId(3),
+      Birdie,
+      Some(Strokes(1.2)),
+      Some(Strokes(1.2)),
+      Some(Strokes(1.2)),
+      Some(Strokes(1.2)),
+      Some(Strokes(1.2)),
+      Points(3)
+    )
+
+    // Game
+    queryTool.addResultByIdentifier(gameRes, None).unsafeRunSync() shouldBe 1
+    queryTool.addResultByIdentifier(gameRes, None).unsafeRunSync() shouldBe 1
+
+    queryTool.getResultByIdentifier(GameId(3), None).unsafeRunSync() shouldBe Some(gameRes)
+
+    // Game + Hole
+    queryTool.addResultByIdentifier(gameRes, Some(Hole(3))).unsafeRunSync() shouldBe 1
+    queryTool.addResultByIdentifier(gameRes, Some(Hole(3))).unsafeRunSync() shouldBe 1
+
+    queryTool.getResultByIdentifier(GameId(3), Some(Hole(3))).unsafeRunSync() shouldBe Some(gameRes)
   }
 }
