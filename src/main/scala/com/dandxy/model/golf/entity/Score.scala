@@ -26,7 +26,7 @@ object Score {
 
   case object Birdie extends Score {
     val name: String = s"Birdie"
-    val s: Int       = 1
+    val s: Int       = -1
   }
 
   case object ParredHole extends Score {
