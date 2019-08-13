@@ -1,59 +1,85 @@
 package com.dandxy.model.golf.entity
 
+import doobie.util.Meta
+
 sealed trait Score {
   def name: String
+  def s: Int
 }
 
 object Score {
 
-  final case class HoleInOne(value: Int) extends Score {
-    val name: String = s"Ace: $value"
+  case object HoleInOne extends Score {
+    val name: String = s"Ace"
+    val s: Int       = -9
   }
 
-  final case class Albatross(value: Int) extends Score {
-    val name: String = s"Albatross: $value"
+  case object Albatross extends Score {
+    val name: String = s"Albatross"
+    val s: Int       = -3
   }
 
-  final case class Eagle(value: Int) extends Score {
-    val name: String = s"Eagle: $value"
+  case object Eagle extends Score {
+    val name: String = s"Eagle"
+    val s: Int       = -2
   }
 
-  final case class Birdie(value: Int) extends Score {
-    val name: String = s"Birdie: $value"
+  case object Birdie extends Score {
+    val name: String = s"Birdie"
+    val s: Int       = 1
   }
 
-  final case class ParredHole(value: Int) extends Score {
-    val name: String = s"Par: $value"
+  case object ParredHole extends Score {
+    val name: String = s"Par"
+    val s: Int       = 0
   }
 
-  final case class Bogey(value: Int) extends Score {
-    val name: String = s"Bogey: $value"
+  case object Bogey extends Score {
+    val name: String = s"Bogey"
+    val s: Int       = 1
   }
 
-  final case class DoubleBogey(value: Int) extends Score {
-    val name: String = s"Double Bogey: $value"
+  case object DoubleBogey extends Score {
+    val name: String = s"Double Bogey"
+    val s: Int       = 2
   }
 
-  final case class TripeBogey(value: Int) extends Score {
-    val name: String = s"Double Bogey: $value"
+  case object TripeBogey extends Score {
+    val name: String = s"Double Bogey"
+    val s: Int       = 3
   }
 
   final case class MultipleBogey(value: Int) extends Score {
     val name: String = s"${value}x Bogey: $value"
+    val s: Int       = value
+  }
+
+  private def fromInt(shotCount: Int): Score = shotCount match {
+    case -3 => Albatross
+    case -2 => Eagle
+    case -1 => Birdie
+    case 0  => ParredHole
+    case 1  => Bogey
+    case 2  => DoubleBogey
+    case 3  => TripeBogey
+    case _  => MultipleBogey(shotCount)
   }
 
   def findScore(shotCount: Int, par: Par): Score =
-    if (shotCount == 1) HoleInOne(1)
-    else {
-      shotCount - par.strokes match {
-        case -3 => Albatross(shotCount)
-        case -2 => Eagle(shotCount)
-        case -1 => Birdie(shotCount)
-        case 0  => ParredHole(shotCount)
-        case 1  => Bogey(shotCount)
-        case 2  => DoubleBogey(shotCount)
-        case 3  => TripeBogey(shotCount)
-        case _  => MultipleBogey(shotCount)
-      }
-    }
+    if (shotCount == 1) HoleInOne else fromInt(shotCount - par.strokes)
+
+  def fromId(value: Int): Score = value match {
+    case -9    => HoleInOne
+    case -3    => Albatross
+    case -2    => Eagle
+    case -1    => Birdie
+    case 0     => ParredHole
+    case 1     => Bogey
+    case 2     => DoubleBogey
+    case 3     => TripeBogey
+    case a @ _ => MultipleBogey(a)
+  }
+
+  implicit val meta: Meta[Score] = Meta[Int].imap(fromId)(_.s)
+
 }

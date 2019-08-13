@@ -10,6 +10,7 @@ import com.dandxy.model.golf.input._
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
+import com.dandxy.strokes.GolfResult
 import doobie._
 import doobie.implicits._
 
@@ -165,33 +166,32 @@ object UserQueryToolSQL {
          | ) s ON agg.game_id = s.game_id AND agg.hole = s.hole
          |""".stripMargin.query[AggregateGameResult].to[List]
 
-  // -- Players Game result
-  //CREATE TABLE player.game_result (
-  //    game_result_id SERIAL PRIMARY KEY,
-  //    game_id INTEGER REFERENCES player.game,
-  //    strokes_gained NUMERIC(6, 2) NOT NULL,
-  //    strokes_gained_off_tee NUMERIC(6, 2) NOT NULL,
-  //    strokes_gained_approach NUMERIC(6, 2) NOT NULL,
-  //    strokes_gained_around NUMERIC(6, 2) NOT NULL,
-  //    strokes_gained_putting NUMERIC(6, 2) NOT NULL,
-  //    points INTEGER NOT NULL
-  //);
-  //
-  //CREATE UNIQUE INDEX player_game_result_index on game_result.shot (game_id);
-  //
-  //-- Players hole result
-  //CREATE TABLE player.hole_result (
-  //    game_hole_result_id SERIAL PRIMARY KEY,
-  //    game_id INTEGER REFERENCES player.game,
-  //    hole INTEGER NOT NULL,
-  //    strokes_gained NUMERIC(6, 2) NOT NULL,
-  //    strokes_gained_off_tee NUMERIC(6, 2) NOT NULL,
-  //    strokes_gained_approach NUMERIC(6, 2) NOT NULL,
-  //    strokes_gained_around NUMERIC(6, 2) NOT NULL,
-  //    strokes_gained_putting NUMERIC(6, 2) NOT NULL,
-  //    points INTEGER NOT NULL
-  //);
-  //
-  //CREATE UNIQUE INDEX player_hole_result_index on player.hole_result (game_id, hole);
+  def insertGameIdentifier(result: GolfResult): ConnectionIO[Int] =
+    sql""" INSERT INTO  player.game_result (game_id, strokes_gained, strokes_gained_off_tee, strokes_gained_approach,
+         |                                  strokes_gained_around, strokes_gained_putting, points)
+         | VALUES (${result.id}, ${result.strokesGained}, ${result.strokesGainedOffTheTee}, 
+         |         ${result.strokesGainedApproach}, ${result.strokesGainedAround}, ${result.strokesGainedPutting})
+         |""".stripMargin.update.run
+
+  def insertHoleIdentifier(result: GolfResult, hole: Hole): ConnectionIO[Int] =
+    sql""" INSERT INTO  player.hole_result (game_id, hole, strokes_gained, strokes_gained_off_tee, strokes_gained_approach,
+         |                                  strokes_gained_around, strokes_gained_putting, points)
+         | VALUES (${result.id}, ${hole.id}, ${result.strokesGained}, ${result.strokesGainedOffTheTee}, 
+         |         ${result.strokesGainedApproach}, ${result.strokesGainedAround}, ${result.strokesGainedPutting})
+         |""".stripMargin.update.run
+
+  def fetchGameResult(gameId: GameId): ConnectionIO[Option[GolfResult]] =
+    sql""" SELECT game_id, score, strokes_gained, strokes_gained_off_tee, strokes_gained_approach, strokes_gained_around,
+         |        strokes_gained_putting, points
+         | FROM player.game_result
+         | WHERE game_id = ${gameId.id}
+         |""".stripMargin.query[GolfResult].option
+
+  def fetchHoleResult(gameId: GameId, h: Hole): ConnectionIO[Option[GolfResult]] =
+    sql""" SELECT game_id, strokes_gained, strokes_gained_off_tee, strokes_gained_approach,
+         |        strokes_gained_around, strokes_gained_putting, points
+         | FROM player.game_result
+         | WHERE game_id = $gameId AND hole = $h
+         |""".stripMargin.query[GolfResult].option
 
 }
