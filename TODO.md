@@ -11,10 +11,10 @@
 *   Generate scorecard - DEFERRED (14/08/2019)
 *   Generate stats (already proposed) More comprehensively below - DEFERRED (14/08/2019)
 *   Consolidate all tests into it:test - DONE
-*   Interpolation of the missing data 1 yard/feet
-*   Get probability 
-*   Email verification table
-*   Email marketing table
+*   Interpolation of the missing data 1 yard/feet - DONE
+*   Get probability - DEFERRED (14/08/2019)
+*   Email verification table - NEXT
+*   Email marketing table - NEXT
 *   Add more complex building blocks - token
 *   Verify token
 *   Add http4s
