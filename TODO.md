@@ -8,16 +8,14 @@
 *   Calculate stableford points - DONE
 *   Basic stats - DONE
 *   Store holes stats - DONE
-*   Generate scorecard - DEFERRED (14/08/2019)
-*   Generate stats (already proposed) More comprehensively below - DEFERRED (14/08/2019)
 *   Consolidate all tests into it:test - DONE
 *   Interpolation of the missing data 1 yard/feet - DONE
-*   Get probability - DEFERRED (14/08/2019)
-*   Email verification table - NEXT
-*   Email marketing table - NEXT
+*   Email verification table - DONE
+*   Email marketing table - DONE
+*   Get probability - NEXT
+*   Add http4s
 *   Add more complex building blocks - token
 *   Verify token
-*   Add http4s
 *   Add basic Auth
 *   Add club data endpoint
 *   Add game endpoint
@@ -27,6 +25,11 @@
 *   Add postman
 *   Add stats endpoint
 *   Compare to pga
+
+#### Deferred items
+
+*   Generate scorecard - DEFERRED (14/08/2019)
+*   Generate stats (already proposed) More comprehensively below - DEFERRED (14/08/2019)
 
 #### Statistics and Scorecards:
 
