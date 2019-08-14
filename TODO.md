@@ -1,15 +1,16 @@
 
 ## Dan's TODO List
 
-*   Add password verification DONE
-*   Add shots Done
-*   Delete migrations Done
-*   Add a game Done
-*   Calculate stableford points Done
-*   Basic stats Done
-*   Store holes stats TODO
-*   Generate scorecard TODO
-*   Generate stats (already proposed) More comprehensively below
+*   Add password verification - DONE
+*   Add shots - DONE
+*   Delete migrations - DONE
+*   Add a game - DONE
+*   Calculate stableford points - DONE
+*   Basic stats - DONE
+*   Store holes stats - DONE
+*   Generate scorecard - DEFERRED (14/08/2019)
+*   Generate stats (already proposed) More comprehensively below - DEFERRED (14/08/2019)
+*   Consolidate all tests into it:test - DONE
 *   Interpolation of the missing data 1 yard/feet
 *   Get probability 
 *   Email verification table
@@ -27,13 +28,22 @@
 *   Add stats endpoint
 *   Compare to pga
 
-TODO next;
+#### Statistics and Scorecards:
 
-Holes result written to the dB
-Games metrics:
-Get ordered list of stokes gained by club
-
-Get best x shots
-Get worst x shots
-
-Get strength by hole
+*   Holes result written to the dB
+*   Games metrics:
+*   Get ordered list of stokes gained by club
+*   Get best x shots
+*   Get worst x shots
+*   Get strength by hole
+*   Best X shots
+*   Worst X shots
+*   Greens in regulation
+*   Fairways hit
+*   Shot orientation per club
+*   Average distance per club
+*   Best performing club
+*   Worst performing club
+*   Displays without worst X shots
+*   View by 3-6-9 hole splits
+*   Scorecard view

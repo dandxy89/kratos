@@ -1,9 +1,9 @@
-package com.dandxy.model.golf
+package com.dandxy.golf
 
-import com.dandxy.model.golf.input.DistanceMeasurement._
+import com.dandxy.golf.input.DistanceMeasurement._
 import org.scalatest.{ FlatSpec, Matchers }
 
-class DistanceMetricTest extends FlatSpec with Matchers {
+class DistanceMetricSpec extends FlatSpec with Matchers {
 
   behavior of "toYards function"
 
@@ -47,3 +47,4 @@ class DistanceMetricTest extends FlatSpec with Matchers {
     Meters.toMeters(5) shouldBe 5.0
   }
 }
+

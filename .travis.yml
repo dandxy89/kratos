@@ -16,7 +16,6 @@ env:
   - CODECOV_TOKEN="2136d990-e22d-4501-8293-501f554bf29f"
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION test
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage it:test coverageReport
 
 cache:

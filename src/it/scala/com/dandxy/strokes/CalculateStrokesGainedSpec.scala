@@ -4,7 +4,7 @@ import com.dandxy.model.golf.input.Handicap
 import com.dandxy.model.user.Identifier.Hole
 import com.dandxy.strokes.StrokesGainedCalculator._
 import com.dandxy.testData.SimulationTestData
-import org.scalatest.{ FlatSpec, Matchers }
+import org.scalatest.{FlatSpec, Matchers}
 
 class CalculateStrokesGainedSpec extends FlatSpec with Matchers with SimulationTestData {
 
