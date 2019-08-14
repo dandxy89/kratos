@@ -2,16 +2,16 @@ package com.dandxy.strokes
 
 import cats.Monad
 import cats.implicits._
-import com.dandxy.model.golf.entity.Location.{ OnTheGreen, TeeBox }
-import com.dandxy.model.golf.entity.Par.ParThree
-import com.dandxy.model.golf.entity.Score.findScore
-import com.dandxy.model.golf.entity.{ Location, Par }
-import com.dandxy.model.golf.input.GolfInput.UserShotInput
-import com.dandxy.model.golf.input.{ Distance, Handicap, Strokes }
-import com.dandxy.model.golf.pga.Statistic.PGAStatistic
+import com.dandxy.golf.entity.{Location, Par}
+import com.dandxy.golf.entity.Location.{OnTheGreen, TeeBox}
+import com.dandxy.golf.entity.Par.ParThree
+import com.dandxy.golf.input.{Distance, Handicap, Strokes}
+import com.dandxy.golf.input.GolfInput.UserShotInput
+import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user.Identifier.Hole
-import com.dandxy.strokes.StablefordCalculator.{ calculate => StablefordPoints }
-import com.dandxy.util.Helpers.{ combineAll, roundAt3 }
+import com.dandxy.strokes.StablefordCalculator.{calculate => StablefordPoints}
+import com.dandxy.util.Helpers.{combineAll, roundAt3}
+import com.dandxy.golf.entity.Score.findScore
 
 import scala.annotation.tailrec
 import scala.language.higherKinds

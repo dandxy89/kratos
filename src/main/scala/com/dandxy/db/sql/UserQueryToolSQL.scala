@@ -4,11 +4,11 @@ import java.sql.Timestamp
 
 import cats.implicits._
 import com.dandxy.auth.PlayerHash
-import com.dandxy.model.golf.entity._
-import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.model.golf.input._
+import com.dandxy.golf.entity.{GolfClub, Location, Orientation, Par}
+import com.dandxy.golf.input.{Distance, HandicapWithDate, ShotHeight, ShotShape, Strokes}
+import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{ GameId, Hole }
+import com.dandxy.model.user.Identifier.{GameId, Hole}
 import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
 import doobie._

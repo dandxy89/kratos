@@ -1,6 +1,6 @@
 package com.dandxy.model.error
 
-import com.dandxy.model.golf.input.Distance
+import com.dandxy.golf.input.Distance
 
 sealed trait DomainError {
   def msg: String

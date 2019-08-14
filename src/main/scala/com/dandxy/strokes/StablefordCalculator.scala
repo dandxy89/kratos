@@ -1,7 +1,8 @@
 package com.dandxy.strokes
 
-import com.dandxy.model.golf.entity.Par
-import com.dandxy.model.golf.input.{ Handicap, Points }
+import com.dandxy.golf.entity.Par
+import com.dandxy.golf.input.{Handicap, Points}
+
 
 object StablefordCalculator {
 

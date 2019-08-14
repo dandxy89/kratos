@@ -2,10 +2,10 @@ package com.dandxy.db
 
 import java.sql.Timestamp
 
-import com.dandxy.model.golf.entity.PGAStatistics
-import com.dandxy.model.golf.input.GolfInput.{UserGameInput, UserShotInput}
-import com.dandxy.model.golf.input.{Distance, HandicapWithDate}
-import com.dandxy.model.golf.pga.Statistic.PGAStatistic
+import com.dandxy.golf.entity.PGAStatistics
+import com.dandxy.golf.input.{Distance, HandicapWithDate}
+import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.Identifier.{GameId, Hole}
 import com.dandxy.model.user._
