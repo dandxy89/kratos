@@ -1,8 +1,8 @@
-package com.dandxy.model.golf.entity
+package com.dandxy.golf.entity
 
 import cats.Eq
 import com.dandxy.db.sql.TableName
-import com.dandxy.model.golf.entity.Penalty._
+import com.dandxy.golf.entity.Penalty._
 import doobie.util.Meta
 import doobie.util.fragment.Fragment
 

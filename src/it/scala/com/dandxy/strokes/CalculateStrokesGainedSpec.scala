@@ -1,6 +1,6 @@
 package com.dandxy.strokes
 
-import com.dandxy.model.golf.input.Handicap
+import com.dandxy.golf.input.Handicap
 import com.dandxy.model.user.Identifier.Hole
 import com.dandxy.strokes.StrokesGainedCalculator._
 import com.dandxy.testData.SimulationTestData

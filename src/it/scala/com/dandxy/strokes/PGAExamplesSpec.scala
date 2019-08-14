@@ -1,8 +1,8 @@
 package com.dandxy.strokes
 
 import cats.implicits._
-import com.dandxy.model.golf.entity.Par.{ParFour, ParThree}
-import com.dandxy.model.golf.input.{Handicap, Strokes}
+import com.dandxy.golf.entity.Par.{ParFour, ParThree}
+import com.dandxy.golf.input.{Handicap, Strokes}
 import com.dandxy.model.user.Identifier.Hole
 import com.dandxy.strokes.StrokesGainedCalculator._
 import com.dandxy.testData.SimulationTestData

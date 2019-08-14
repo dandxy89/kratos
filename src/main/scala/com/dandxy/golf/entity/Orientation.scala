@@ -1,4 +1,4 @@
-package com.dandxy.model.golf.entity
+package com.dandxy.golf.entity
 
 import doobie.util.Meta
 

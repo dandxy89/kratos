@@ -1,6 +1,6 @@
-package com.dandxy.model.golf.pga
+package com.dandxy.golf.pga
 
-import com.dandxy.model.golf.input.Distance
+import com.dandxy.golf.input.Distance
 
 sealed trait Statistic
 

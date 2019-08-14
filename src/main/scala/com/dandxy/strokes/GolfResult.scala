@@ -1,7 +1,7 @@
 package com.dandxy.strokes
 
-import com.dandxy.model.golf.entity.Score
-import com.dandxy.model.golf.input.{ Points, Strokes }
+import com.dandxy.golf.entity.Score
+import com.dandxy.golf.input.{Points, Strokes}
 import com.dandxy.model.user.Identifier.GameId
 
 final case class GolfResult(

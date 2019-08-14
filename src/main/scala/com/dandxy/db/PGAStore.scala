@@ -1,9 +1,9 @@
 package com.dandxy.db
 
 import cats.effect.Bracket
-import com.dandxy.model.golf.entity.PGAStatistics
-import com.dandxy.model.golf.input.Distance
-import com.dandxy.model.golf.pga.Statistic.PGAStatistic
+import com.dandxy.golf.entity.PGAStatistics
+import com.dandxy.golf.input.Distance
+import com.dandxy.golf.pga.Statistic.PGAStatistic
 import doobie.implicits._
 import doobie.util.transactor.Transactor
 

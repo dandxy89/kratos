@@ -1,8 +1,8 @@
-package com.dandxy.model.golf.input
+package com.dandxy.golf.input
 
 import java.sql.Timestamp
 
-import com.dandxy.model.golf.entity._
+import com.dandxy.golf.entity._
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user.ShotSerialId

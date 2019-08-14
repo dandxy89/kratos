@@ -1,4 +1,4 @@
-package com.dandxy.model.golf.input
+package com.dandxy.golf.input
 
 import doobie.util.Meta
 

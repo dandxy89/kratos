@@ -3,13 +3,13 @@ package com.dandxy.db
 import java.sql.Timestamp
 
 import cats.effect.Bracket
-import com.dandxy.auth.{ PasswordAuth, PlayerHash }
+import com.dandxy.auth.{PasswordAuth, PlayerHash}
 import com.dandxy.config.AppModels.AuthSalt
 import com.dandxy.db.sql.TableName._
-import com.dandxy.model.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.model.golf.input.HandicapWithDate
+import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.golf.input.HandicapWithDate
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{ GameId, Hole }
+import com.dandxy.model.user.Identifier.{GameId, Hole}
 import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
 import doobie._
