@@ -13,11 +13,9 @@ CREATE UNIQUE INDEX player_email_index on player.playerlookup (player_email);
 
 -- Password Storage
 CREATE TABLE userSecurity.hashedpassword (
-    player_email VARCHAR(200) NOT NULL,
+    player_email VARCHAR(200) PRIMARY KEY,
     hashed_password VARCHAR(200) NOT NULL,
-    player_id INTEGER REFERENCES player.playerlookup,
-
-    CONSTRAINT player_email_pkey PRIMARY KEY(player_email)
+    player_id INTEGER REFERENCES player.playerlookup
 );
 
 CREATE UNIQUE INDEX player_sec_email_index on userSecurity.hashedpassword (player_email);
