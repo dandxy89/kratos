@@ -42,8 +42,10 @@ class PGAQueryToolSpec extends FlatSpec with Matchers with Eventually with Befor
     pgaStats(Distance(50), Recovery) shouldBe Some(PGAStatistic(Distance(50.0), 3.79))
     pgaStats(Distance(50), OnTheGreen) shouldBe Some(PGAStatistic(Distance(50.0), 2.135))
 
-    // Negative
-    pgaStats(Distance(310), Fairway) shouldBe None
+    // New interpolated data
+    pgaStats(Distance(310), Fairway) shouldBe Some(PGAStatistic(Distance(310.0),3.819))
+
+    // Outside of range
     pgaStats(Distance(500), OnTheGreen) shouldBe None
   }
 }
