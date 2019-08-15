@@ -13,7 +13,7 @@
 *   Email verification table - DONE
 *   Email marketing table - DONE
 *   Interpolation of the missing data 1 yard/feet -> probability - DONE
-*   Get probability - NEXT
+*   Add more test coverage - DONE
 *   Add http4s
 *   Add more complex building blocks - token
 *   Verify token
@@ -31,6 +31,7 @@
 
 *   Generate scorecard - DEFERRED (14/08/2019)
 *   Generate stats (already proposed) More comprehensively below - DEFERRED (14/08/2019)
+*   Get probability - DEFERRED (15/08/2019)
 
 #### Statistics and Scorecards:
 
