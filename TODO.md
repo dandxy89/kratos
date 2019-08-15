@@ -12,6 +12,7 @@
 *   Interpolation of the missing data 1 yard/feet - DONE
 *   Email verification table - DONE
 *   Email marketing table - DONE
+*   Interpolation of the missing data 1 yard/feet -> probability - DONE
 *   Get probability - NEXT
 *   Add http4s
 *   Add more complex building blocks - token
