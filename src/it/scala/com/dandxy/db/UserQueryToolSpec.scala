@@ -2,10 +2,10 @@ package com.dandxy.db
 
 import java.sql.Timestamp
 
+import cats.effect.{IO, Timer}
 import cats.implicits._
 import com.dandxy.auth.Salt
-import com.dandxy.config.AppModels.AuthSalt
-import com.dandxy.db.util.Migration
+import com.dandxy.config.{AuthSalt, DatabaseConfig}
 import com.dandxy.golf.entity.GolfClub.{Driver, FourIron, Putter}
 import com.dandxy.golf.entity.Location.{OnTheGreen, TeeBox}
 import com.dandxy.golf.entity.Manufacturer.Miura
@@ -24,6 +24,10 @@ import com.dandxy.strokes.GolfResult
 import com.dandxy.util.{Helpers, PostgresDockerService}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
+import cats.implicits._
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.duration._
 
 class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with BeforeAndAfterAll {
 
@@ -31,12 +35,11 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
 
   eventually(service.isPostgresRunning shouldBe true)
 
-  override def beforeAll(): Unit = Migration.flywayMigrateDatabase(service.config) match {
-    case Left(error) => fail(error.getMessage)
-    case Right(m) =>
-      println(s"UserQueryToolSpec migrations applied: $m")
-      assert(true)
-  }
+  implicit val t: Timer[IO] = IO.timer(ExecutionContext.global)
+
+  override def beforeAll(): Unit =
+    (DatabaseConfig
+      .initializeDb[IO](service.config) *> IO.sleep(3.seconds)).unsafeRunSync()
 
   // Players
   val userOne   = PlayerId(1)
@@ -53,11 +56,11 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
   val testGolfClubs2 = List(GolfClubData(PlayerId(3), Driver, Some(Straight), Some(Low), Some(Miura), Distance(200.0), Yards))
 
   // Auth
-  val fakeEmail = UserEmail("fake@hacker.com")
-  val authSalt  = AuthSalt(Some(Salt("testingSalt")))
+  val fakeEmail: UserEmail = UserEmail("fake@hacker.com")
+  val authSalt: AuthSalt = AuthSalt(Some(Salt("testingSalt")))
 
   // Query Tool
-  val queryTool = new UserPostgresQueryTool(service.postgresTransactor, authSalt)
+  val queryTool = UserPostgresQueryInterpreter(service.postgresTransactor, authSalt)
 
   "UserQueryTool" should "comply with GDPR regulations" in {
     queryTool.gdprPurge(PlayerId(2)).unsafeRunSync() shouldBe 7

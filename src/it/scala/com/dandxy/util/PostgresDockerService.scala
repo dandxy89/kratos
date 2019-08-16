@@ -4,9 +4,10 @@ import java.sql.DriverManager
 import java.util.UUID
 
 import cats.effect.{ContextShift, IO}
-import com.dandxy.config.AppModels.DBConfig
+import com.dandxy.config.{DatabaseConfig, DatabaseConnectionsConfig}
 import doobie.free.connection.ConnectionIO
 import doobie.implicits._
+import doobie.util.ExecutionContexts
 import doobie.util.transactor.Transactor
 import doobie.util.transactor.Transactor.Aux
 import org.scalatest.concurrent.Eventually
@@ -48,10 +49,9 @@ class PostgresDockerService(customPort: Int) extends Eventually with Matchers {
     eventually(isPostgresRunning shouldBe false)
   }
 
-  val config: DBConfig = DBConfig(user, password, "localhost", customPort)
+  val config = DatabaseConfig(url, driver, user, password, DatabaseConnectionsConfig(1))
 
-  val postgresTransactor: Aux[IO, Unit] = Transactor
-    .fromDriverManager[IO](driver, url, user, password)
+  val postgresTransactor: Aux[IO, Unit] = Transactor.fromDriverManager[IO](driver, url, user, password)
 
   def transactQuery[A](op: ConnectionIO[A]): A = op.transact(postgresTransactor).unsafeRunSync()
 

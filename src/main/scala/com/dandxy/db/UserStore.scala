@@ -3,17 +3,17 @@ package com.dandxy.db
 import java.sql.Timestamp
 
 import cats.effect.Bracket
-import com.dandxy.auth.{PasswordAuth, PlayerHash}
-import com.dandxy.config.AppModels.AuthSalt
+import com.dandxy.auth.{ PasswordAuth, PlayerHash }
+import com.dandxy.config.AuthSalt
 import com.dandxy.db.sql.TableName._
-import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input.HandicapWithDate
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{GameId, Hole}
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
-import doobie._
 import doobie.implicits._
+import doobie.util.transactor.Transactor
 
 import scala.language.higherKinds
 
@@ -35,7 +35,7 @@ trait UserStore[F[_]] {
   def getResultByIdentifier(game: GameId, h: Option[Hole]): F[Option[GolfResult]]
 }
 
-class UserPostgresQueryTool[F[_]](xa: Transactor[F], config: AuthSalt)(implicit F: Bracket[F, Throwable]) extends UserStore[F] {
+class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F], config: AuthSalt) extends UserStore[F] {
 
   import com.dandxy.db.sql.UserQueryToolSQL._
 
@@ -109,4 +109,11 @@ class UserPostgresQueryTool[F[_]](xa: Transactor[F], config: AuthSalt)(implicit 
     case Some(hole) => fetchHoleResult(game, hole).transact(xa)
     case None       => fetchGameResult(game).transact(xa)
   }
+}
+
+object UserPostgresQueryInterpreter {
+
+  def apply[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F], config: AuthSalt): UserPostgresQueryInterpreter[F, A] =
+    new UserPostgresQueryInterpreter(xa, config)
+
 }

@@ -13,11 +13,18 @@ trait PGAStore[F[_]] {
   def getStatistic(distance: Distance, stat: PGAStatistics): F[Option[PGAStatistic]]
 }
 
-class PGAPostgresQueryTool[F[_]](xa: Transactor[F])(implicit F: Bracket[F, Throwable]) extends PGAStore[F] {
+class PGAPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](val xa: Transactor[F]) extends PGAStore[F] {
 
   import com.dandxy.db.sql.PGAQueryToolSQL._
 
   def getStatistic(distance: Distance, stat: PGAStatistics): F[Option[PGAStatistic]] =
     findStatistic(distance, stat).transact(xa)
+
+}
+
+object PGAPostgresQueryInterpreter {
+
+  def apply[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F]): PGAPostgresQueryInterpreter[F, A] =
+    new PGAPostgresQueryInterpreter(xa)
 
 }
