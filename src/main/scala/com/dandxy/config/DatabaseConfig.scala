@@ -1,37 +1,44 @@
 package com.dandxy.config
 
-import cats.effect.{Async, ContextShift, Resource, Sync}
+import cats.effect._
 import cats.syntax.functor._
 import doobie.hikari.HikariTransactor
+import io.circe.Decoder
+import io.circe.generic.semiauto.deriveDecoder
 import org.flywaydb.core.Flyway
 
 import scala.concurrent.ExecutionContext
 import scala.language.higherKinds
 
-final case class DatabaseConnectionsConfig(poolSize: Int)
-
-final case class DatabaseConfig(url: String, driver: String, user: String, password: String, connections: DatabaseConnectionsConfig)
+final case class DatabaseConfig(
+  driver: String,
+  host: String,
+  port: Int,
+  user: String,
+  password: String,
+  connections: DatabaseConnectionsConfig
+) {
+  val url = s"jdbc:postgresql://${host}:${port}/"
+}
 
 object DatabaseConfig {
 
   def dbTransactor[F[_]: Async: ContextShift](
     dbc: DatabaseConfig,
     connEc: ExecutionContext,
-    blocker: ExecutionContext
+    blocker: Blocker
   ): Resource[F, HikariTransactor[F]] =
-    HikariTransactor.newHikariTransactor[F](dbc.driver, dbc.url, dbc.user, dbc.password, connEc, blocker)
+    HikariTransactor.newHikariTransactor[F](dbc.driver, dbc.url, dbc.user, dbc.password, connEc, blocker.blockingContext)
 
-  /**
-   * Runs the flyway migrations against the target database
-   */
   def initializeDb[F[_]](cfg: DatabaseConfig)(implicit S: Sync[F]): F[Unit] =
     S.delay {
-      val fw: Flyway = {
-        Flyway
-          .configure()
-          .dataSource(cfg.url, cfg.user, cfg.password)
-          .load()
-      }
+      val fw: Flyway = Flyway
+        .configure()
+        .dataSource(cfg.url, cfg.user, cfg.password)
+        .load()
       fw.migrate()
     }.as(())
+
+  implicit val decoder: Decoder[DatabaseConfig] = deriveDecoder
+
 }
