@@ -1,3 +1,10 @@
 package com.dandxy.config
 
-final case class ApplicationConfig(jdbc: DatabaseConfig, auth: AuthSalt)
+import io.circe.Decoder
+import io.circe.generic.semiauto.deriveDecoder
+
+final case class ApplicationConfig(jdbc: DatabaseConfig, auth: AuthSalt, server: ServerConfig)
+
+object ApplicationConfig {
+  implicit val decoder: Decoder[ApplicationConfig] = deriveDecoder
+}
