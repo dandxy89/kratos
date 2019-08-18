@@ -1,7 +1,7 @@
 package com.dandxy.db.util
 
 import cats.effect.concurrent.Ref
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.{ Bracket, Concurrent, Timer }
 import cats.implicits._
 import com.typesafe.scalalogging.LazyLogging
 import doobie.implicits._
@@ -9,6 +9,7 @@ import doobie.util.transactor.Transactor
 import fs2.Stream
 
 import scala.concurrent.duration._
+import scala.language.higherKinds
 
 object HealthCheck extends LazyLogging {
 
@@ -16,7 +17,7 @@ object HealthCheck extends LazyLogging {
   case object OK      extends Status("Ok")
   case object Warning extends Status("Warning")
 
-  def queryStatus(db: Transactor[IO]): IO[Status] =
+  def queryStatus[F[_]](db: Transactor[F])(implicit b: Bracket[F, Throwable]): F[Status] =
     sql"select 1"
       .query[Int]
       .unique
@@ -29,14 +30,16 @@ object HealthCheck extends LazyLogging {
           Warning
       }
 
-  def databaseStatusPoll(db: Transactor[IO])(implicit ec: ContextShift[IO], t: Timer[IO]): IO[Ref[IO, Status]] =
+  def databaseStatusPoll[F[_]](db: Transactor[F])(implicit t: Timer[F], F: Concurrent[F]): F[Ref[F, Status]] =
     for {
-      status <- Ref.of[IO, Status](OK)
-      _ <- Stream
-        .repeatEval[IO, Unit](IO.sleep(10.seconds) *> queryStatus(db) >>= status.set)
-        .compile
-        .drain
-        .start
-
+      status <- Ref.of[F, Status](OK)
+      _ <- F.start(
+        Stream
+          .repeatEval[F, Unit](t.sleep(1.seconds) *> F.race(queryStatus(db) >>= status.set, t.sleep(2.seconds) *> status.set(Warning)).void)
+          .compile
+          .drain
+          .foreverM
+          .void
+      )
     } yield status
 }
