@@ -1,16 +1,15 @@
-package itv.user.middlewares.http4s
+package com.dandxy.middleware
 
 import cats.effect.IO
-import com.dandxy.middleware.implementation.http4s
-import com.dandxy.middleware.implementation.http4s.ToHttpResponse
-import com.dandxy.middleware.implementation.http4s.defaults._
-import com.dandxy.middleware.implementation.http4s.syntax._
+import com.dandxy.middleware.OutputType.{ ACase, CustomModelA, CustomModelB }
+import com.dandxy.middleware.http4s.ToHttpResponse
+import com.dandxy.middleware.http4s.syntax._
+import com.dandxy.middleware.http4s.defaults._
 import io.circe.Encoder
 import io.circe.syntax._
-import itv.user.middlewares.http4s.OutputType.{ACase, CustomModelA, CustomModelB}
 import org.http4s.circe._
-import org.http4s.{EntityEncoder, Header, Method, Request, Response, Status}
-import org.scalatest.{FlatSpec, Matchers}
+import org.http4s.{ EntityEncoder, Header, Method, Request, Response, Status }
+import org.scalatest.{ FlatSpec, Matchers }
 
 trait OutputType
 

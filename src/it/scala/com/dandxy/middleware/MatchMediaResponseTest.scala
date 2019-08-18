@@ -1,17 +1,16 @@
-package itv.user.middlewares.http4s
+package com.dandxy.middleware
 
 import cats.Monad
-import cats.effect.{ IO, Sync }
-import com.dandxy.middleware.ToResponse
-import com.dandxy.middleware.implementation.http4s.ToHttpResponse
-import com.dandxy.middleware.implementation.http4s.defaults._
-import com.dandxy.middleware.implementation.http4s.syntax._
+import cats.effect.{IO, Sync}
+import com.dandxy.middleware.TestError.{ErrorA, ErrorB}
+import com.dandxy.middleware.http4s.ToHttpResponse
+import com.dandxy.middleware.http4s.syntax._
+import com.dandxy.middleware.http4s.defaults._
 import io.circe.syntax._
-import io.circe.{ Encoder, Json }
-import itv.user.middlewares.http4s.TestError.{ ErrorA, ErrorB }
+import io.circe.{Encoder, Json}
 import org.http4s.circe._
-import org.http4s.{ Header, Headers, HttpVersion, MediaRange, MediaType, Method, Request, Response, Status, Uri }
-import org.scalatest.{ FlatSpec, Matchers }
+import org.http4s.{Header, MediaRange, MediaType, Method, Request, Response, Status, Uri}
+import org.scalatest.{FlatSpec, Matchers}
 
 import scala.language.higherKinds
 
