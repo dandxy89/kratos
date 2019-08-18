@@ -14,7 +14,7 @@
 *   Email marketing table - DONE
 *   Interpolation of the missing data 1 yard/feet -> probability - DONE
 *   Add more test coverage - DONE
-*   Add http4s
+*   Add http4s - DONE
 *   Add more complex building blocks - token
 *   Verify token
 *   Add basic Auth
