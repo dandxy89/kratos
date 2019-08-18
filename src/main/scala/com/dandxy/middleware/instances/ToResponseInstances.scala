@@ -4,8 +4,8 @@ import cats.Monad
 import cats.data.OptionT
 import cats.syntax.all._
 import com.dandxy.middleware.ToResponse
-import com.dandxy.middleware.implementation.http4s.ToHttpResponse
-import org.http4s.{Response, Status}
+import com.dandxy.middleware.http4s.ToHttpResponse
+import org.http4s.{ Response, Status }
 
 import scala.language.higherKinds
 

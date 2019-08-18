@@ -5,8 +5,8 @@ import cats.effect.concurrent.Ref
 import cats.implicits._
 import com.dandxy.db.util.DatabaseStatus
 import com.dandxy.db.util.HealthCheck.Status
-import com.dandxy.middleware.implementation.http4s.defaults._
-import com.dandxy.middleware.implementation.http4s.syntax._
+import com.dandxy.middleware.http4s.defaults._
+import com.dandxy.middleware.http4s.syntax._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 
