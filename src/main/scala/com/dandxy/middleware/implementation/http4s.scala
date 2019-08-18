@@ -44,9 +44,7 @@ package object http4s {
     }
 
     implicit class ToResponseOps[T](val value: T) extends AnyVal {
-      def negotiate[F[_]](
-                           req: Request[F],
-                           fallback: Option[F[Response[F]]] = None
+      def negotiate[F[_]](req: Request[F], fallback: Option[F[Response[F]]] = None
                          )(implicit converter: ToHttpResponse[F, T], F: Monad[F]): F[Response[F]] = {
         val mr = parseRequestAcceptHeader(req).fold(List.empty[MediaRange])(_.toList)
         converter.run(mr)(value).getOrElseF(fallback.getOrElse(F.pure(unacceptable)))
