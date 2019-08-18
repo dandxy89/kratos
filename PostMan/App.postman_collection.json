@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "545be976-7352-4157-b994-f4e0e7732cb1",
+		"name": "Strokes Gained App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PingPong",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/plain",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/health/ping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"health",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DB Status",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/plain",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/health/ping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"health",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
