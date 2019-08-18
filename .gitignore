@@ -4,3 +4,4 @@
 .bloop/
 *.DS_Store
 *.xml
+!logback.xml

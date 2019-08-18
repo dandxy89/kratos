@@ -2,6 +2,7 @@ package com.dandxy.config
 
 import cats.effect._
 import cats.syntax.functor._
+import com.typesafe.scalalogging.StrictLogging
 import doobie.hikari.HikariTransactor
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
@@ -21,7 +22,7 @@ final case class DatabaseConfig(
   val url = s"jdbc:postgresql://${host}:${port}/"
 }
 
-object DatabaseConfig {
+object DatabaseConfig extends StrictLogging {
 
   def dbTransactor[F[_]: Async: ContextShift](
     dbc: DatabaseConfig,
@@ -36,7 +37,8 @@ object DatabaseConfig {
         .configure()
         .dataSource(cfg.url, cfg.user, cfg.password)
         .load()
-      fw.migrate()
+      val m = fw.migrate()
+      logger.info(s"$m Migrations applied to the database")
     }.as(())
 
   implicit val decoder: Decoder[DatabaseConfig] = deriveDecoder

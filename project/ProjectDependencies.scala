@@ -21,6 +21,7 @@ object ProjectDependencies extends {
   }
 
   def apply(): Seq[ModuleID] = Seq(
+    // Project dependencies
     "com.outr"                   %% "profig"                  % Version.profigVersion,
     "de.mkammerer"               % "argon2-jvm"               % Version.argonPass,
     "co.fs2"                     %% "fs2-core"                % Version.fS2Version,
@@ -48,6 +49,7 @@ object ProjectDependencies extends {
     "org.scalaz"                 %% "scalaz-zio"              % Version.zioVersion,
     "org.scalaz"                 %% "scalaz-zio-interop-cats" % Version.zioVersion,
     "org.scalatest"              %% "scalatest"               % Version.scalaTestVersion % "it, test",
+    // Compiler Plugins
     compilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.4"),
     compilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.3.0-M4")
   )
