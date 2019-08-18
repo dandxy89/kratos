@@ -23,8 +23,8 @@ object Server extends IOApp {
       dbXa <- DatabaseConfig.dbTransactor(conf.jdbc, conE, Blocker.liftExecutionContext(cacE))
       _       = UserPostgresQueryInterpreter(dbXa, conf.auth)
       _       = PGAPostgresQueryInterpreter(dbXa)
-      ab      = HealthRoutes()
-      httpApp = Router("/test" -> ab.pingPongService).orNotFound
+      health  = HealthRoutes()
+      httpApp = Router("/health" -> health.pingPongService).orNotFound
       _ <- Resource.liftF(DatabaseConfig.initializeDb(conf.jdbc))
       server <- BlazeServerBuilder[F]
         .bindHttp(conf.server.port, conf.server.host)
@@ -32,7 +32,6 @@ object Server extends IOApp {
         .resource
     } yield server
 
-  def run(args: List[String]): IO[ExitCode] =
-    createServer.use(_ => IO.never).as(ExitCode.Success)
+  def run(args: List[String]): IO[ExitCode] = createServer.use(_ => IO.never).as(ExitCode.Success)
 
 }
