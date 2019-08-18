@@ -30,12 +30,18 @@ object HealthCheck extends LazyLogging {
           Warning
       }
 
+  def raceQuery[F[_]](db: Transactor[F], ref: Ref[F, Status])(implicit t: Timer[F], F: Concurrent[F]): F[Unit] =
+    F.race(
+        queryStatus(db) >>= ref.set,
+        t.sleep(3.seconds) >> ref.set(Warning)
+      ).void
+
   def databaseStatusPoll[F[_]](db: Transactor[F])(implicit t: Timer[F], F: Concurrent[F]): F[Ref[F, Status]] =
     for {
       status <- Ref.of[F, Status](OK)
       _ <- F.start(
         Stream
-          .repeatEval[F, Unit](t.sleep(1.seconds) *> F.race(queryStatus(db) >>= status.set, t.sleep(2.seconds) *> status.set(Warning)).void)
+          .repeatEval[F, Unit](t.sleep(10.seconds) *> raceQuery(db, status))
           .compile
           .drain
           .foreverM

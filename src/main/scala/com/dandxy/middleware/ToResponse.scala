@@ -1,16 +1,17 @@
 package com.dandxy.middleware
 
-import cats.data.{Kleisli, OptionT}
+import cats.data.{ Kleisli, OptionT }
 import cats.instances.stream._
 import cats.instances.option._
 import cats.syntax.all._
-import cats.{Applicative, Contravariant, FlatMap, Functor, Monad, MonoidK, ~>}
-import com.dandxy.middleware.ToResponse.{apply, instance}
+import cats.{ ~>, Applicative, Contravariant, FlatMap, Functor, Monad, MonoidK }
+import com.dandxy.middleware.ToResponse.{ apply, instance }
 import com.dandxy.middleware.model.Exported
 
 import scala.language.higherKinds
 
 trait ToResponse[F[_], M, B, A] { self =>
+
   def run: Kleisli[OptionT[F, ?], (M, A), B]
 
   def run(media: M)(value: A): OptionT[F, B] = run((media, value))
@@ -45,11 +46,10 @@ trait ToResponseInstances extends LowPrioImplicits {
     ToResponse.instanceF((media, value) => value.flatMap(encoder.run(media)(_).value))
 
   implicit def eitherResponse[F[_], M, B, L, R](
-    implicit lEncode: ToResponse[F, B, M, L],
-    rEncode: ToResponse[F, B, M, R]
+    implicit l: ToResponse[F, B, M, L],
+    r: ToResponse[F, B, M, R]
   ): ToResponse[F, B, M, Either[L, R]] =
-    ToResponse.instance((media, value) => value.fold(lEncode.run(media), rEncode.run(media)))
-  // the content type check will only be performed on the side of either that is returned
+    ToResponse.instance((media, value) => value.fold(l.run(media), r.run(media)))
 }
 
 object ToResponse extends ToResponseInstances {
@@ -91,21 +91,29 @@ object ToResponse extends ToResponseInstances {
     implicit F: Monad[F]
   ): MonoidK[ToResponse[F, M, R, ?]] with Contravariant[ToResponse[F, M, R, ?]] =
     new MonoidK[ToResponse[F, M, R, ?]] with Contravariant[ToResponse[F, M, R, ?]] {
+
       override def contramap[A, B](fa: ToResponse[F, M, R, A])(f: B => A): ToResponse[F, M, R, B] =
         fa.contramap(f)
+
       override def empty[A]: ToResponse[F, M, R, A] = ToResponse.empty[F, M, R, A]
+
       override def combineK[A](x: ToResponse[F, M, R, A], y: ToResponse[F, M, R, A]): ToResponse[F, M, R, A] =
         x.combineK(y)
+
     }
 
   implicit def monadInstance[F[_], M, I](implicit F: Monad[F]): Monad[ToResponse[F, M, ?, I]] =
     new Monad[ToResponse[F, M, ?, I]] {
+
       implicit val M: Monad[Kleisli[OptionT[F, ?], (M, I), ?]] = Monad[Kleisli[OptionT[F, ?], (M, I), ?]]
 
       override def flatMap[A, B](fa: ToResponse[F, M, A, I])(f: A => ToResponse[F, M, B, I]): ToResponse[F, M, B, I] =
         fa.flatMap(f)
+
       override def tailRecM[A, B](a: A)(f: A => ToResponse[F, M, Either[A, B], I]): ToResponse[F, M, B, I] =
         apply(M.tailRecM(a)(f(_).run))
+
       override def pure[A](x: A): ToResponse[F, M, A, I] = apply(M.pure(x))
+
     }
 }
