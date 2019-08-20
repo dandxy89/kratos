@@ -19,7 +19,7 @@ object StablefordCalculator {
     }
 
   def calculate(par: Par, handicap: Handicap, index: Int, shots: Int): Points =
-    Points((shots - (par.strokes + numberOfShots(handicap, index))) match {
+    Points(shots - (par.strokes + numberOfShots(handicap, index)) match {
       case 1  => 1
       case 0  => 2
       case -1 => 3

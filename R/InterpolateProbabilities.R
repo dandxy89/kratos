@@ -10,7 +10,7 @@ table <- dplyr::as_tibble(clipboardData)
 # Check we've got the correct data
 head(table)
 
-# Prepare the values to predict and dataframe to store them in
+# Prepare the values to predict and Data Frame to store them in
 output <- dplyr::data_frame(Distance = min(table$distance):max(table$distance))
 prediction_values <- output %>% select(Distance) %>% pull()
 

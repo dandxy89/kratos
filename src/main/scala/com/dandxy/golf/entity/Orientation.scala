@@ -25,7 +25,7 @@ object Orientation {
   }
 
   case object MiddleLeft extends Orientation {
-    val description: String = "Middle lett"
+    val description: String = "Middle left"
     val code: Int           = 4
   }
 

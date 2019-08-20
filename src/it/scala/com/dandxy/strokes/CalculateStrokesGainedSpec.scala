@@ -12,35 +12,35 @@ class CalculateStrokesGainedSpec extends FlatSpec with Matchers with SimulationT
 
   val myHandicap: Handicap = Handicap(7.5)
 
-  it should "parThreeExample" in {
+  it should "par Three Example" in {
     runIO(calculate(dbCalled)(myHandicap, parThreeExample, Some(Hole(1)))) shouldBe expectedParThreeExample
   }
 
-  it should "parThreeExampleBadGolfer" in {
+  it should "par Three Example Bad Golfer" in {
     runIO(calculate(dbCalled)(myHandicap, parThreeExampleBadGolfer, Some(Hole(2)))) shouldBe expectedParThreeExampleBadGolfer
   }
 
-  it should "parThreeExampleGoodGolfer" in {
+  it should "par Three Example Good Golfer" in {
     runIO(calculate(dbCalled)(myHandicap, parThreeExampleGoodGolfer, Some(Hole(3)))) shouldBe expectedParThreeExampleGoodGolfer
   }
 
-  it should "parFourExample" in {
+  it should "par Four Example" in {
     runIO(calculate(dbCalled)(myHandicap, parFourExample, Some(Hole(4)))) shouldBe expectedParFourExample
   }
 
-  it should "parFourExampleHoleInOne" in {
+  it should "par Four Example Hole In One" in {
     runIO(calculate(dbCalled)(myHandicap, parFourExampleHoleInOne, Some(Hole(5)))) shouldBe expectedParFourExampleHoleInOne
   }
 
-  it should "parFiveExample" in {
+  it should "par Five Example" in {
     runIO(calculate(dbCalled)(myHandicap, parFiveExample, Some(Hole(6)))) shouldBe expectedParFiveExample
   }
 
-  it should "parFiveExampleBigDrive" in {
+  it should "par Five Example Big Drive" in {
     runIO(calculate(dbCalled)(myHandicap, parFiveExampleBigDrive, Some(Hole(7)))) shouldBe expectedParFiveExampleBigDrive
   }
 
-  it should "parFiveExampleBigDriveOutofBounds" in {
+  it should "par Five Example Big Drive Out of Bounds" in {
     runIO(calculate(dbCalled)(myHandicap, parFiveExampleBigDriveOutOfBounds, Some(Hole(8)))) shouldBe expectedParFiveExampleBigDriveOutOfBounds
   }
 }

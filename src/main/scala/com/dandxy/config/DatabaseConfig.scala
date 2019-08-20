@@ -19,7 +19,7 @@ final case class DatabaseConfig(
   password: String,
   connections: DatabaseConnectionsConfig
 ) {
-  val url = s"jdbc:postgresql://${host}:${port}/"
+  val url = s"jdbc:postgresql://$host:$port/"
 }
 
 object DatabaseConfig extends StrictLogging {

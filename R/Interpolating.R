@@ -40,5 +40,5 @@ output <- output %>%
   mutate(Distance = as.integer(Distance)) %>%
   mutate(sql_input = sprintf("   (%1.0f, %f),", Distance, Strokes))
 
-# Write the column to Clipboars
+# Write the column to Clipboard
 write_clip(output$sql_input)

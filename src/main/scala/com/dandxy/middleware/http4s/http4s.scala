@@ -25,22 +25,21 @@ package object http4s {
   object defaults {
     implicit def entityEncoderResponse[F[_]: Applicative, T](implicit ee: EntityEncoder[F, T]): Exported[ToHttpResponse[F, T]] =
       Exported(fromEncoder[F, T](_ => Status.Ok))
-
   }
 
   object syntax {
 
-    private def parseRequestAcceptHeader[F[_], T](req: Request[F]): Option[Array[MediaRange]] =
+    private def parseRequestAcceptHeader[F[_]](req: Request[F]): Option[Array[MediaRange]] =
       req.headers
         .get(CaseInsensitiveString("Accept"))
         .map(header => header.value.split(',').flatMap(range => MediaRange.parse(range.trim).toOption))
 
-    private def unacceptable[F[_]: Monad]: Response[F] = {
-      val error =
-        """{"error":"unsupported_accept_type", "error_description":"The media ranges could not be satisfied"}"""
+    private val error: String =
+      """{"error":"unsupported_accept_type", "error_description":"The media ranges could not be satisfied"}"""
+
+    private def unacceptable[F[_]]: Response[F] =
       Response[F](Status.NotAcceptable, headers = Headers.of(`Content-Type`(MediaType.application.json, Charset.`UTF-8`)))
         .withEntity(error)
-    }
 
     implicit class ToResponseOps[T](val value: T) extends AnyVal {
       def negotiate[F[_]](

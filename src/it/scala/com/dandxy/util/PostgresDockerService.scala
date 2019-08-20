@@ -3,14 +3,15 @@ package com.dandxy.util
 import java.sql.DriverManager
 import java.util.UUID
 
-import cats.effect.{ ContextShift, IO }
-import com.dandxy.config.{ DatabaseConfig, DatabaseConnectionsConfig }
+import cats.effect.{ContextShift, IO}
+import com.dandxy.config.{DatabaseConfig, DatabaseConnectionsConfig}
 import doobie.free.connection.ConnectionIO
 import doobie.implicits._
 import doobie.util.transactor.Transactor
+import doobie.util.transactor.Transactor.Aux
 import org.scalatest.concurrent.Eventually
-import org.scalatest.time.{ Seconds, Span }
-import org.scalatest.{ Assertion, Matchers }
+import org.scalatest.time.{Seconds, Span}
+import org.scalatest.{Assertion, Matchers}
 
 import scala.concurrent.ExecutionContext
 import scala.sys.ShutdownHookThread
@@ -49,7 +50,7 @@ class PostgresDockerService(customPort: Int) extends Eventually with Matchers {
 
   val config = DatabaseConfig(driver, "localhost", customPort, user, password, DatabaseConnectionsConfig(1))
 
-  val postgresTransactor = Transactor.fromDriverManager[IO](driver, url, user, password)
+  val postgresTransactor: Aux[IO, Unit] = Transactor.fromDriverManager[IO](driver, url, user, password)
 
   def transactQuery[A](op: ConnectionIO[A]): A = op.transact(postgresTransactor).unsafeRunSync()
 
