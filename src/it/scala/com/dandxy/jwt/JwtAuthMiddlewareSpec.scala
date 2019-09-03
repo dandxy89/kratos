@@ -5,12 +5,12 @@ import java.security.KeyPairGenerator
 import cats.effect.IO
 import io.circe.generic.auto._
 import io.circe.parser
-import javax.crypto.{KeyGenerator, SecretKey}
+import javax.crypto.{ KeyGenerator, SecretKey }
 import org.http4s._
 import org.http4s.headers.Authorization
 import org.http4s.server.AuthMiddleware
 import org.scalatest.Matchers
-import pdi.jwt.{Jwt, JwtAlgorithm, JwtClaim}
+import pdi.jwt.{ Jwt, JwtAlgorithm, JwtClaim }
 
 class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
 
@@ -24,7 +24,7 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val req = Request[IO](Method.GET, uri"/some-endpoint")
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.Forbidden)
+    response.status shouldBe Status.Forbidden
   }
 
   it should "return 403 Forbidden when token is not valid and URL is not found" in {
@@ -34,7 +34,7 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val req     = Request[IO](Method.GET, uri"/nonexistent", headers = headers)
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.Forbidden)
+    response.status shouldBe Status.Forbidden
   }
 
   it should "return 403 Forbidden when the auth header is not using the bearer token scheme and URL is found" in {
@@ -42,7 +42,7 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val req              = Request[IO](Method.GET, uri"/some-endpoint", headers = headers)
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.Forbidden)
+    response.status shouldBe Status.Forbidden
   }
 
   it should "return 403 Forbidden when JWT token is not valid and URL is found" in {
@@ -55,7 +55,7 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val req              = Request[IO](Method.GET, uri"/some-endpoint", headers = headers)
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.Forbidden)
+    response.status shouldBe Status.Forbidden
   }
 
   it should "return 403 Forbidden when JWT algorithm is not matching and URL is found" in {
@@ -68,7 +68,7 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val req              = Request[IO](Method.GET, uri"/some-endpoint", headers = headers)
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.Forbidden)
+    response.status shouldBe Status.Forbidden
   }
 
   it should "return 200 when token is valid and URL is found" in {
@@ -77,8 +77,8 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val req     = Request[IO](Method.GET, uri"/some-endpoint", headers = headers)
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.Ok)
-    response.attemptAs[String].value.unsafeRunSync() should be(Right("some-user-id"))
+    response.status shouldBe Status.Ok
+    response.attemptAs[String].value.unsafeRunSync() shouldBe Right("some-user-id")
   }
 
   it should "return 404 when token is valid but URL is not found" in {
@@ -87,7 +87,7 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val req     = Request[IO](Method.GET, uri"/nonexistent", headers = headers)
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.NotFound)
+    response.status shouldBe Status.NotFound
   }
 
   it should "return 200 OK when a javax.crypto.SecretKey is provided and token is valid" in {
@@ -99,8 +99,8 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val middleware = JwtAuthMiddleware[IO, Claims](secretKey, Seq(JwtAlgorithm.HS512))
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.Ok)
-    response.attemptAs[String].value.unsafeRunSync() should be(Right("some-user-id"))
+    response.status shouldBe Status.Ok
+    response.attemptAs[String].value.unsafeRunSync() shouldBe Right("some-user-id")
   }
 
   it should "return 200 OK when a java.security.PrivateKey is provided and token is valid" in {
@@ -112,7 +112,7 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val middleware = JwtAuthMiddleware[IO, Claims](keyPair.getPublic, JwtAlgorithm.allRSA())
 
     val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status should be(Status.Ok)
-    response.attemptAs[String].value.unsafeRunSync() should be(Right("some-user-id"))
+    response.status shouldBe Status.Ok
+    response.attemptAs[String].value.unsafeRunSync() shouldBe Right("some-user-id")
   }
 }
