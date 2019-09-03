@@ -39,6 +39,9 @@ object Server extends IOApp {
         .resource
     } yield server
 
-  def run(args: List[String]): IO[ExitCode] = createServer.use(_ => IO.never).as(ExitCode.Success)
+  def run(args: List[String]): IO[ExitCode] =
+    createServer
+      .use(_ => IO.never)
+      .as(ExitCode.Success)
 
 }

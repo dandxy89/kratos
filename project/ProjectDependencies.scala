@@ -8,6 +8,7 @@ object ProjectDependencies extends {
     val doobieVersion      = "0.7.0-M5"
     val fS2Version         = "1.0.4"
     val http4sVersion      = "0.20.10"
+    val JwtVersion         = "3.1.0"
     val logbackVersion     = "1.2.3"
     val scalaLogVersion    = "3.9.2"
     val pureConfigVersion  = "0.10.2"
@@ -40,6 +41,7 @@ object ProjectDependencies extends {
     "org.tpolecat"               %% "doobie-postgres"         % Version.doobieVersion,
     "org.tpolecat"               %% "doobie-scalatest"        % Version.doobieVersion,
     "org.flywaydb"               % "flyway-core"              % Version.flywayVersion,
+    "com.pauldijou"              %% "jwt-core"                % Version.JwtVersion,
     "org.slf4j"                  % "slf4j-log4j12"            % Version.scala4jLogging,
     "com.typesafe.scala-logging" %% "scala-logging"           % Version.scalaLogVersion,
     "com.github.pureconfig"      %% "pureconfig"              % Version.pureConfigVersion,
