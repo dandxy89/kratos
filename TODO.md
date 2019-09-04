@@ -62,7 +62,7 @@ REGISTRATION
 *   PUT /register + JSON payload - this takes the new users credentials and creates: profile, password, playerId. On registration it will send an email, the email will contain a hyperlink + JWT token to allow the user to verify their account
 
 EMAIL VERIFICATION
-*   GET /verfiy?token={Emailed JWT Token} - this is the link supplied in the verification email
+*   GET /verify?token={Emailed JWT Token} - this is the link supplied in the verification email
 
 GDPR Compliance (for ALEX :] )
 *   DELETE /gdpr/purge + Active JWT Token - this will delete the existence where possible all of the players details
