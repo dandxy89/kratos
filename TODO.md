@@ -16,14 +16,13 @@
 *   Add more test coverage - DONE
 *   Add http4s - DONE
 *   Add more complex building blocks - token - DONE
-*   Verify token
-*   Add basic Auth
-*   Add club data endpoint
-*   Add game endpoint
-*   Add shot endpoint
-*   Add email marketing email endpoint
-*   Add email verification endpoint + token + email
-*   Add postman
+*   Verify token  - In Progress
+*   Add basic Auth  - In Progress
+*   Add club data endpoint  - In Progress
+*   Add game endpoint  - In Progress
+*   Add shot endpoint - In Progress
+*   Add email verification endpoint - In Progress
+*   Add postman - In Progress
 *   Add stats endpoint
 *   Compare to pga
 
@@ -32,6 +31,7 @@
 *   Generate scorecard - DEFERRED (14/08/2019)
 *   Generate stats (already proposed) More comprehensively below - DEFERRED (14/08/2019)
 *   Get probability - DEFERRED (15/08/2019)
+*   Add email marketing email endpoint
 
 #### Statistics and Scorecards:
 
