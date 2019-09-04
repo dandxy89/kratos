@@ -2,28 +2,28 @@ package com.dandxy.db
 
 import java.sql.Timestamp
 
-import cats.effect.{IO, Timer}
+import cats.effect.{ IO, Timer }
 import cats.implicits._
 import com.dandxy.auth.Salt
-import com.dandxy.config.{AuthSalt, DatabaseConfig}
-import com.dandxy.golf.entity.GolfClub.{Driver, FourIron, Putter}
-import com.dandxy.golf.entity.Location.{OnTheGreen, TeeBox}
+import com.dandxy.config.{ AuthSalt, DatabaseConfig }
+import com.dandxy.golf.entity.GolfClub.{ Driver, FourIron, Putter }
+import com.dandxy.golf.entity.Location.{ OnTheGreen, TeeBox }
 import com.dandxy.golf.entity.Manufacturer.Miura
-import com.dandxy.golf.entity.Orientation.{LongLeft, MiddleLeft}
+import com.dandxy.golf.entity.Orientation.{ LongLeft, MiddleLeft }
 import com.dandxy.golf.entity.Par.ParThree
 import com.dandxy.golf.entity.Score.Birdie
-import com.dandxy.golf.input.{Distance, Handicap, Points, Strokes, WindSpeed}
+import com.dandxy.golf.input.{ Distance, Handicap, Points, Strokes, WindSpeed }
 import com.dandxy.golf.input.DistanceMeasurement.Yards
-import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input.ShotHeight.Low
 import com.dandxy.golf.input.ShotShape.Straight
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{GameId, Hole}
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
-import com.dandxy.util.{Helpers, PostgresDockerService}
+import com.dandxy.util.{ Helpers, PostgresDockerService }
 import org.scalatest.concurrent.Eventually
-import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
+import org.scalatest.{ BeforeAndAfterAll, FlatSpec, Matchers }
 import cats.implicits._
 
 import scala.concurrent.ExecutionContext
@@ -57,7 +57,7 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
 
   // Auth
   val fakeEmail: UserEmail = UserEmail("fake@hacker.com")
-  val authSalt: AuthSalt = AuthSalt(Some(Salt("testingSalt")))
+  val authSalt: AuthSalt   = AuthSalt(Some(Salt("testingSalt")))
 
   // Query Tool
   val queryTool = UserPostgresQueryInterpreter(service.postgresTransactor, authSalt)
@@ -201,5 +201,9 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
     queryTool.addResultByIdentifier(gameRes, Some(Hole(3))).unsafeRunSync() shouldBe 1
 
     queryTool.getResultByIdentifier(GameId(3), Some(Hole(3))).unsafeRunSync() shouldBe Some(gameRes)
+  }
+
+  it should "delete a players game" in {
+    queryTool.deletePlayerGame(GameId(3)).unsafeRunSync() shouldBe 6
   }
 }

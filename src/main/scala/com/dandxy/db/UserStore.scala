@@ -26,6 +26,7 @@ trait UserStore[F[_]] {
   def getAllPlayerGames(playerId: PlayerId): F[List[UserGameInput]]
   def getPlayerGame(gameId: GameId): F[Option[UserGameInput]]
   def addPlayerGame(game: UserGameInput): F[GameId]
+  def deletePlayerGame(gameId: GameId): F[Int]
   def dropByHole(gameId: GameId, hole: Hole): F[Int]
   def addPlayerShots(input: List[UserShotInput]): F[Int]
   def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): F[List[UserShotInput]]
@@ -84,6 +85,16 @@ class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transa
 
   def addPlayerGame(game: UserGameInput): F[GameId] =
     insertPlayerGame(game).transact(xa)
+
+  def deletePlayerGame(gameId: GameId): F[Int] =
+    (
+      for {
+        r <- deleteGameResult(gameId)
+        s <- deleteHoleResult(gameId)
+        c <- dropFromShots(gameId)
+        a <- dropPlayerGame(gameId)
+      } yield a + c + r + s
+    ).transact(xa)
 
   def dropByHole(gameId: GameId, hole: Hole): F[Int] =
     dropShotsByHole(gameId, hole).transact(xa)
