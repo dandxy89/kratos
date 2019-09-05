@@ -21,7 +21,7 @@ class LoginRoute[F[_]](authenticator: BasicAuthenticator[F, PlayerId], newToken:
 
   def loginRoute: HttpRoutes[F] =
     basicAuth(AuthedRoutes.of[PlayerId, F] {
-      case GET -> Root / "golfer" as id => Ok(newToken(id).toJson)
+      case GET -> Root / "login" as id => Ok(newToken(id).toJson)
     })
 }
 
