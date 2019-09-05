@@ -57,6 +57,7 @@
 
 LOGIN
 *   GET /login + Authentication header - takes email:password and returns a JWT token if successful
+*   DONE
 
 REGISTRATION
 *   PUT /register + JSON payload - this takes the new users credentials and creates: profile, password, playerId. On registration it will send an email, the email will contain a hyperlink + JWT token to allow the user to verify their account
