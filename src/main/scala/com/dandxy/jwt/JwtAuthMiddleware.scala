@@ -2,16 +2,16 @@ package com.dandxy.jwt
 
 import java.security.PublicKey
 
-import cats.data.{Kleisli, OptionT}
+import cats.data.{ Kleisli, OptionT }
 import cats.syntax.applicative._
-import cats.{Applicative, Monad}
+import cats.{ Applicative, Monad }
 import javax.crypto.SecretKey
 import org.http4s.dsl.Http4sDsl
 import org.http4s.headers.Authorization
 import org.http4s.server.AuthMiddleware
-import org.http4s.{AuthScheme, AuthedRoutes, Credentials, Request}
-import pdi.jwt.algorithms.{JwtAsymmetricAlgorithm, JwtHmacAlgorithm}
-import pdi.jwt.{Jwt, JwtClaim}
+import org.http4s.{ AuthScheme, AuthedRoutes, Credentials, Request }
+import pdi.jwt.algorithms.{ JwtAsymmetricAlgorithm, JwtHmacAlgorithm }
+import pdi.jwt.{ Jwt, JwtClaim }
 
 import scala.language.higherKinds
 import scala.util.Try
@@ -35,7 +35,6 @@ object JwtAuthMiddleware {
 
   private[this] def onFailure[F[_]: Monad]: AuthedRoutes[String, F] = {
     val dsl = new Http4sDsl[F] {}
-
     import dsl._
     Kleisli(req => OptionT.liftF(Forbidden(req.authInfo)))
   }
@@ -51,7 +50,7 @@ object JwtAuthMiddleware {
     val errorMessageOrClaim = for {
       authHeader <- request.headers.get(Authorization).toRight("Couldn't find Authorization header").right
       jwtClaim   <- parseCredentials(authHeader.credentials).right
-      content    <- D.decode(jwtClaim.content).right
+      content    <- D.decode(jwtClaim.content.replace("{,", "{")).right
     } yield content
 
     errorMessageOrClaim.pure[F]

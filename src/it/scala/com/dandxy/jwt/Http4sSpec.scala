@@ -2,10 +2,10 @@ package com.dandxy.jwt
 
 import cats.effect.IO
 import fs2.Stream
-import org.http4s.{ AuthedRoutes, Entity, EntityEncoder, Headers, Request, Response }
 import org.http4s.dsl.io._
 import org.http4s.implicits._
 import org.http4s.server.AuthMiddleware
+import org.http4s.{ AuthedRoutes, Entity, EntityEncoder, Headers, Request, Response }
 import org.scalatest.FlatSpec
 
 trait Http4sSpec extends FlatSpec {
@@ -14,8 +14,8 @@ trait Http4sSpec extends FlatSpec {
 
     implicit val entityEncoder: EntityEncoder[IO, Claims] = new EntityEncoder[IO, Claims] {
       override def toEntity(a: Claims): Entity[IO] = Entity(
-        Stream.emits[IO, Byte](a.userId.getBytes),
-        Option(a.userId.getBytes().length.toLong)
+        Stream.emits[IO, Byte](a.playerId.getBytes),
+        Option(a.playerId.getBytes().length.toLong)
       )
 
       override def headers: Headers = Headers.empty
