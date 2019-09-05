@@ -69,8 +69,8 @@ GDPR Compliance (for ALEX :] )
 *   DELETE /gdpr/purge + Active JWT Token - this will delete the existence where possible all of the players details
 
 (ADD / GET CLUB) DATA
-*   POST /golf/club/update + Active JWT Token + JSON payload - this will take the data from JSON and persist
-*   GET /golf/club/update + Active JWT Token - this will retrieve the club data from storage 
+*   GET /golf/club/update + Active JWT Token - this will retrieve the club data from storage
+*   PUT /golf/club/update + Active JWT Token + JSON payload - this will take the data from JSON and persist
 
 (GET) ALL GOLF GAMES
 *   GET /golf/game/all?page={offset}  + Active JWT Token - this will paginate and get 5 at a time of the values from the database
