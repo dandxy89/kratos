@@ -3,7 +3,6 @@ package com.dandxy.jwt
 import java.security.KeyPairGenerator
 
 import cats.effect.IO
-import com.dandxy.model.player.PlayerId
 import io.circe.generic.auto._
 import io.circe.parser
 import javax.crypto.{KeyGenerator, SecretKey}
@@ -113,19 +112,5 @@ class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
     val response = handleRequest(middleware, req).unsafeRunSync()
     response.status shouldBe Status.Ok
     response.attemptAs[String].value.unsafeRunSync() shouldBe Right("some-user-id")
-  }
-
-  it should "return 200 OK when a java.security.PrivateKey is provided and app token is valid" in {
-    val keyPair = KeyPairGenerator.getInstance("RSA").genKeyPair()
-    val sToken  = GenerateToken.prepareToken("dan")(PlayerId(123))
-    val token   = Jwt.encode(sToken, keyPair.getPrivate, JwtAlgorithm.RS512)
-
-    val headers    = Headers.of(Authorization(Credentials.Token(AuthScheme.Bearer, token)))
-    val req        = Request[IO](Method.GET, uri"/some-endpoint", headers = headers)
-    val middleware = JwtAuthMiddleware[IO, Claims](keyPair.getPublic, JwtAlgorithm.allRSA())
-
-    val response = handleRequest(middleware, req).unsafeRunSync()
-    response.status shouldBe Status.Ok
-    response.attemptAs[String].value.unsafeRunSync() shouldBe Right("123")
   }
 }

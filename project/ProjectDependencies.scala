@@ -35,6 +35,7 @@ object ProjectDependencies extends {
     "io.circe"                   %% "circe-core"              % Version.circeVersion,
     "io.circe"                   %% "circe-parser"            % Version.circeVersion,
     "io.circe"                   %% "circe-generic-extras"    % Version.circeVersion,
+    "io.circe"                   %% "circe-jawn"              % Version.circeVersion,
     "io.circe"                   %% "circe-config"            % Version.circeConfigVersion,
     "org.tpolecat"               %% "doobie-core"             % Version.doobieVersion,
     "org.tpolecat"               %% "doobie-hikari"           % Version.doobieVersion,

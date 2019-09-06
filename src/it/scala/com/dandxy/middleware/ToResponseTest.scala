@@ -3,8 +3,8 @@ package com.dandxy.middleware
 import cats.effect.IO
 import com.dandxy.middleware.OutputType.{ ACase, CustomModelA, CustomModelB }
 import com.dandxy.middleware.http4s.ToHttpResponse
-import com.dandxy.middleware.http4s.syntax._
-import com.dandxy.middleware.http4s.defaults._
+import com.dandxy.middleware.http4s.content.syntax._
+import com.dandxy.middleware.http4s.content.defaults._
 import io.circe.Encoder
 import io.circe.syntax._
 import org.http4s.circe._
@@ -44,7 +44,8 @@ class ToResponseTest extends FlatSpec with Matchers {
     res.status shouldBe Status.Ok
   }
 
-  implicit val enc: ToHttpResponse[IO, OutputType] = http4s.fromEncoder(OutputType.testPartial, _ => true)
+  implicit val enc: ToHttpResponse[IO, OutputType] =
+    http4s.content.fromEncoder(OutputType.testPartial, _ => true)
 
   it should "Writing a custom fromEncoder" in {
     val resA: Response[IO] = IO

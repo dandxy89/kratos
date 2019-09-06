@@ -67,8 +67,7 @@ class UserQueryToolSpec extends FlatSpec with Matchers with Eventually with Befo
   }
 
   it should "register a user correctly" in {
-    val passwordValue = "$argon2id$v=19$m=65536,t=50,p=8$F7G2ZwXteYVMD/Xo5TPZ8A$8Ts3ZLAK67ED5Kb1ocT3iGogZd68s74lhanhUwVCVF0"
-    queryTool.registerUser(reg, Password(passwordValue), testTS).unsafeRunSync() shouldBe userThree
+    queryTool.registerUser(reg, pass, testTS).unsafeRunSync() shouldBe userThree
   }
 
   it should "login a user correctly" in {

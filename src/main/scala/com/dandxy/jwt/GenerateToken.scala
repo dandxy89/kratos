@@ -1,17 +1,17 @@
 package com.dandxy.jwt
 
-import java.time.{LocalDateTime, ZoneOffset}
+import java.time.{ LocalDateTime, ZoneOffset }
 
-import io.circe.syntax._
 import com.dandxy.model.player.PlayerId
-import pdi.jwt.JwtClaim
+import io.circe.syntax._
+import pdi.jwt.{ Jwt, JwtAlgorithm, JwtClaim }
 
 object GenerateToken {
 
-  def prepareToken(issuer: String)(playerId: PlayerId): JwtClaim = {
+  def prepareToken(key: String, issuer: String, algorithm: JwtAlgorithm = JwtAlgorithm.HS256)(playerId: PlayerId): String = {
     val now = LocalDateTime.now()
 
-    JwtClaim(
+    val claim = JwtClaim(
       playerId.asJson.spaces2,
       Some(issuer),
       Some("golfer"),
@@ -21,5 +21,7 @@ object GenerateToken {
       Some(now.toEpochSecond(ZoneOffset.UTC)),
       None
     )
+
+    Jwt.encode(claim, key, algorithm)
   }
 }

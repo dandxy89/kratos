@@ -5,8 +5,7 @@ import cats.implicits._
 import com.dandxy.jwt.GenerateToken
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.{ Password, UserEmail }
-import org.http4s.headers.Authorization
-import org.http4s.{ AuthScheme, Credentials, Header, Headers, Method, Request, Status, Uri }
+import org.http4s.{ Header, Method, Request, Status, Uri }
 import org.scalatest.{ FlatSpec, Matchers }
 
 import scala.language.higherKinds
@@ -23,8 +22,8 @@ class LoginRouteSpec extends FlatSpec with Matchers {
       }
 
   it should "return 200 OK when the attempt login succeeds" in {
-    val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken("TestCASE"))
-    val req = Request[IO](Method.GET, Uri.unsafeFromString("login"))
+    val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken("asdasd", "TestCASE"))
+    val req = Request[IO](Method.GET, Uri.unsafeFromString("golfer"))
       .withHeaders(Header("Authorization", "Basic dGVzdEBnbWFpbC5jb206dGVzdFBhc3N3b3Jk"))
 
     val res = route.loginRoute.run(req).value.unsafeRunSync()
@@ -35,9 +34,9 @@ class LoginRouteSpec extends FlatSpec with Matchers {
     }
   }
 
-  it should "return 401 OK when the attempt login succeeds" in {
-    val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken("TestCASE"))
-    val req = Request[IO](Method.GET, Uri.unsafeFromString("login"))
+  it should "return 401 OK when the attempt login fails" in {
+    val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken("asdasd", "TestCASE"))
+    val req = Request[IO](Method.GET, Uri.unsafeFromString("golfer"))
       .withHeaders(Header("Authorization", "Basic 123123123kjasdjkansdkja"))
 
     val res = route.loginRoute.run(req).value.unsafeRunSync()
