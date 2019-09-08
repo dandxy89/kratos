@@ -1,7 +1,7 @@
 package com.dandxy.golf.entity
 
 import com.dandxy.golf.entity.GolfClub._
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{ FlatSpec, Matchers }
 
 class GolfClubSpec extends FlatSpec with Matchers {
 

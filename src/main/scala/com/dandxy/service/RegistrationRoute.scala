@@ -33,13 +33,15 @@ class RegistrationRoute[F[_]: Monad](registerUser: (UserRegistration, Password, 
           .flatMap(t => registerUser(d.user, d.password, Timestamp.valueOf(t)))
       } yield a
 
-      res.attempt
+      res
+        .attempt
         .map(_.leftMap(_ => InvalidDataProvided.asInstanceOf[DomainError]))
         .negotiate(req)
   }
 }
 
 object RegistrationRoute {
+
   def apply[F[_]: Sync](registerUser: (UserRegistration, Password, Timestamp) => F[PlayerId]) =
     new RegistrationRoute[F](registerUser)
 }

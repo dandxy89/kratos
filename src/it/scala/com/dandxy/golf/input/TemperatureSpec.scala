@@ -1,6 +1,6 @@
 package com.dandxy.golf.input
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{ FlatSpec, Matchers }
 
 class TemperatureSpec extends FlatSpec with Matchers {
 

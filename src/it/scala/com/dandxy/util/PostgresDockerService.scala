@@ -3,15 +3,15 @@ package com.dandxy.util
 import java.sql.DriverManager
 import java.util.UUID
 
-import cats.effect.{ContextShift, IO}
-import com.dandxy.config.{DatabaseConfig, DatabaseConnectionsConfig}
+import cats.effect.{ ContextShift, IO }
+import com.dandxy.config.{ DatabaseConfig, DatabaseConnectionsConfig }
 import doobie.free.connection.ConnectionIO
 import doobie.implicits._
 import doobie.util.transactor.Transactor
 import doobie.util.transactor.Transactor.Aux
 import org.scalatest.concurrent.Eventually
-import org.scalatest.time.{Seconds, Span}
-import org.scalatest.{Assertion, Matchers}
+import org.scalatest.time.{ Seconds, Span }
+import org.scalatest.{ Assertion, Matchers }
 
 import scala.concurrent.ExecutionContext
 import scala.sys.ShutdownHookThread
@@ -20,9 +20,9 @@ import scala.util.Try
 
 class PostgresDockerService(customPort: Int) extends Eventually with Matchers {
 
-  override implicit val patienceConfig: PatienceConfig = PatienceConfig(timeout = Span(60, Seconds), interval = Span(1, Seconds))
+  implicit override val patienceConfig: PatienceConfig = PatienceConfig(timeout = Span(60, Seconds), interval = Span(1, Seconds))
 
-  private implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+  implicit private val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
   val user        = "postgres"
   val password    = "docker"

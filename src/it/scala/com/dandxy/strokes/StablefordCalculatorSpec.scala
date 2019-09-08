@@ -2,8 +2,8 @@ package com.dandxy.strokes
 
 import com.dandxy.golf.entity.Par
 import com.dandxy.golf.input.Handicap
-import com.dandxy.strokes.StablefordCalculator.{calculate, numberOfShots}
-import org.scalatest.{FlatSpec, Matchers}
+import com.dandxy.strokes.StablefordCalculator.{ calculate, numberOfShots }
+import org.scalatest.{ FlatSpec, Matchers }
 
 class StablefordCalculatorSpec extends FlatSpec with Matchers {
 

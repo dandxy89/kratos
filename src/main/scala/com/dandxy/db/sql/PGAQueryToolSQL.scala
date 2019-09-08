@@ -9,7 +9,8 @@ import doobie.implicits._
 object PGAQueryToolSQL {
 
   private[db] def findStatistic(distance: Distance, stat: PGAStatistics): ConnectionIO[Option[PGAStatistic]] =
-    (fr"SELECT distance, strokes FROM " ++ stat.tableName ++ fr" WHERE distance = $distance").stripMargin
+    (fr"SELECT distance, strokes FROM " ++ stat.tableName ++ fr" WHERE distance = $distance")
+      .stripMargin
       .query[PGAStatistic]
       .option
 

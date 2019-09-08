@@ -2,15 +2,15 @@ package com.dandxy.strokes
 
 import cats.Monad
 import cats.implicits._
-import com.dandxy.golf.entity.{Location, Par}
-import com.dandxy.golf.entity.Location.{OnTheGreen, TeeBox}
+import com.dandxy.golf.entity.{ Location, Par }
+import com.dandxy.golf.entity.Location.{ OnTheGreen, TeeBox }
 import com.dandxy.golf.entity.Par.ParThree
-import com.dandxy.golf.input.{Distance, Handicap, Strokes}
+import com.dandxy.golf.input.{ Distance, Handicap, Strokes }
 import com.dandxy.golf.input.GolfInput.UserShotInput
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user.Identifier.Hole
-import com.dandxy.strokes.StablefordCalculator.{calculate => StablefordPoints}
-import com.dandxy.util.Helpers.{combineAll, roundAt3}
+import com.dandxy.strokes.StablefordCalculator.{ calculate => StablefordPoints }
+import com.dandxy.util.Helpers.{ combineAll, roundAt3 }
 import com.dandxy.golf.entity.Score.findScore
 
 import scala.annotation.tailrec
@@ -84,8 +84,9 @@ object StrokesGainedCalculator {
 
   type Get[F[_]] = Location => Distance => F[PGAStatistic]
 
-  def calculate[F[_]](dbOp: Get[F])(h: Handicap, input: List[UserShotInput], hole: Option[Hole])
-                     (implicit F: Monad[F]): F[(GolfResult, List[UserShotInput])] =
+  def calculate[F[_]](
+    dbOp: Get[F]
+  )(h: Handicap, input: List[UserShotInput], hole: Option[Hole])(implicit F: Monad[F]): F[(GolfResult, List[UserShotInput])] =
     for {
       inp <- F.point(determineId(hole, input.filter(_.location.locationId <= 6)))
       met <- getMetrics(dbOp)(inp)

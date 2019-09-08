@@ -85,7 +85,7 @@ object UserQueryToolSQL {
     sql""" DELETE FROM player.shot WHERE game_id = $gameId AND hole = $hole """.update.run
 
   // TODO: Must be a better way to do this! Lenses?
-  private[this] final case class Intermediate(
+  final private[this] case class Intermediate(
     gameId: GameId,
     hole: Hole,
     shot: Int,

@@ -27,6 +27,7 @@ class LoginRoute[F[_]](authenticator: BasicAuthenticator[F, PlayerId], newToken:
 }
 
 object LoginRoute {
+
   def apply[F[_]: Sync](attemptLogin: (UserEmail, Password) => F[Option[PlayerId]], newToken: PlayerId => String): LoginRoute[F] = {
 
     val authenticator: BasicAuthenticator[F, PlayerId] =

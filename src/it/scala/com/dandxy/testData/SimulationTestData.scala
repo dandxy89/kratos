@@ -4,16 +4,16 @@ import cats.effect.IO
 import cats.implicits._
 import com.dandxy.golf.entity.GolfClub._
 import com.dandxy.golf.entity.Location
-import com.dandxy.golf.entity.Location.{Fairway, OnTheGreen, TeeBox}
+import com.dandxy.golf.entity.Location.{ Fairway, OnTheGreen, TeeBox }
 import com.dandxy.golf.entity.Orientation._
-import com.dandxy.golf.entity.Par.{ParFive, ParFour, ParThree}
+import com.dandxy.golf.entity.Par.{ ParFive, ParFour, ParThree }
 import com.dandxy.golf.entity.Penalty.OutOfBounds
 import com.dandxy.golf.entity.Score._
 import com.dandxy.golf.input.GolfInput.UserShotInput
-import com.dandxy.golf.input.{Distance, Points, Strokes}
+import com.dandxy.golf.input.{ Distance, Points, Strokes }
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user.Identifier
-import com.dandxy.model.user.Identifier.{GameId, Hole}
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.strokes.GolfResult
 
 trait SimulationTestData {

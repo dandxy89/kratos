@@ -53,6 +53,7 @@ trait ToResponseInstances extends LowPrioImplicits {
 }
 
 object ToResponse extends ToResponseInstances {
+
   def apply[F[_], M, B, A](f: Kleisli[OptionT[F, ?], (M, A), B]): ToResponse[F, M, B, A] =
     new ToResponse[F, M, B, A] {
       override val run: Kleisli[OptionT[F, ?], (M, A), B] = f
@@ -81,7 +82,8 @@ object ToResponse extends ToResponseInstances {
   )(implicit F: Applicative[F]): ToResponse[F, MS, B, A] =
     instanceF { (media, value) =>
       val f = fn(value)
-      media.toStream
+      media
+        .toStream
         .map(f.lift)
         .foldK
         .sequence

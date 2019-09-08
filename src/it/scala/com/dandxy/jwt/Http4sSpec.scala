@@ -24,7 +24,8 @@ trait Http4sSpec extends FlatSpec {
 
     val route = AuthedRoutes.of[Claims, IO]({ case GET -> Root / "some-endpoint" as claims => Ok(claims) })
 
-    middleware(route).orNotFound
+    middleware(route)
+      .orNotFound
       .run(request)
   }
 }

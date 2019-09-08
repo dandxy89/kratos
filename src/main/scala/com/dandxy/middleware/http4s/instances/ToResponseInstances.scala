@@ -5,7 +5,7 @@ import cats.implicits._
 import cats.data.OptionT
 import com.dandxy.middleware.ToResponse
 import com.dandxy.middleware.http4s.ToHttpResponse
-import org.http4s.{Response, Status}
+import org.http4s.{ Response, Status }
 
 trait ToResponseInstances {
 

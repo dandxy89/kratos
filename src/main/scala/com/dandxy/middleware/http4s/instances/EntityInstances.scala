@@ -1,8 +1,8 @@
 package com.dandxy.middleware.http4s.instances
 
-import com.dandxy.model.http.{IsRequest, IsResponse}
+import com.dandxy.model.http.{ IsRequest, IsResponse }
 import org.http4s.util.CaseInsensitiveString
-import org.http4s.{Request, Response}
+import org.http4s.{ Request, Response }
 
 trait EntityInstances {
 

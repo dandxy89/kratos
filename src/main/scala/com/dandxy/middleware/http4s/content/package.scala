@@ -27,7 +27,8 @@ package object content {
   object syntax {
 
     private def parseRequestAcceptHeader[F[_]](req: Request[F]): Option[Array[MediaRange]] =
-      req.headers
+      req
+        .headers
         .get(CaseInsensitiveString("Accept"))
         .map(header => header.value.split(',').flatMap(range => MediaRange.parse(range.trim).toOption))
 
@@ -39,6 +40,7 @@ package object content {
         .withEntity(error)
 
     implicit class ToResponseOps[T](val value: T) extends AnyVal {
+
       def negotiate[F[_]](
         req: Request[F],
         fallback: Option[F[Response[F]]] = None

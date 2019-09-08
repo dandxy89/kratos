@@ -18,9 +18,9 @@ import scala.language.higherKinds
 
 object Server extends IOApp {
 
-  private implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+  implicit private val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
-  private implicit val t: Timer[IO] = IO.timer(ExecutionContext.global)
+  implicit private val t: Timer[IO] = IO.timer(ExecutionContext.global)
 
   def createServer[F[_]: ContextShift: ConcurrentEffect: Timer]: Resource[F, HTTP4Server[F]] =
     for {

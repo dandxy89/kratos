@@ -1,7 +1,7 @@
 package com.dandxy.golf.input
 
 import com.dandxy.golf.input.DistanceMeasurement._
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{ FlatSpec, Matchers }
 
 class DistanceMetricSpec extends FlatSpec with Matchers {
 
@@ -47,4 +47,3 @@ class DistanceMetricSpec extends FlatSpec with Matchers {
     Meters.toMeters(5) shouldBe 5.0
   }
 }
-

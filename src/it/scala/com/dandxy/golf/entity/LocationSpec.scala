@@ -2,7 +2,7 @@ package com.dandxy.golf.entity
 
 import com.dandxy.golf.entity.Location._
 import com.dandxy.golf.entity.Penalty._
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{ FlatSpec, Matchers }
 
 class LocationSpec extends FlatSpec with Matchers {
 
