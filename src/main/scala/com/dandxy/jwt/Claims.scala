@@ -1,18 +1,11 @@
 package com.dandxy.jwt
 
-import cats.implicits._
-import com.dandxy.model.player.PlayerId
+import io.circe.generic.auto._
+import io.circe.parser
 
-import scala.util.control.NonFatal
+final case class Claims(playerId: Int)
 
-final case class Claims(playerId: String) {
-
-  def asPlayerId: Either[String, PlayerId] =
-    Either
-      .catchNonFatal(playerId.toInt)
-      .map(PlayerId(_))
-      .leftMap {
-        case NonFatal(e) =>
-          e.getMessage
-      }
+object Claims {
+  implicit val jwtDecoder: JwtContentDecoder[Claims] =
+    (claims: String) => parser.decode[Claims](claims).left.map(_.getMessage)
 }

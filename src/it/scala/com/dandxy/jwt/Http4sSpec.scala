@@ -14,15 +14,16 @@ trait Http4sSpec extends FlatSpec {
 
     implicit val entityEncoder: EntityEncoder[IO, Claims] = new EntityEncoder[IO, Claims] {
       override def toEntity(a: Claims): Entity[IO] = Entity(
-        Stream.emits[IO, Byte](a.playerId.getBytes),
-        Option(a.playerId.getBytes().length.toLong)
+        Stream.emits[IO, Byte](Seq(a.playerId.toByte)),
+        Option(Seq(a.playerId.byteValue).length.toLong)
       )
 
       override def headers: Headers = Headers.empty
-
     }
 
-    val route = AuthedRoutes.of[Claims, IO]({ case GET -> Root / "some-endpoint" as claims => Ok(claims) })
+    val route = AuthedRoutes.of[Claims, IO]({
+      case GET -> Root / "some-endpoint" as claims => Ok(claims)
+    })
 
     middleware(route)
       .orNotFound

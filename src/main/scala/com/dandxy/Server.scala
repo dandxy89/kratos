@@ -6,7 +6,7 @@ import com.dandxy.config._
 import com.dandxy.db.util.HealthCheck
 import com.dandxy.db.{ PGAPostgresQueryInterpreter, UserPostgresQueryInterpreter }
 import com.dandxy.jwt.GenerateToken
-import com.dandxy.service.{ HealthRoutes, LoginRoute, RegistrationRoute }
+import com.dandxy.service.{ GolferRoutes, HealthRoutes, LoginRoute, RegistrationRoute }
 import doobie.util.ExecutionContexts
 import io.circe.config.parser
 import org.http4s.implicits._
@@ -32,12 +32,14 @@ object Server extends IOApp {
       _    = PGAPostgresQueryInterpreter(dbXa)
       dbStat <- Resource.liftF(HealthCheck.databaseStatusPoll(dbXa))
       hRoute = HealthRoutes(dbStat)
-      lRoute = LoginRoute(urDB.attemptLogin, GenerateToken.prepareToken(conf.jwt.key, conf.jwt.issuer))
+      lRoute = LoginRoute(urDB.attemptLogin, GenerateToken.prepareToken(conf.jwt.key))
       rRoute = RegistrationRoute(urDB.registerUser)
+      gRoute = GolferRoutes(urDB, conf.jwt.key)
       httpApp = Router(
         "/health"   -> hRoute.healthService,
         "/login"    -> lRoute.loginRoute,
-        "/register" -> rRoute.registrationRoutes
+        "/register" -> rRoute.registrationRoutes,
+        "/golf"     -> gRoute.golferRoutes
       ).orNotFound
       _ <- Resource.liftF(DatabaseConfig.initializeDb(conf.jdbc))
       server <- BlazeServerBuilder[F]

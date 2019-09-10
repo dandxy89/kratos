@@ -1,6 +1,8 @@
 package com.dandxy.golf.input
 
 import doobie.util.Meta
+import io.circe.Encoder
+import io.circe.syntax._
 
 sealed trait Temperature {
   def toCelsius: Double
@@ -17,6 +19,8 @@ object Temperature {
     def toCelsius: Double = (value - 32.0) / (9.0 / 5)
   }
 
-  implicit val meta: Meta[Temperature] = Meta[Double].imap[Temperature](v => Celsius(v))(_.toCelsius)
+  // Instances
+  implicit val meta: Meta[Temperature]  = Meta[Double].imap[Temperature](v => Celsius(v))(_.toCelsius)
+  implicit val en: Encoder[Temperature] = Encoder.instance(_.toCelsius.asJson)
 
 }

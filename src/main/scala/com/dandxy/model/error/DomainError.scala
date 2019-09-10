@@ -25,7 +25,11 @@ object DomainError {
   }
 
   case object InvalidDataProvided extends DomainError {
-    override def msg: String = "Invalid data provide to service"
+    override def msg: String = "Invalid data provided to service"
+  }
+
+  case object InvalidPlayerProvided extends DomainError {
+    override def msg: String = "Invalid player id"
   }
 
   implicit val e: Encoder[DomainError] = Encoder.instance { e =>

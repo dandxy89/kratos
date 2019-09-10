@@ -1,6 +1,8 @@
 package com.dandxy.golf.input
 
 import doobie.util.Meta
+import io.circe.Encoder
+import io.circe.syntax._
 
 sealed trait DistanceMeasurement {
   def toYards(input: Double): Double
@@ -38,6 +40,8 @@ object DistanceMeasurement {
     case _ => Feet
   }
 
-  implicit val meta: Meta[DistanceMeasurement] = Meta[Int].imap(fromId)(_.id)
+  // Instances
+  implicit val meta: Meta[DistanceMeasurement]  = Meta[Int].imap(fromId)(_.id)
+  implicit val en: Encoder[DistanceMeasurement] = Encoder.instance(_.id.asJson)
 
 }

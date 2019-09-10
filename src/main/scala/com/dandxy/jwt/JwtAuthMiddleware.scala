@@ -50,7 +50,8 @@ object JwtAuthMiddleware {
     val errorMessageOrClaim = for {
       authHeader <- request.headers.get(Authorization).toRight("Couldn't find Authorization header").right
       jwtClaim   <- parseCredentials(authHeader.credentials).right
-      content    <- D.decode(jwtClaim.content.replace("{,", "{")).right
+      cleanContent = jwtClaim.content.replace("{,", "{").replace(",,", ",")
+      content <- D.decode(cleanContent).right
     } yield content
 
     errorMessageOrClaim.pure[F]

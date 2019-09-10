@@ -22,7 +22,7 @@ class LoginRouteSpec extends FlatSpec with Matchers {
       }
 
   it should "return 200 OK when the attempt login succeeds" in {
-    val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken("asdasd", "TestCASE"))
+    val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken("asdasd"))
     val req = Request[IO](Method.GET, Uri.unsafeFromString("golfer"))
       .withHeaders(Header("Authorization", "Basic dGVzdEBnbWFpbC5jb206dGVzdFBhc3N3b3Jk"))
 
@@ -35,7 +35,7 @@ class LoginRouteSpec extends FlatSpec with Matchers {
   }
 
   it should "return 401 OK when the attempt login fails" in {
-    val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken("asdasd", "TestCASE"))
+    val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken("asdasd"))
     val req = Request[IO](Method.GET, Uri.unsafeFromString("golfer"))
       .withHeaders(Header("Authorization", "Basic 123123123kjasdjkansdkja"))
 

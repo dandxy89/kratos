@@ -1,6 +1,8 @@
 package com.dandxy.golf.input
 
 import doobie.util.Meta
+import io.circe.Encoder
+import io.circe.syntax._
 
 sealed trait WindSpeed {
   def description: String
@@ -36,6 +38,8 @@ object WindSpeed {
     case _ => StrongWindy
   }
 
-  implicit val meta: Meta[WindSpeed] = Meta[Int].imap(fromId)(_.id)
+  // Instances
+  implicit val meta: Meta[WindSpeed]  = Meta[Int].imap(fromId)(_.id)
+  implicit val en: Encoder[WindSpeed] = Encoder.instance(_.id.asJson)
 
 }
