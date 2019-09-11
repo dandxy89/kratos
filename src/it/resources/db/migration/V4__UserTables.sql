@@ -52,11 +52,11 @@ CREATE TABLE player.game_result (
     game_result_id SERIAL PRIMARY KEY,
     game_id INTEGER REFERENCES player.game,
     score INTEGER NOT NULL,
-    strokes_gained NUMERIC(6, 2) NOT NULL,
-    strokes_gained_off_tee NUMERIC(6, 2) NOT NULL,
-    strokes_gained_approach NUMERIC(6, 2) NOT NULL,
-    strokes_gained_around NUMERIC(6, 2) NOT NULL,
-    strokes_gained_putting NUMERIC(6, 2) NOT NULL,
+    strokes_gained NUMERIC(6, 2),
+    strokes_gained_off_tee NUMERIC(6, 2),
+    strokes_gained_approach NUMERIC(6, 2),
+    strokes_gained_around NUMERIC(6, 2),
+    strokes_gained_putting NUMERIC(6, 2),
     points INTEGER NOT NULL
 );
 
@@ -68,11 +68,11 @@ CREATE TABLE player.hole_result (
     game_id INTEGER REFERENCES player.game,
     hole INTEGER NOT NULL,
     score INTEGER NOT NULL,
-    strokes_gained NUMERIC(6, 2) NOT NULL,
-    strokes_gained_off_tee NUMERIC(6, 2) NOT NULL,
-    strokes_gained_approach NUMERIC(6, 2) NOT NULL,
-    strokes_gained_around NUMERIC(6, 2) NOT NULL,
-    strokes_gained_putting NUMERIC(6, 2) NOT NULL,
+    strokes_gained NUMERIC(6, 2),
+    strokes_gained_off_tee NUMERIC(6, 2),
+    strokes_gained_approach NUMERIC(6, 2),
+    strokes_gained_around NUMERIC(6, 2),
+    strokes_gained_putting NUMERIC(6, 2),
     points INTEGER NOT NULL
 );
 

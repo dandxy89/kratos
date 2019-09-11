@@ -8,7 +8,7 @@ import com.dandxy.auth.PasswordAuth.{ hashPassword, verifyPassword }
 import com.dandxy.config.AuthSalt
 import com.dandxy.db.sql.TableName._
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.golf.input.HandicapWithDate
+import com.dandxy.golf.input.{ Handicap, HandicapWithDate }
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
@@ -35,6 +35,7 @@ trait UserStore[F[_]] {
   def aggregateGameResult(gameId: GameId): F[List[AggregateGameResult]]
   def addResultByIdentifier(result: GolfResult, h: Option[Hole]): F[Int]
   def getResultByIdentifier(game: GameId, h: Option[Hole]): F[Option[GolfResult]]
+  def getGameHandicap(game: GameId): F[Option[Handicap]]
 }
 
 class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F], config: AuthSalt) extends UserStore[F] {
@@ -122,6 +123,10 @@ class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transa
     case Some(hole) => fetchHoleResult(game, hole).transact(xa)
     case None       => fetchGameResult(game).transact(xa)
   }
+
+  def getGameHandicap(game: GameId): F[Option[Handicap]] =
+    fetchGameHandicap(game).transact(xa)
+
 }
 
 object UserPostgresQueryInterpreter {

@@ -2,25 +2,30 @@ package com.dandxy.strokes
 
 import cats.Monad
 import cats.implicits._
-import com.dandxy.golf.entity.{ Location, Par }
 import com.dandxy.golf.entity.Location.{ OnTheGreen, TeeBox }
 import com.dandxy.golf.entity.Par.ParThree
-import com.dandxy.golf.input.{ Distance, Handicap, Strokes }
+import com.dandxy.golf.entity.Score.findScore
+import com.dandxy.golf.entity.{ Location, Par }
 import com.dandxy.golf.input.GolfInput.UserShotInput
+import com.dandxy.golf.input.{ Distance, Handicap, Strokes }
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user.Identifier.Hole
 import com.dandxy.strokes.StablefordCalculator.{ calculate => StablefordPoints }
 import com.dandxy.util.Helpers.{ combineAll, roundAt3 }
-import com.dandxy.golf.entity.Score.findScore
 
 import scala.annotation.tailrec
 import scala.language.higherKinds
 
 object StrokesGainedCalculator {
 
-  def getMetrics[F[_]: Monad](dbOp: Location => Distance => F[PGAStatistic])(input: List[UserShotInput]): F[List[UserShotInput]] =
+  type GetStat[F[_]] = (Distance, Location) => F[Option[PGAStatistic]]
+
+  def getMetrics[F[_]: Monad](dbOp: GetStat[F])(input: List[UserShotInput]): F[List[UserShotInput]] =
     input.map { v =>
-      dbOp(v.location)(v.distance).map(s => v.copy(strokesGained = Option(Strokes(s.strokes))))
+      dbOp(v.distance, v.location).map {
+        case None    => v
+        case Some(s) => v.copy(strokesGained = Option(Strokes(s.strokes)))
+      }
     }.sequence
 
   def calculateStrokesGained(a: Option[Strokes], b: Option[Strokes]): Option[Strokes] =
@@ -82,10 +87,8 @@ object StrokesGainedCalculator {
       StablefordPoints(input.head.par, h, input.head.strokeIndex, shotCount)
     )
 
-  type Get[F[_]] = Location => Distance => F[PGAStatistic]
-
   def calculate[F[_]](
-    dbOp: Get[F]
+    dbOp: GetStat[F]
   )(h: Handicap, input: List[UserShotInput], hole: Option[Hole])(implicit F: Monad[F]): F[(GolfResult, List[UserShotInput])] =
     for {
       inp <- F.point(determineId(hole, input.filter(_.location.locationId <= 6)))

@@ -1,6 +1,8 @@
 package com.dandxy.golf.entity
 
 import doobie.util.Meta
+import io.circe.syntax._
+import io.circe.{ Decoder, Encoder }
 
 sealed trait Orientation {
   def description: String
@@ -66,6 +68,8 @@ object Orientation {
     case _ => LongRight
   }
 
-  implicit val meta: Meta[Orientation] = Meta[Int].imap(fromId)(_.code)
-
+  // Instances
+  implicit val meta: Meta[Orientation]  = Meta[Int].imap(fromId)(_.code)
+  implicit val en: Encoder[Orientation] = Encoder.instance(_.code.asJson)
+  implicit val de: Decoder[Orientation] = Decoder.instance(_.as[Int].map(fromId))
 }

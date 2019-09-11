@@ -22,41 +22,40 @@ trait SimulationTestData {
 
   def asIdentifier(h: Hole): Identifier = h.asInstanceOf[Identifier]
 
-  val dbCalled: Location => Distance => IO[PGAStatistic] = stat =>
-    distance =>
-      stat match {
-        case OnTheGreen =>
-          distance match {
-            case Distance(17) => IO.pure(PGAStatistic(Distance(17), 1.83))
-            case Distance(10) => IO.pure(PGAStatistic(Distance(10), 1.626))
-            case Distance(2)  => IO.pure(PGAStatistic(Distance(2), 1.009))
-            case _ =>
-              IO(println(s"Putting Miss: $distance")) *> IO.pure(PGAStatistic(Distance(10), 1.626))
-          }
+  val dbCalled: (Distance, Location) => IO[Option[PGAStatistic]] = (distance, stat) =>
+    stat match {
+      case OnTheGreen =>
+        distance match {
+          case Distance(17) => IO.pure(Some(PGAStatistic(Distance(17), 1.83)))
+          case Distance(10) => IO.pure(Some(PGAStatistic(Distance(10), 1.626)))
+          case Distance(2)  => IO.pure(Some(PGAStatistic(Distance(2), 1.009)))
+          case _ =>
+            IO(println(s"Putting Miss: $distance")) *> IO.pure(Some(PGAStatistic(Distance(10), 1.626)))
+        }
 
-        case TeeBox =>
-          distance match {
-            case Distance(446.0) => IO.pure(PGAStatistic(Distance(446), 4.10))
-            case Distance(430.0) => IO.pure(PGAStatistic(Distance(430), 4.08))
-            case Distance(160.0) => IO.pure(PGAStatistic(Distance(160), 2.99))
-            case Distance(559.0) => IO.pure(PGAStatistic(Distance(560), 4.74))
-            case Distance(310.0) => IO.pure(PGAStatistic(Distance(310), 3.75))
-            case Distance(210.0) => IO.pure(PGAStatistic(Distance(210), 3.15))
-            case _ =>
-              IO(println(s"Tee Miss: $distance")) *> IO.pure(PGAStatistic(Distance(100), 0))
-          }
+      case TeeBox =>
+        distance match {
+          case Distance(446.0) => IO.pure(Some(PGAStatistic(Distance(446), 4.10)))
+          case Distance(430.0) => IO.pure(Some(PGAStatistic(Distance(430), 4.08)))
+          case Distance(160.0) => IO.pure(Some(PGAStatistic(Distance(160), 2.99)))
+          case Distance(559.0) => IO.pure(Some(PGAStatistic(Distance(560), 4.74)))
+          case Distance(310.0) => IO.pure(Some(PGAStatistic(Distance(310), 3.75)))
+          case Distance(210.0) => IO.pure(Some(PGAStatistic(Distance(210), 3.15)))
+          case _ =>
+            IO(println(s"Tee Miss: $distance")) *> IO.pure(Some(PGAStatistic(Distance(100), 0)))
+        }
 
-        case _ =>
-          distance match {
-            case Distance(116.0) => IO.pure(PGAStatistic(Distance(116), 2.825))
-            case Distance(430.0) => IO.pure(PGAStatistic(Distance(430), 4.08))
-            case Distance(320.0) => IO.pure(PGAStatistic(Distance(320), 3.84))
-            case Distance(160.0) => IO.pure(PGAStatistic(Distance(160), 2.98))
-            case Distance(200.0) => IO.pure(PGAStatistic(Distance(200), 3.19))
-            case _ =>
-              IO(println(s"Other Miss: $distance")) *> IO.pure(PGAStatistic(Distance(100), 0))
-          }
-      }
+      case _ =>
+        distance match {
+          case Distance(116.0) => IO.pure(Some(PGAStatistic(Distance(116), 2.825)))
+          case Distance(430.0) => IO.pure(Some(PGAStatistic(Distance(430), 4.08)))
+          case Distance(320.0) => IO.pure(Some(PGAStatistic(Distance(320), 3.84)))
+          case Distance(160.0) => IO.pure(Some(PGAStatistic(Distance(160), 2.98)))
+          case Distance(200.0) => IO.pure(Some(PGAStatistic(Distance(200), 3.19)))
+          case _ =>
+            IO(println(s"Other Miss: $distance")) *> IO.pure(Some(PGAStatistic(Distance(100), 0)))
+        }
+    }
 
   val parThreeExample: List[UserShotInput] = List(
     UserShotInput(GameId(1), Hole(1), 1, ParThree, Distance(210), TeeBox, FourIron, None, 1, Option(MiddleLeft), None, None, None),

@@ -47,4 +47,10 @@ object GolfInput {
     shotHeight: Option[ShotHeight],
     shotId: Option[ShotSerialId]
   ) extends GolfInput
+
+  object UserShotInput {
+    // Instances
+    implicit val en: Encoder[UserShotInput] = deriveEncoder
+    implicit val de: Decoder[UserShotInput] = deriveDecoder
+  }
 }

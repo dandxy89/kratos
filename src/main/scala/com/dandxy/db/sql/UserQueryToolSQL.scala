@@ -5,7 +5,7 @@ import java.sql.Timestamp
 import cats.implicits._
 import com.dandxy.auth.PlayerHash
 import com.dandxy.golf.entity.{ GolfClub, Location, Orientation, Par }
-import com.dandxy.golf.input.{ Distance, HandicapWithDate, ShotHeight, ShotShape, Strokes }
+import com.dandxy.golf.input.{ Distance, Handicap, HandicapWithDate, ShotHeight, ShotShape, Strokes }
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
@@ -227,5 +227,11 @@ object UserQueryToolSQL {
 
   def deleteHoleResult(gameId: GameId): ConnectionIO[Int] =
     sql""" DELETE FROM player.hole_result WHERE game_id = $gameId """.stripMargin.update.run
+
+  def fetchGameHandicap(gameId: GameId): ConnectionIO[Option[Handicap]] =
+    sql""" SELECT handicap
+         | FROM player.game
+         | WHERE game_id = $gameId
+       """.stripMargin.query[Handicap].option
 
 }

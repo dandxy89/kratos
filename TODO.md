@@ -16,13 +16,13 @@
 *   Add more test coverage - DONE
 *   Add http4s - DONE
 *   Add more complex building blocks - token - DONE
-*   Verify token  - In Progress
-*   Add basic Auth  - In Progress
-*   Add club data endpoint  - In Progress
-*   Add game endpoint  - In Progress
-*   Add shot endpoint - In Progress
-*   Add email verification endpoint - In Progress
-*   Add postman - In Progress
+*   Verify token  - DONE
+*   Add basic Auth  - DONE
+*   Add club data endpoint  - DONE
+*   Add game endpoint  - DONE
+*   Add shot endpoint - DONE
+*   Add email verification endpoint - DONE
+*   Add postman - TODO
 *   Add stats endpoint
 *   Compare to pga
 
@@ -31,7 +31,7 @@
 *   Generate scorecard - DEFERRED (14/08/2019)
 *   Generate stats (already proposed) More comprehensively below - DEFERRED (14/08/2019)
 *   Get probability - DEFERRED (15/08/2019)
-*   Add email marketing email endpoint
+*   Add email marketing email endpoint - DEFERRED (11/09/2019)
 
 #### Statistics and Scorecards:
 
@@ -80,10 +80,9 @@ GDPR Compliance (for ALEX :] )
 *   PUT /golf/game/{id} + Active JWT Token - this will generate a new game id
 *   DELETE /golf/game/{id} + Active JWT Token - this will generate a new game id
 
-(GET / ADD / DELETE) SHOT DATA BY GAME AND HOLE
+(GET / ADD ) SHOT DATA BY GAME AND HOLE
 *   GET /golf/game/{id}/hole/{optional id} + Active JWT Token - this will get all of the shot data from the database
 *   PUT /golf/game/shot + Active JWT Token + JSON payload of shots - this will add new shots / overwrite where required
-*   DELETE /golf/game/{id}/hole/{id} + Active JWT Token - this will delete shots by hole id
 
 (GET) HANDICAP HISTORY
 *   GET /golf/handicap/{player_id} + Active JWT Token - this will get get all handicaps recorded for the player

@@ -1,7 +1,7 @@
 package com.dandxy
 
 import cats.effect._
-import cats.implicits._
+import cats.syntax.all._
 import com.dandxy.config._
 import com.dandxy.db.util.HealthCheck
 import com.dandxy.db.{ PGAPostgresQueryInterpreter, UserPostgresQueryInterpreter }
@@ -29,12 +29,12 @@ object Server extends IOApp {
       cacE <- ExecutionContexts.cachedThreadPool[F]
       dbXa <- DatabaseConfig.dbTransactor(conf.jdbc, conE, Blocker.liftExecutionContext(cacE))
       urDB = UserPostgresQueryInterpreter(dbXa, conf.auth)
-      _    = PGAPostgresQueryInterpreter(dbXa)
+      pgDB = PGAPostgresQueryInterpreter(dbXa)
       dbStat <- Resource.liftF(HealthCheck.databaseStatusPoll(dbXa))
       hRoute = HealthRoutes(dbStat)
       lRoute = LoginRoute(urDB.attemptLogin, GenerateToken.prepareToken(conf.jwt.key))
       rRoute = RegistrationRoute(urDB.registerUser)
-      gRoute = GolferRoutes(urDB, conf.jwt.key)
+      gRoute = GolferRoutes(urDB, conf.jwt.key, pgDB)
       httpApp = Router(
         "/health"   -> hRoute.healthService,
         "/login"    -> lRoute.loginRoute,
