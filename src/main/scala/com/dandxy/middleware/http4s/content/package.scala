@@ -1,11 +1,11 @@
 package com.dandxy.middleware.http4s
 
-import cats.{Applicative, Monad}
+import cats.{ Applicative, Monad }
 import com.dandxy.middleware.ToResponse
 import com.dandxy.middleware.model.Exported
 import org.http4s.headers.`Content-Type`
 import org.http4s.util.CaseInsensitiveString
-import org.http4s.{Charset, EntityEncoder, Headers, MediaRange, MediaType, Request, Response, Status}
+import org.http4s.{ Charset, EntityEncoder, Headers, MediaRange, MediaType, Request, Response, Status }
 
 import scala.language.higherKinds
 

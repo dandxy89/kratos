@@ -1,7 +1,7 @@
 package com.dandxy.golf.input
 
 import doobie.util.Meta
-import io.circe.Encoder
+import io.circe.{ Decoder, Encoder }
 import io.circe.syntax._
 
 sealed trait WindSpeed {
@@ -41,5 +41,6 @@ object WindSpeed {
   // Instances
   implicit val meta: Meta[WindSpeed]  = Meta[Int].imap(fromId)(_.id)
   implicit val en: Encoder[WindSpeed] = Encoder.instance(_.id.asJson)
+  implicit val de: Decoder[WindSpeed] = Decoder.instance(_.as[Int].map(fromId))
 
 }

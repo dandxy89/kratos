@@ -3,12 +3,12 @@ package com.dandxy.jwt
 import java.security.KeyPairGenerator
 
 import cats.effect.IO
-import javax.crypto.{KeyGenerator, SecretKey}
+import javax.crypto.{ KeyGenerator, SecretKey }
 import org.http4s._
 import org.http4s.headers.Authorization
 import org.http4s.server.AuthMiddleware
 import org.scalatest.Matchers
-import pdi.jwt.{Jwt, JwtAlgorithm, JwtClaim}
+import pdi.jwt.{ Jwt, JwtAlgorithm, JwtClaim }
 
 class JwtAuthMiddlewareSpec extends Http4sSpec with Matchers {
 

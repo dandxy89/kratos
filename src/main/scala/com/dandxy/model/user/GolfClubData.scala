@@ -1,10 +1,10 @@
 package com.dandxy.model.user
 
-import com.dandxy.golf.entity.{GolfClub, Manufacturer}
-import com.dandxy.golf.input.{Distance, DistanceMeasurement, ShotHeight, ShotShape}
+import com.dandxy.golf.entity.{ GolfClub, Manufacturer }
+import com.dandxy.golf.input.{ Distance, DistanceMeasurement, ShotHeight, ShotShape }
 import com.dandxy.model.player.PlayerId
-import io.circe.Encoder
-import io.circe.generic.semiauto.deriveEncoder
+import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
+import io.circe.{ Decoder, Encoder }
 
 final case class GolfClubData(
   playerId: PlayerId,
@@ -19,4 +19,5 @@ final case class GolfClubData(
 object GolfClubData {
   // Instances
   implicit val en: Encoder[GolfClubData] = deriveEncoder
+  implicit val de: Decoder[GolfClubData] = deriveDecoder
 }

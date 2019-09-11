@@ -1,7 +1,7 @@
 package com.dandxy.golf.input
 
 import doobie.util.Meta
-import io.circe.Encoder
+import io.circe.{ Decoder, Encoder }
 import io.circe.syntax._
 
 sealed trait DistanceMeasurement {
@@ -43,5 +43,6 @@ object DistanceMeasurement {
   // Instances
   implicit val meta: Meta[DistanceMeasurement]  = Meta[Int].imap(fromId)(_.id)
   implicit val en: Encoder[DistanceMeasurement] = Encoder.instance(_.id.asJson)
+  implicit val de: Decoder[DistanceMeasurement] = Decoder.instance(_.as[Int].map(fromId))
 
 }

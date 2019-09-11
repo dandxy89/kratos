@@ -20,16 +20,15 @@ object Codecs {
   implicit def errorResponse[F[_]: Monad](implicit ee: EntityEncoder[F, DomainError]): ToHttpResponse[F, DomainError] =
     ToResponse.instance { (_, value) =>
       val status = value match {
-        case _: InvalidDistance | InvalidDataProvided | InvalidPlayerProvided => Status.BadRequest
-        case _: StatisticNotKnown                                             => Status.NotFound
+        case _: InvalidDistance | InvalidDataProvided | InvalidPlayerProvided | InvalidGameProvided => Status.BadRequest
+        case _: StatisticNotKnown                                                                   => Status.NotFound
       }
 
       Response[F](status).withEntity(value).pure[OptionT[F, ?]]
     }
 
   implicit val TimestampFormat: Encoder[Timestamp] with Decoder[Timestamp] = new Encoder[Timestamp] with Decoder[Timestamp] {
-    override def apply(a: Timestamp): Json = Encoder.encodeLong.apply(a.getTime)
-
+    override def apply(a: Timestamp): Json            = Encoder.encodeLong.apply(a.getTime)
     override def apply(c: HCursor): Result[Timestamp] = Decoder.decodeLong.map(s => new Timestamp(s)).apply(c)
   }
 }
