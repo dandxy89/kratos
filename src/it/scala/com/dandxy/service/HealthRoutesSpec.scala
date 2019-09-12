@@ -34,7 +34,7 @@ class HealthRoutesSpec extends FlatSpec with Matchers {
       .run(request)
       .value
 
-    responseMatcher[String](resp.unsafeRunSync(), "Pong")
+    responseMatcher[String](resp.unsafeRunSync(), """"Pong"""")
   }
 
   it should "respond correctly when checking the db status" in {

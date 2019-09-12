@@ -23,7 +23,8 @@ class LoginRoute[F[_]](authenticator: BasicAuthenticator[F, PlayerId], newToken:
     basicAuth(AuthedRoutes.of[PlayerId, F] {
       case GET -> Root / "golfer" as id =>
         Response[F](Status.Ok)
-        .withHeaders(Header("Authorization", newToken(id))).pure[F]
+          .withHeaders(Header("Authorization", newToken(id)))
+          .pure[F]
     })
 }
 

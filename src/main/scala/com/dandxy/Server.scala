@@ -32,9 +32,9 @@ object Server extends IOApp {
       pgDB = PGAPostgresQueryInterpreter(dbXa)
       dbStat <- Resource.liftF(HealthCheck.databaseStatusPoll(dbXa))
       hRoute = HealthRoutes(dbStat)
-      lRoute = LoginRoute(urDB.attemptLogin, GenerateToken.prepareToken(conf.jwt.key))
+      lRoute = LoginRoute(urDB.attemptLogin, GenerateToken.prepareToken(conf.jwt.hours ,conf.jwt.key))
       rRoute = RegistrationRoute(urDB.registerUser)
-      gRoute = GolferRoutes(urDB, conf.jwt.key, pgDB)
+      gRoute = GolferRoutes(urDB, conf.jwt.key, pgDB.getStatistic)
       httpApp = Router(
         "/health"   -> hRoute.healthService,
         "/login"    -> lRoute.loginRoute,
