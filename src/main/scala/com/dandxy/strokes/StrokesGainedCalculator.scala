@@ -89,10 +89,10 @@ object StrokesGainedCalculator {
 
   def calculate[F[_]](
     dbOp: GetStat[F]
-  )(h: Handicap, input: List[UserShotInput], hole: Option[Hole])(implicit F: Monad[F]): F[(GolfResult, List[UserShotInput])] =
+  )(h: Handicap, input: List[UserShotInput], hole: Option[Hole])(implicit F: Monad[F]): F[StrokesGainded] =
     for {
       inp <- F.point(determineId(hole, input.filter(_.location.locationId <= 6)))
       met <- getMetrics(dbOp)(inp)
       stg <- F.map(F.point(met))(getAllStrokesGained)
-    } yield (aggregateResults(stg, h, countShots(input)), stg)
+    } yield StrokesGainded(aggregateResults(stg, h, countShots(input)), stg)
 }

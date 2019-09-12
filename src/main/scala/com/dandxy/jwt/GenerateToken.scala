@@ -9,7 +9,7 @@ import pdi.jwt.{ Jwt, JwtAlgorithm, JwtClaim }
 
 object GenerateToken {
 
-  def prepareToken(key: String, algorithm: JwtAlgorithm = JwtAlgorithm.HS256)(playerId: PlayerId): String = {
+  def prepareToken(offsetHours: Long, key: String, algorithm: JwtAlgorithm = JwtAlgorithm.HS256)(playerId: PlayerId): String = {
     val now = LocalDateTime.now()
 
     val claim = JwtClaim(
@@ -17,7 +17,7 @@ object GenerateToken {
       None,
       Some("golfer"),
       None,
-      Some(now.plusHours(2).toEpochSecond(ZoneOffset.UTC)),
+      Some(now.plusHours(offsetHours).toEpochSecond(ZoneOffset.UTC)),
       None,
       Some(now.toEpochSecond(ZoneOffset.UTC)),
       None

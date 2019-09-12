@@ -13,7 +13,6 @@ import com.dandxy.model.error.DomainError.InvalidDataProvided
 import com.dandxy.model.player.{ PlayerId, Registration }
 import com.dandxy.model.user.{ Password, UserRegistration }
 import com.dandxy.util.Codecs._
-import com.typesafe.scalalogging.StrictLogging
 import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl
@@ -21,8 +20,7 @@ import org.http4s.dsl.Http4sDsl
 import scala.language.higherKinds
 
 class RegistrationRoute[F[_]: Monad](registerUser: (UserRegistration, Password, Timestamp) => F[PlayerId])(implicit F: Sync[F])
-    extends Http4sDsl[F]
-    with StrictLogging {
+    extends Http4sDsl[F] {
 
   // GET /golfer/verify?token={Emailed JWT Token}
   //    case GET -> Root / "verify" => ???

@@ -15,6 +15,7 @@ import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user.Identifier
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.strokes.GolfResult
+import com.dandxy.strokes.StrokesGainded
 
 trait SimulationTestData {
 
@@ -63,7 +64,7 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(1), 3, ParThree, Distance(2), OnTheGreen, Putter, None, 1, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExample: (GolfResult, List[UserShotInput]) = (
+  val expectedParThreeExample: StrokesGainded = StrokesGainded(
     GolfResult(
       GameId(1),
       ParredHole,
@@ -131,7 +132,7 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(2), 5, ParThree, Distance(2), OnTheGreen, Putter, None, 2, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExampleBadGolfer: (GolfResult, List[UserShotInput]) = (
+  val expectedParThreeExampleBadGolfer: StrokesGainded = StrokesGainded(
     GolfResult(
       GameId(1),
       DoubleBogey,
@@ -226,7 +227,7 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(3), 2, ParThree, Distance(10), OnTheGreen, Putter, None, 3, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParThreeExampleGoodGolfer: (GolfResult, List[UserShotInput]) = (
+  val expectedParThreeExampleGoodGolfer: StrokesGainded = StrokesGainded(
     GolfResult(
       GameId(1),
       Birdie,
@@ -278,7 +279,7 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(4), 4, ParFour, Distance(2), OnTheGreen, Putter, None, 4, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFourExample: (GolfResult, List[UserShotInput]) = (
+  val expectedParFourExample: StrokesGainded = StrokesGainded(
     GolfResult(
       GameId(1),
       ParredHole,
@@ -357,7 +358,7 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(5), 1, ParFour, Distance(430), TeeBox, Driver, None, 4, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFourExampleHoleInOne: (GolfResult, List[UserShotInput]) = (
+  val expectedParFourExampleHoleInOne: StrokesGainded = StrokesGainded(
     GolfResult(GameId(1), HoleInOne, Some(Strokes(3.08)), Some(Strokes(3.08)), None, None, None, Points(6)),
     List(
       UserShotInput(
@@ -386,7 +387,7 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(6), 5, ParFive, Distance(2), OnTheGreen, Putter, None, 6, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExample: (GolfResult, List[UserShotInput]) = (
+  val expectedParFiveExample: StrokesGainded = StrokesGainded(
     GolfResult(
       GameId(1),
       ParredHole,
@@ -484,7 +485,7 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(7), 1, ParFive, Distance(2), OnTheGreen, Putter, None, 7, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExampleBigDrive: (GolfResult, List[UserShotInput]) = (
+  val expectedParFiveExampleBigDrive: StrokesGainded = StrokesGainded(
     GolfResult(
       GameId(1),
       ParredHole,
@@ -584,7 +585,7 @@ trait SimulationTestData {
     UserShotInput(GameId(1), Hole(8), 7, ParFive, Distance(559), OnTheGreen, Putter, None, 8, Option(MiddleLeft), None, None, None)
   )
 
-  val expectedParFiveExampleBigDriveOutOfBounds: (GolfResult, List[UserShotInput]) = (
+  val expectedParFiveExampleBigDriveOutOfBounds: StrokesGainded = StrokesGainded(
     GolfResult(
       GameId(1),
       DoubleBogey,
@@ -737,7 +738,7 @@ trait SimulationTestData {
     )
   )
 
-  val pgaExpectedResult: (GolfResult, List[UserShotInput]) = (
+  val pgaExpectedResult: StrokesGainded = StrokesGainded(
     GolfResult(
       GameId(2),
       ParredHole,
@@ -796,5 +797,4 @@ trait SimulationTestData {
       )
     )
   )
-
 }

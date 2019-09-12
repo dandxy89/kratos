@@ -3,7 +3,7 @@ package com.dandxy.service
 import cats.effect.Sync
 import cats.syntax.all._
 import cats.{ Applicative, MonadError }
-import com.dandxy.db.{ PGAStore, UserStore }
+import com.dandxy.db.UserStore
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input.Handicap
 import com.dandxy.jwt.{ Claims, JwtAuthMiddleware }
@@ -15,7 +15,11 @@ import com.dandxy.model.error.DomainError._
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.GolfClubData
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
-import com.dandxy.strokes.{ GolfResult, StrokesGainedCalculator }
+import com.dandxy.strokes.GolfResult
+import com.dandxy.golf.entity.Location
+import com.dandxy.golf.input.Distance
+import com.dandxy.strokes.StrokesGainedCalculator.calculate
+import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.util.Codecs._
 import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.circe.CirceEntityEncoder._
@@ -26,7 +30,9 @@ import pdi.jwt.JwtAlgorithm
 
 import scala.language.higherKinds
 
-class GolferRoutes[F[_]: Applicative](us: UserStore[F], secretKey: String, pga: PGAStore[F])(
+class GolferRoutes[F[_]: Applicative](us: UserStore[F],
+                                      secretKey: String,
+                                      getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(
   implicit F: Sync[F]
 ) extends Http4sDsl[F] {
 
@@ -45,12 +51,10 @@ class GolferRoutes[F[_]: Applicative](us: UserStore[F], secretKey: String, pga: 
       case None =>
         (us.getByGameAndMaybeHole(g, h), us.getGameHandicap(g)).mapN { (in, hd) =>
           for {
-            r <- StrokesGainedCalculator.calculate[F](pga.getStatistic)(hd.getOrElse(Handicap(0)), in, h)
-            _ <- us.addPlayerShots(r._2)
-            _ <- us.addResultByIdentifier(r._1, h)
-          } yield {
-            r._1
-          }
+            r <- calculate[F](getStatistic)(hd.getOrElse(Handicap(0)), in, h)
+            _ <- us.addPlayerShots(r.shots)
+            _ <- us.addResultByIdentifier(r.result, h)
+          } yield r.result
         }.flatten
     }
 
@@ -101,7 +105,7 @@ class GolferRoutes[F[_]: Applicative](us: UserStore[F], secretKey: String, pga: 
 
 object GolferRoutes {
 
-  def apply[F[_]: Sync](userStore: UserStore[F], secretKey: String, pgaStore: PGAStore[F]) =
-    new GolferRoutes[F](userStore, secretKey, pgaStore)
+  def apply[F[_]: Sync](userStore: UserStore[F], secretKey: String, getStatistic: (Distance, Location) => F[Option[PGAStatistic]]) =
+    new GolferRoutes[F](userStore, secretKey, getStatistic)
 
 }

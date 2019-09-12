@@ -16,7 +16,7 @@ object ProjectDependencies extends {
     val scalaTestVersion   = "3.0.5"
     val flywayVersion      = "5.2.4"
     val refindedVersion    = "0.9.8"
-    val profigVersion      = "2.3.6"
+    val profigVersion      = "2.3.4"
     val scala4jLogging     = "1.7.26"
     val circeConfigVersion = "0.6.1"
   }
