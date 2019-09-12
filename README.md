@@ -1,13 +1,13 @@
 
-[![Build Status](https://travis-ci.com/dandxy89/kratos.svg?token=qdqFxUyNZxG8xHF5ajA4&branch=master)](https://travis-ci.com/dandxy89/kratos)
-
-
-[![codecov](https://codecov.io/gh/dandxy89/kratos/branch/master/graph/badge.svg?token=IvVbtdOVXS)](https://codecov.io/gh/dandxy89/kratos)
-
-
 # Overview of Application
 
-TODO: Overview of the project
+The purpose of this backend application is to record, calculate and analyse golf data. 
+
+The primary focus intially has been to incorporate the Strokes Gained methodology into the App whereby upon saving to the database the application will calculate the metrics for the given Hole and Game.
+
+The intention longer term is to incorporate more analysis and modes to record shots but also different types of Games ( namely Sixes, Foursomes and Greensomes) and practice recording.
+
+The ultimate goal is for this to assist with my own golf game - to take an analytical approach towards becoming a Scratch golfer.
 
 # Strokes Gained
 
@@ -37,33 +37,17 @@ Worked example:
 
 [Link](https://www.pgatour.com/news/2016/05/31/strokes-gained-defined.html)
 
-## Setting up a local database
+## Useful command
 
-    docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres
-    
-    psql -h localhost -U postgres -d postgres
-
-## Testing
-
-*   Unit tests - In Progress
-*   Integration tests - In Progress
-*   Pact tests - To start
+*   Kill all dockers ```docker kill $(docker ps -q)```
+*   Temporary database ```docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 postgres`
+*   Long-term development ```docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres```
+*   Command line connection to postgres ```psql -h localhost -U postgres -d postgres```
 
 ## Http4s Server
 
-Not implemented
+Postman specification included within this project
 
-TODO
+## UI
 
-*   Registration
-*   Authentication
-*   Strokes gained
-*   Saving to database
-*   Email verification
-
-## Scalajs / Purescript UI
-
-TODO
-
-*   Decide on ScalaJs or Purescript
-*   Implement basic UI for demos
+Yet to be decided / built.
