@@ -1,17 +1,18 @@
 package com.dandxy.db
 
-import cats.effect.{IO, Timer}
+import cats.effect.{ IO, Timer }
 import cats.implicits._
 import com.dandxy.config.DatabaseConfig
 import com.dandxy.db.util.HealthCheck
 import com.dandxy.db.util.HealthCheck.OK
-import com.dandxy.golf.entity.Location.{Bunker, Fairway, OnTheGreen, Recovery, Rough, TeeBox}
+import com.dandxy.golf.entity.Location
+import com.dandxy.golf.entity.Location.{ Bunker, Fairway, OnTheGreen, Recovery, Rough, TeeBox }
 import com.dandxy.golf.entity.PGAStatistics
 import com.dandxy.golf.input.Distance
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.util.PostgresDockerService
 import org.scalatest.concurrent.Eventually
-import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
+import org.scalatest.{ BeforeAndAfterAll, FlatSpec, Matchers }
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
@@ -35,8 +36,8 @@ class PGAQueryToolSpec extends FlatSpec with Matchers with Eventually with Befor
   // Query Tool
   val queryTool = PGAPostgresQueryInterpreter(service.postgresTransactor)
 
-  val pgaStats: (Distance, PGAStatistics) => Option[PGAStatistic] =
-    (d, s) => queryTool.getStatistic(d, s).unsafeRunSync()
+  val pgaStats: (Distance, Location) => Option[PGAStatistic] =
+    (d, l) => queryTool.getStatistic(d, l).unsafeRunSync()
 
   "PGAQueryTool" should "return the correct values" in {
     // Positive

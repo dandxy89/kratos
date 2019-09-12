@@ -1,13 +1,11 @@
-package com.dandxy.middleware.instances
+package com.dandxy.middleware.http4s.instances
 
 import cats.Monad
+import cats.implicits._
 import cats.data.OptionT
-import cats.syntax.all._
 import com.dandxy.middleware.ToResponse
 import com.dandxy.middleware.http4s.ToHttpResponse
-import org.http4s.{Response, Status}
-
-import scala.language.higherKinds
+import org.http4s.{ Response, Status }
 
 trait ToResponseInstances {
 

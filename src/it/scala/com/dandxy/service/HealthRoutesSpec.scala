@@ -29,7 +29,8 @@ class HealthRoutesSpec extends FlatSpec with Matchers {
     val request = Request[IO](Method.GET, Uri.unsafeFromString("/ping"))
       .withHeaders(Headers.of(Header("Accept", "text/plain")))
 
-    val resp = endpointHealth(goodHealth).healthService
+    val resp = endpointHealth(goodHealth)
+      .healthService
       .run(request)
       .value
 
@@ -40,11 +41,13 @@ class HealthRoutesSpec extends FlatSpec with Matchers {
     val request = Request[IO](Method.GET, Uri.unsafeFromString("/db/status"))
       .withHeaders(Headers.of(Header("Accept", "text/plain")))
 
-    val goodResp = endpointHealth(goodHealth).healthService
+    val goodResp = endpointHealth(goodHealth)
+      .healthService
       .run(request)
       .value
 
-    val badResp = endpointHealth(badHealth).healthService
+    val badResp = endpointHealth(badHealth)
+      .healthService
       .run(request)
       .value
 

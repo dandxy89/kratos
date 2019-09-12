@@ -1,7 +1,7 @@
 package com.dandxy.golf.input
 
-import com.dandxy.golf.input.ShotHeight.{High, Low, Normal, Putt}
-import org.scalatest.{FlatSpec, Matchers}
+import com.dandxy.golf.input.ShotHeight.{ High, Low, Normal, Putt }
+import org.scalatest.{ FlatSpec, Matchers }
 
 class ShotHeightSpec extends FlatSpec with Matchers {
 

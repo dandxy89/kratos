@@ -1,6 +1,7 @@
-package com.dandxy.middleware
+package com.dandxy.middleware.http4s
 
 import cats.{ Applicative, Monad }
+import com.dandxy.middleware.ToResponse
 import com.dandxy.middleware.model.Exported
 import org.http4s.headers.`Content-Type`
 import org.http4s.util.CaseInsensitiveString
@@ -8,9 +9,7 @@ import org.http4s.{ Charset, EntityEncoder, Headers, MediaRange, MediaType, Requ
 
 import scala.language.higherKinds
 
-package object http4s {
-
-  type ToHttpResponse[F[_], T] = ToResponse[F, List[MediaRange], Response[F], T]
+package object content {
 
   def fromEncoder[F[_], T](
     status: T => Status,
@@ -30,7 +29,8 @@ package object http4s {
   object syntax {
 
     private def parseRequestAcceptHeader[F[_]](req: Request[F]): Option[Array[MediaRange]] =
-      req.headers
+      req
+        .headers
         .get(CaseInsensitiveString("Accept"))
         .map(header => header.value.split(',').flatMap(range => MediaRange.parse(range.trim).toOption))
 
@@ -42,6 +42,7 @@ package object http4s {
         .withEntity(error)
 
     implicit class ToResponseOps[T](val value: T) extends AnyVal {
+
       def negotiate[F[_]](
         req: Request[F],
         fallback: Option[F[Response[F]]] = None

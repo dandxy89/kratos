@@ -5,15 +5,19 @@ import com.dandxy.db.sql.TableName
 import com.dandxy.golf.entity.Penalty._
 import doobie.util.Meta
 import doobie.util.fragment.Fragment
-
-sealed trait Location {
-  def name: String
-  def locationId: Int
-  def shots: Int
-}
+import io.circe.syntax._
+import io.circe.{ Decoder, Encoder }
+import doobie.implicits._
+import doobie.util.fragment.Fragment
 
 sealed trait PGAStatistics {
   val tableName: Fragment
+}
+
+sealed trait Location extends PGAStatistics {
+  def name: String
+  def locationId: Int
+  def shots: Int
 }
 
 sealed trait Penalty extends Location {
@@ -28,6 +32,7 @@ object Penalty {
     val shots: Int          = 1
     val name: String        = "Penalty - hazard"
     val locationId: Int     = 7
+    val tableName: Fragment = fr""
   }
 
   case object OutOfBounds extends Penalty {
@@ -35,6 +40,7 @@ object Penalty {
     val shots: Int          = 1
     val name: String        = "Penalty - out of bounds"
     val locationId: Int     = 8
+    val tableName: Fragment = fr""
   }
 
   case object LostBall extends Penalty {
@@ -42,6 +48,7 @@ object Penalty {
     val shots: Int          = 1
     val name: String        = "Penalty - lost ball"
     val locationId: Int     = 9
+    val tableName: Fragment = fr""
   }
 
   case object UnplayableLie extends Penalty {
@@ -49,6 +56,7 @@ object Penalty {
     val shots: Int          = 1
     val name: String        = "Penalty - unplayable lie"
     val locationId: Int     = 10
+    val tableName: Fragment = fr""
   }
 
   case object OneShotPenalty extends Penalty {
@@ -56,6 +64,7 @@ object Penalty {
     val shots: Int          = 1
     val name: String        = "Penalty - one shot penalty"
     val locationId: Int     = 11
+    val tableName: Fragment = fr""
   }
 
   case object TwoShotPenalty extends Penalty {
@@ -63,6 +72,7 @@ object Penalty {
     val shots: Int          = 2
     val name: String        = "Penalty - two shot penalty"
     val locationId: Int     = 12
+    val tableName: Fragment = fr""
   }
 }
 
@@ -129,6 +139,8 @@ object Location {
     case _  => TwoShotPenalty
   }
 
-  implicit val meta: Meta[Location] = Meta[Int].imap(fromId)(_.locationId)
-
+  // Instances
+  implicit val meta: Meta[Location]  = Meta[Int].imap(fromId)(_.locationId)
+  implicit val en: Encoder[Location] = Encoder.instance(_.locationId.asJson)
+  implicit val de: Decoder[Location] = Decoder.instance(_.as[Int].map(fromId))
 }

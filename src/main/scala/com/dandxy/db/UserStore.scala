@@ -3,11 +3,12 @@ package com.dandxy.db
 import java.sql.Timestamp
 
 import cats.effect.Bracket
-import com.dandxy.auth.{ PasswordAuth, PlayerHash }
+import com.dandxy.auth.PlayerHash
+import com.dandxy.auth.PasswordAuth.{ hashPassword, verifyPassword }
 import com.dandxy.config.AuthSalt
 import com.dandxy.db.sql.TableName._
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.golf.input.HandicapWithDate
+import com.dandxy.golf.input.{ Handicap, HandicapWithDate }
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
@@ -26,6 +27,7 @@ trait UserStore[F[_]] {
   def getAllPlayerGames(playerId: PlayerId): F[List[UserGameInput]]
   def getPlayerGame(gameId: GameId): F[Option[UserGameInput]]
   def addPlayerGame(game: UserGameInput): F[GameId]
+  def deletePlayerGame(gameId: GameId): F[Int]
   def dropByHole(gameId: GameId, hole: Hole): F[Int]
   def addPlayerShots(input: List[UserShotInput]): F[Int]
   def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): F[List[UserShotInput]]
@@ -33,6 +35,7 @@ trait UserStore[F[_]] {
   def aggregateGameResult(gameId: GameId): F[List[AggregateGameResult]]
   def addResultByIdentifier(result: GolfResult, h: Option[Hole]): F[Int]
   def getResultByIdentifier(game: GameId, h: Option[Hole]): F[Option[GolfResult]]
+  def getGameHandicap(game: GameId): F[Option[Handicap]]
 }
 
 class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F], config: AuthSalt) extends UserStore[F] {
@@ -51,18 +54,19 @@ class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transa
       } yield g + c + p + l + s + r
     ).transact(xa)
 
-  def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): F[PlayerId] =
+  def registerUser(registration: UserRegistration, rawPassword: Password, updateTime: Timestamp): F[PlayerId] =
     (
       for {
         id <- addUser(registration, updateTime)
-        _  <- addHashedPassword(registration.email, hashedPassword, PlayerId(id))
+        hashedPassword = Password(hashPassword(rawPassword, config.salt))
+        _ <- addHashedPassword(registration.email, hashedPassword, PlayerId(id))
       } yield PlayerId(id)
     ).transact(xa)
 
   def attemptLogin(email: UserEmail, rawPassword: Password): F[Option[PlayerId]] =
     checkLogin(email).map {
       case None                    => None
-      case Some(PlayerHash(p, ph)) => if (PasswordAuth.verify(rawPassword, ph.value, config.salt)) Some(p) else None
+      case Some(PlayerHash(p, ph)) => if (verifyPassword(rawPassword, ph.value, config.salt)) Some(p) else None
     }.transact(xa)
 
   def addClubData(playerId: PlayerId, input: List[GolfClubData]): F[Int] =
@@ -84,6 +88,16 @@ class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transa
 
   def addPlayerGame(game: UserGameInput): F[GameId] =
     insertPlayerGame(game).transact(xa)
+
+  def deletePlayerGame(gameId: GameId): F[Int] =
+    (
+      for {
+        r <- deleteGameResult(gameId)
+        s <- deleteHoleResult(gameId)
+        c <- dropFromShots(gameId)
+        a <- dropPlayerGame(gameId)
+      } yield a + c + r + s
+    ).transact(xa)
 
   def dropByHole(gameId: GameId, hole: Hole): F[Int] =
     dropShotsByHole(gameId, hole).transact(xa)
@@ -109,6 +123,10 @@ class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transa
     case Some(hole) => fetchHoleResult(game, hole).transact(xa)
     case None       => fetchGameResult(game).transact(xa)
   }
+
+  def getGameHandicap(game: GameId): F[Option[Handicap]] =
+    fetchGameHandicap(game).transact(xa)
+
 }
 
 object UserPostgresQueryInterpreter {

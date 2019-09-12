@@ -6,56 +6,652 @@
 	},
 	"item": [
 		{
-			"name": "PingPong",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "text/plain",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/health/ping",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"health",
-						"ping"
-					]
+			"name": "Development",
+			"item": [
+				{
+					"name": "PingPong",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/health/ping",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"health",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DB Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/health/db/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"health",
+								"db",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user\" : {\n    \"email\" : \"dp@gmail.com\",\n    \"firstName\" : \"d\",\n    \"lastName\" : \"g\"\n  },\n  \"password\" : \"asd123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/register/golfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"register",
+								"golfer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Example",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "dp@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "asd123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/login/golfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login",
+								"golfer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD Club Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDQ0MjEsImlhdCI6MTU2ODI5NzIyMSwicGxheWVySWQiOjN9.L_e8uYgVVSUB6ty7_n0RmT3jyPbUPATL-tktwrmYEZo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"playerId\":3,\n    \"club\":1,\n    \"typicalShape\":3,\n    \"typicalHeight\":3,\n    \"manufacturer\":2,\n    \"typicalDistance\":278,\n    \"distanceType\":2\n  },\n  {\n    \"playerId\":3,\n    \"club\":2,\n    \"typicalShape\":2,\n    \"typicalHeight\":1,\n    \"manufacturer\":4,\n    \"typicalDistance\":234,\n    \"distanceType\":2\n  }\n]"
+						},
+						"url": {
+							"raw": "http://localhost:8080/golf/club",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"club"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Club Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDQ0MjEsImlhdCI6MTU2ODI5NzIyMSwicGxheWVySWQiOjN9.L_e8uYgVVSUB6ty7_n0RmT3jyPbUPATL-tktwrmYEZo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/club",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"club"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD Games by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDU1NzMsImlhdCI6MTU2ODI5ODM3MywicGxheWVySWQiOjN9.0tiRWZYzi4FbaeTwnU9iQPRK4rt-CfrYZZeoVNoWawc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": 3,\n    \"gameStartTime\": 1568241871,\n    \"courseName\": \"Burhill Golf Club - New Course\",\n    \"handicap\": 6.3,\n    \"ballUsed\": \"Truesoft\",\n    \"temperature\": 18.2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/golf/game",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"game"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET All Games by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/game/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"game",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET All Games of Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/game/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"game",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE All Games by Id Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/game/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"game",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD Shots for a Game",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDU1NzMsImlhdCI6MTU2ODI5ODM3MywicGxheWVySWQiOjN9.0tiRWZYzi4FbaeTwnU9iQPRK4rt-CfrYZZeoVNoWawc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":1,\n        \"par\":3,\n        \"distance\":154,\n        \"location\":1,\n        \"club\":19,\n        \"strokeIndex\":3\n    },\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":2,\n        \"par\":3,\n        \"distance\":154,\n        \"location\":1,\n        \"club\":30,\n        \"strokeIndex\":3\n    }\n]"
+						},
+						"url": {
+							"raw": "http://localhost:8080/golf/game/shot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"game",
+								"shot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Shots for a Game",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/game/5/shot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"game",
+								"5",
+								"shot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Shots for a Game And Hole",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/game/5/shot/hole/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"game",
+								"5",
+								"shot",
+								"hole",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Handicap History",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyMDkxNjksImlhdCI6MTU2ODIwMTk2OSwicGxheWVySWQiOjN9.o8g50NVoCkyP2Ctj1BwZad1fEQNyI2EXAGcFXoeHcZM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/handicap",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"handicap"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Result for a Game",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDQ0MjEsImlhdCI6MTU2ODI5NzIyMSwicGxheWVySWQiOjN9.L_e8uYgVVSUB6ty7_n0RmT3jyPbUPATL-tktwrmYEZo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/result/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"result",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Result for a Game and Hole",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDU1NzMsImlhdCI6MTU2ODI5ODM3MywicGxheWVySWQiOjN9.0tiRWZYzi4FbaeTwnU9iQPRK4rt-CfrYZZeoVNoWawc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/result/4/hole/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"result",
+								"4",
+								"hole",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "DB Status",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "text/plain",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/health/ping",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"health",
-						"ping"
-					]
-				}
-			},
-			"response": []
+			"name": "Production",
+			"item": []
 		}
 	]
 }

@@ -1,6 +1,8 @@
 package com.dandxy.golf.entity
 
 import doobie.util.Meta
+import io.circe.syntax._
+import io.circe.{ Decoder, Encoder }
 
 sealed trait Score {
   def name: String
@@ -80,6 +82,8 @@ object Score {
     case a @ _ => MultipleBogey(a)
   }
 
-  implicit val meta: Meta[Score] = Meta[Int].imap(fromId)(_.s)
-
+  // Instances
+  implicit val meta: Meta[Score]  = Meta[Int].imap(fromId)(_.s)
+  implicit val en: Encoder[Score] = Encoder.instance(_.s.asJson)
+  implicit val de: Decoder[Score] = Decoder.instance(_.as[Int].map(fromId))
 }

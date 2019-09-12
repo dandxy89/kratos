@@ -4,11 +4,11 @@ import java.sql.Timestamp
 
 import cats.implicits._
 import com.dandxy.auth.PlayerHash
-import com.dandxy.golf.entity.{GolfClub, Location, Orientation, Par}
-import com.dandxy.golf.input.{Distance, HandicapWithDate, ShotHeight, ShotShape, Strokes}
-import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.golf.entity.{ GolfClub, Location, Orientation, Par }
+import com.dandxy.golf.input.{ Distance, Handicap, HandicapWithDate, ShotHeight, ShotShape, Strokes }
+import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{GameId, Hole}
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
 import doobie._
@@ -63,6 +63,9 @@ object UserQueryToolSQL {
          |         ${game.ballUsed}, ${game.greenSpeed}, ${game.temperature}, ${game.windSpeed})
        """.stripMargin.update.withUniqueGeneratedKeys[GameId]("game_id")
 
+  private[db] def dropPlayerGame(gameId: GameId): ConnectionIO[Int] =
+    sql""" DELETE FROM player.game WHERE game_id = $gameId """.stripMargin.update.run
+
   private[db] def fetchPlayerGame(gameId: GameId): ConnectionIO[Option[UserGameInput]] =
     sql""" SELECT player_id, game_start_time, course, handicap, ball_used, green_speed, temperature, wind_speed, game_id
          | FROM player.game
@@ -75,11 +78,14 @@ object UserQueryToolSQL {
          | WHERE player_id = $playerId
        """.stripMargin.query[UserGameInput].to[List]
 
+  private[db] def dropFromShots(gameId: GameId): ConnectionIO[Int] =
+    sql""" DELETE FROM player.shot WHERE game_id = $gameId """.update.run
+
   private[db] def dropShotsByHole(gameId: GameId, hole: Hole): ConnectionIO[Int] =
     sql""" DELETE FROM player.shot WHERE game_id = $gameId AND hole = $hole """.update.run
 
   // TODO: Must be a better way to do this! Lenses?
-  private[this] final case class Intermediate(
+  final private[this] case class Intermediate(
     gameId: GameId,
     hole: Hole,
     shot: Int,
@@ -206,7 +212,7 @@ object UserQueryToolSQL {
     sql""" SELECT game_id, score, strokes_gained, strokes_gained_off_tee, strokes_gained_approach, strokes_gained_around,
          |        strokes_gained_putting, points
          | FROM player.game_result
-         | WHERE game_id = ${gameId.id}
+         | WHERE game_id = $gameId
          |""".stripMargin.query[GolfResult].option
 
   def fetchHoleResult(gameId: GameId, h: Hole): ConnectionIO[Option[GolfResult]] =
@@ -215,4 +221,17 @@ object UserQueryToolSQL {
          | FROM player.hole_result
          | WHERE game_id = $gameId AND hole = $h
          |""".stripMargin.query[GolfResult].option
+
+  def deleteGameResult(gameId: GameId): ConnectionIO[Int] =
+    sql""" DELETE FROM player.game_result WHERE game_id = $gameId """.stripMargin.update.run
+
+  def deleteHoleResult(gameId: GameId): ConnectionIO[Int] =
+    sql""" DELETE FROM player.hole_result WHERE game_id = $gameId """.stripMargin.update.run
+
+  def fetchGameHandicap(gameId: GameId): ConnectionIO[Option[Handicap]] =
+    sql""" SELECT handicap
+         | FROM player.game
+         | WHERE game_id = $gameId
+       """.stripMargin.query[Handicap].option
+
 }

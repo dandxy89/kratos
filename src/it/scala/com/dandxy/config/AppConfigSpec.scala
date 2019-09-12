@@ -3,7 +3,7 @@ package com.dandxy.config
 import com.dandxy.auth.Salt
 import io.circe.Error
 import io.circe.config.parser
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{ FlatSpec, Matchers }
 
 //noinspection SpellCheckingInspection
 class AppConfigSpec extends FlatSpec with Matchers {

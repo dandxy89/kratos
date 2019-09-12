@@ -47,7 +47,7 @@ object PasswordAuth {
 
   private def salted(password: String, salt: Option[Salt]): String = salt.map(s => s"${s.base64}$password").getOrElse(password)
 
-  def hash(
+  def hashPassword(
     password: Password,
     salt: Option[Salt] = None,
     iterations: Int = this.iterations,
@@ -56,7 +56,7 @@ object PasswordAuth {
   ): String =
     argon2.hash(iterations, memory, parallelism, salted(password.value, salt))
 
-  def verify(attemptedPassword: Password, hash: String, salt: Option[Salt] = None): Boolean =
+  def verifyPassword(attemptedPassword: Password, hash: String, salt: Option[Salt] = None): Boolean =
     argon2.verify(hash, salted(attemptedPassword.value, salt))
 
 }
