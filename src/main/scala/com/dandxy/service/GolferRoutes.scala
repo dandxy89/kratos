@@ -15,7 +15,8 @@ import com.dandxy.model.error.DomainError._
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.GolfClubData
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
-import com.dandxy.strokes.{ GolfResult, StrokesGainedCalculator }
+import com.dandxy.strokes.GolfResult
+import com.dandxy.strokes.StrokesGainedCalculator.calculate
 import com.dandxy.util.Codecs._
 import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.circe.CirceEntityEncoder._
@@ -45,12 +46,10 @@ class GolferRoutes[F[_]: Applicative](us: UserStore[F], secretKey: String, pga: 
       case None =>
         (us.getByGameAndMaybeHole(g, h), us.getGameHandicap(g)).mapN { (in, hd) =>
           for {
-            r <- StrokesGainedCalculator.calculate[F](pga.getStatistic)(hd.getOrElse(Handicap(0)), in, h)
-            _ <- us.addPlayerShots(r._2)
-            _ <- us.addResultByIdentifier(r._1, h)
-          } yield {
-            r._1
-          }
+            r <- calculate[F](pga.getStatistic)(hd.getOrElse(Handicap(0)), in, h)
+            _ <- us.addPlayerShots(r.shots)
+            _ <- us.addResultByIdentifier(r.result, h)
+          } yield r.result
         }.flatten
     }
 

@@ -7,6 +7,7 @@ import com.dandxy.db.util.DatabaseStatus
 import com.dandxy.db.util.HealthCheck.Status
 import com.dandxy.middleware.http4s.content.defaults._
 import com.dandxy.middleware.http4s.content.syntax._
+import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 
@@ -15,7 +16,8 @@ import scala.language.higherKinds
 class HealthRoutes[F[_]](dbStatus: Ref[F, Status])(implicit F: Sync[F]) extends Http4sDsl[F] {
 
   val healthService: HttpRoutes[F] = HttpRoutes.of[F] {
-    case req @ GET -> Root / "ping" => "Pong".negotiate[F](req)
+    case req @ GET -> Root / "ping" => 
+    "Pong".negotiate[F](req)
 
     case req @ GET -> Root / "db" / "status" =>
       dbStatus.get.map(DatabaseStatus(_)).negotiate(req)
@@ -23,5 +25,7 @@ class HealthRoutes[F[_]](dbStatus: Ref[F, Status])(implicit F: Sync[F]) extends 
 }
 
 object HealthRoutes {
+
   def apply[F[_]: Sync](dbStatus: Ref[F, Status]) = new HealthRoutes[F](dbStatus)
+  
 }
