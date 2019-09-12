@@ -1,5 +1,5 @@
 ThisBuild / organization := "com.dandxy89"
-ThisBuild / scalaVersion := "2.12.8"
+ThisBuild / scalaVersion := "2.12.9"
 ThisBuild / version := Version()
 ThisBuild / name := "StrokesGained"
 
