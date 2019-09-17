@@ -1,5 +1,20 @@
-import pandas as pd
+import json
+
 import numpy as np
+import pandas as pd
+import requests as r
+
+
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return super(NumpyEncoder, self).default(obj)
 
 
 HOLE_CONFIG = [
@@ -76,33 +91,36 @@ def duff_generator(min, max):
     return np.int(generator(min, max) * 0.45) + 1
 
 
-def random_hole(par_three, par_four, par_five):
+def random_hole_selection(par_three, par_four, par_five):
     """ Select a hole within the constraints of the config
     """
     rv = np.random.randint(3)
 
     if rv == 0 and par_three[1] < par_three[0]:
-        return (rv, ((par_three[0], par_three[1] + 1), par_four, par_five))
+        return (rv, ((par_three[0], par_three[1] + 1), par_four, par_five), 3)
     elif rv == 1 and par_four[1] < par_four[0]:
-        return (rv, (par_three, (par_four[0], par_four[1] + 1), par_five))
+        return (rv, (par_three, (par_four[0], par_four[1] + 1), par_four), 4)
     elif rv == 2 and par_five[1] < par_five[0]:
-        return (rv, (par_three, par_four, (par_five[0], par_five[1] + 1)))
+        return (rv, (par_three, par_four, (par_five[0], par_five[1] + 1)), 5)
     else:
         # Recursively function will return once a holes been selected
-        return random_hole(par_three, par_four, par_five)
+        return random_hole_selection(par_three, par_four, par_five)
 
 
-def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duff):
+def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duff, game_id, index, hole_par):
     """ Shot generator
     """
     accum = 0
     accum_shot = 0
+    hole_index = index
     index = remaining_shot - config[hole_type][7] if duff else remaining_shot
+    hits = []
 
     for ind in np.arange(index):
         if duff:
             club = generator(config[hole_type][8], 24)
             shot_distance = duff_generator(0, find_club_id(clubs, club)[2])
+
         else:
             club = generator(config[hole_type][9 + ind]
                              [0], config[hole_type][9 + ind][1])
@@ -111,18 +129,65 @@ def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duf
 
         accum += shot_distance
         accum_shot += 1
-        # print("Club: ", club, "Distance", shot_distance)
 
-    return (accum, accum_shot)
+        payload = {
+            "gameId": game_id,
+            "hole": hole_index + 1,
+            "shot": remaining_shot - ind,
+            "par": hole_par,
+            "distance": shot_distance,
+            "location": 1 if (remaining_shot - (ind - 1)) == 1 else 2,  # TODO
+            "club": club,
+            "strokeIndex": index + 1
+        }
+
+        hits.append(payload)
+
+    return (accum, accum_shot, hits)
 
 
-def generate_hole(config, clubs, criteria, putt_config):
+def generate_putts(putt_config, n_putt, game_id, index, shots_remaining, hole_par):
+    """ Generate putt data
+    """
+    putt_lengths = [putt_length(putt_config[p][1]) for p in np.arange(n_putt)]
+    putt_lengths.sort()
+    all_shots = []
+
+    for pl in putt_lengths:
+        # Generate payload
+        payload = {
+            "gameId": game_id,
+            "hole": index + 1,
+            "shot": shots_remaining,
+            "par": hole_par,
+            "distance": pl,
+            "location": 6,
+            "club": 25,
+            "strokeIndex": index + 1
+        }
+
+        shots_remaining -= 1
+        all_shots.append(payload)
+
+    return all_shots
+
+
+def combine_list(combined, new_list):
+    """ Appends two lists
+    """
+    for s in new_list:
+        combined.append(s)
+
+    return combined
+
+
+def generate_hole(config, clubs, criteria, putt_config, game_id, stroke_index):
     """ Generate a hole output
     """
     # Select a hole to generate
-    selection = random_hole(criteria[0], criteria[1], criteria[2])
-    criteria = selection[1]
-    hole_type = selection[0]
+    (hole_type, criteria, hole_par) = random_hole_selection(
+        criteria[0], criteria[1], criteria[2])
+    all_shots = []
 
     # Determine the number of shots to be taken
     shot_count = generator(config[hole_type][1], config[hole_type][2])
@@ -132,61 +197,139 @@ def generate_hole(config, clubs, criteria, putt_config):
     dist = generator(config[hole_type][3], config[hole_type][4])
     n_putt = fetch_putt(config[hole_type][6], shot_count)
 
-    #print(config[hole_type][5], " Shots:", shot_count,"Distance:", dist, "Putts:", n_putt)
-
     # Generator putt lengths
-    putt_lengths = [putt_length(putt_config[p][1]) for p in np.arange(n_putt)]
-    putt_lengths.sort(reverse=True)
+    putts = generate_putts(putt_config, n_putt, game_id,
+                           stroke_index, shot_count, hole_par)
+    all_shots = combine_list(all_shots, putts)
 
     # Shots remaining
     remaining_shot = shot_count - n_putt
 
     # Duff shot setup
-    if remaining_shot - config[hole_type][7] > 0:
-        (accum, accum_shot) = shot_generator(
-            config, clubs, remaining_shot, hole_type, 0, True)
+    if (remaining_shot - config[hole_type][7]) > 0:
+        (accum, accum_shot, hits) = shot_generator(
+            config, clubs, remaining_shot, hole_type, 0, True, game_id, stroke_index, hole_par)
 
         # Remaining distances and shots
         dist -= accum
         remaining_shot -= accum_shot
         total_distance += accum
+        all_shots = combine_list(all_shots, hits)
 
     # Take the remaining shots
-    (accum, accum_shot) = shot_generator(
-        config, clubs, remaining_shot, hole_type, dist, False)
+    (accum, accum_shot, hits) = shot_generator(
+        config, clubs, remaining_shot, hole_type, dist, False, game_id, stroke_index, hole_par)
+    all_shots = combine_list(all_shots, hits)
 
     # Remaining distances and shots
     total_distance += accum
 
-    return (criteria, shot_count, total_distance)
+    return (criteria, shot_count, total_distance, all_shots)
 
 
-def generate_course(config, clubs, putt_config):
-    """ Generate hole
+def generate_course(config, clubs, putt_config, game_id):
+    """ Generate Course
     """
     # Determine the number of holes to generate
     shot_count = 0
     total_distance = 0
     num_hole = np.sum([item[0] for item in config])
+    course_shots = []
 
     # Selection crieteria
     criteria = ((config[0][0], 0), (config[1][0], 0), (config[2][0], 0))
 
     # Generate a hole via a loop
-    for _ in np.arange(num_hole):
+    for stroke_index in np.arange(1):
 
         # Run the generate hole function
-        (s, sc, td) = generate_hole(config, clubs, criteria, putt_config)
+        (s, sc, td, hs) = generate_hole(config, clubs,
+                                        criteria, putt_config, game_id, stroke_index)
         criteria = s
         shot_count += sc
         total_distance += td
+
+        # Append all of the shots
+        course_shots = combine_list(course_shots, hs)
 
     # Print final shot count
     print("Final shot count:: {}".format(shot_count))
     print("Final shot distance:: {}".format(total_distance))
 
+    return course_shots
+
+
+def create_game(auth_token, playerId):
+    """ Create a game and return the Game ID
+    """
+    payload = {
+        "playerId": playerId,
+        "gameStartTime": 1568241871 + np.random.randint(30000),
+        "courseName": "Burhill Golf Club - New Course",
+        "handicap": 6.3,
+        "ballUsed": "Truesoft",
+        "temperature": 18.2
+    }
+
+    return put_request("http://localhost:8080/golf/game", auth_token, payload)
+
+
+def put_request(url, auth_token, payload):
+    """ Pre-defined PUT request
+    """
+    response = r.put(
+        url=url,
+        data=json.dumps(payload, cls=NumpyEncoder),
+        headers={
+            "Authorization": "Bearer {}".format(auth_token),
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
+    )
+
+    return response.text
+
+
+def get_request(url, auth_token):
+    """ Pre-defined GET request
+    """
+    response = r.get(
+        url=url,
+        headers={
+            "Authorization": "Bearer {}".format(auth_token),
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
+    )
+
+    return response.status_code
+
 
 if __name__ == "__main__":
+    # Config
+    player = 3
+    token = ""
+
+    # Iterate and push
     for _ in np.arange(1):
-        generate_course(HOLE_CONFIG, GOLF_CLUBS, PUTT_LENGTH)
-        print("")
+        try:
+            # Create a Game ID
+            server_game_id = 1
+            #server_game_id = create_game(token, player)
+
+            # Generate a course worth of shots
+            course_shots = generate_course(
+                HOLE_CONFIG, GOLF_CLUBS, PUTT_LENGTH, server_game_id)
+            print("Course count of shots: {}".format(len(course_shots)))
+            print(json.dumps(course_shots, cls=NumpyEncoder))
+
+            # Add the shots to the DB
+            #shots_added = put_request("http://localhost:8080/golf/game/shot", token, server_game_id, course_shots)
+
+            # Invoke the strokes gained calculation
+            #status_code = get_request("http://localhost:8080/golf/result/{}".format(server_game_id), token)
+            print("Loaded Game ID: {}".format(server_game_id))
+
+        # Ignore all errors
+        except RecursionError:
+            continue

@@ -1,0 +1,62 @@
+[
+    {
+        "gameId": 1,
+        "hole": 1,
+        "shot": 6,
+        "par": 5,
+        "distance": 3,
+        "location": 6,
+        "club": 25,
+        "strokeIndex": 1
+    },
+    {
+        "gameId": 1,
+        "hole": 1,
+        "shot": 5,
+        "par": 5,
+        "distance": 7,
+        "location": 6,
+        "club": 25,
+        "strokeIndex": 1
+    },
+    {
+        "gameId": 1,
+        "hole": 1,
+        "shot": 4,
+        "par": 5,
+        "distance": 9,
+        "location": 6,
+        "club": 25,
+        "strokeIndex": 1
+    },
+    {
+        "gameId": 1,
+        "hole": 1,
+        "shot": 3,
+        "par": 5,
+        "distance": 260,
+        "location": 2,
+        "club": 13,
+        "strokeIndex": 4
+    },
+    {
+        "gameId": 1,
+        "hole": 1,
+        "shot": 2,
+        "par": 5,
+        "distance": 183,
+        "location": 2,
+        "club": 16,
+        "strokeIndex": 4
+    },
+    {
+        "gameId": 1,
+        "hole": 1,
+        "shot": 1,
+        "par": 5,
+        "distance": 136,
+        "location": 2,
+        "club": 20,
+        "strokeIndex": 4
+    }
+]
