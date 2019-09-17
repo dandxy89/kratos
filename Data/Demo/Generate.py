@@ -122,10 +122,8 @@ def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duf
             shot_distance = duff_generator(0, find_club_id(clubs, club)[2])
 
         else:
-            club = generator(config[hole_type][9 + ind]
-                             [0], config[hole_type][9 + ind][1])
-            shot_distance = generator(find_club_id(clubs, club)[
-                                      1], find_club_id(clubs, club)[2])
+            club = generator(config[hole_type][9 + ind][0], config[hole_type][9 + ind][1])
+            shot_distance = generator(find_club_id(clubs, club)[1], find_club_id(clubs, club)[2])
 
         accum += shot_distance
         accum_shot += 1
@@ -133,7 +131,7 @@ def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duf
         payload = {
             "gameId": game_id,
             "hole": hole_index + 1,
-            "shot": remaining_shot - ind,
+            "shot": 1 + ind,
             "par": hole_par,
             "distance": shot_distance,
             "location": 1 if (remaining_shot - (ind - 1)) == 1 else 2,  # TODO
@@ -240,7 +238,7 @@ def generate_course(config, clubs, putt_config, game_id):
     criteria = ((config[0][0], 0), (config[1][0], 0), (config[2][0], 0))
 
     # Generate a hole via a loop
-    for stroke_index in np.arange(1):
+    for stroke_index in np.arange(num_hole):
 
         # Run the generate hole function
         (s, sc, td, hs) = generate_hole(config, clubs,
@@ -248,6 +246,7 @@ def generate_course(config, clubs, putt_config, game_id):
         criteria = s
         shot_count += sc
         total_distance += td
+        hs.reverse()
 
         # Append all of the shots
         course_shots = combine_list(course_shots, hs)
@@ -314,21 +313,21 @@ if __name__ == "__main__":
     for _ in np.arange(1):
         try:
             # Create a Game ID
-            server_game_id = 1
-            #server_game_id = create_game(token, player)
+            #server_game_id = 1
+            server_game_id = create_game(token, player)
 
             # Generate a course worth of shots
             course_shots = generate_course(
                 HOLE_CONFIG, GOLF_CLUBS, PUTT_LENGTH, server_game_id)
             print("Course count of shots: {}".format(len(course_shots)))
-            print(json.dumps(course_shots, cls=NumpyEncoder))
+            #print(json.dumps(course_shots, cls=NumpyEncoder))
 
             # Add the shots to the DB
-            #shots_added = put_request("http://localhost:8080/golf/game/shot", token, server_game_id, course_shots)
+            shots_added = put_request("http://localhost:8080/golf/game/shot", token, course_shots)
 
             # Invoke the strokes gained calculation
-            #status_code = get_request("http://localhost:8080/golf/result/{}".format(server_game_id), token)
-            print("Loaded Game ID: {}".format(server_game_id))
+            status_code = get_request("http://localhost:8080/golf/result/{}".format(server_game_id), token)
+            print("Loaded Game ID: {}\n".format(server_game_id))
 
         # Ignore all errors
         except RecursionError:
