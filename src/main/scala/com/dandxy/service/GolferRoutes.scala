@@ -2,7 +2,7 @@ package com.dandxy.service
 
 import cats.effect.Sync
 import cats.syntax.all._
-import cats.{ Applicative, MonadError }
+import cats.MonadError
 import cats.instances.list._
 import com.dandxy.db.UserStore
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
@@ -31,9 +31,7 @@ import pdi.jwt.JwtAlgorithm
 
 import scala.language.higherKinds
 
-class GolferRoutes[F[_]: Applicative](us: UserStore[F],
-                                      secretKey: String,
-                                      getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(
+class GolferRoutes[F[_]](us: UserStore[F], secretKey: String, getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(
   implicit F: Sync[F]
 ) extends Http4sDsl[F] {
 
@@ -47,18 +45,19 @@ class GolferRoutes[F[_]: Applicative](us: UserStore[F],
       case Left(_)      => e.negotiate(r)
     }
 
-  def processGolfResult(g: GameId, h: Option[Hole]): F[List[GolfResult]] =
+  def processGolfResult(g: GameId, h: Option[Hole], overwrite: Boolean): F[List[GolfResult]] =
     us.getResultByIdentifier(g, h).flatMap {
-      case Some(value) => List(value).pure[F]
-      case None =>
+      case Some(value) if !overwrite => List(value).pure[F]
+      case _ =>
         (us.getByGameAndMaybeHole(g, h), us.getGameHandicap(g)).mapN { (in, hd) =>
           for {
             r <- calculateMany[F](getStatistic)(hd.getOrElse(defaultHandicap), in)
-            _ <- r.traverse(sg => us.addPlayerShots(sg.shots))
-            _ <- r.traverse(sg => us.addResultByIdentifier(sg.result, h))
+            _ <- r.traverse(sg => us.addPlayerShots(sg.shots)) *> r.traverse(sg => us.addResultByIdentifier(sg.result, h))
           } yield r.map(_.result)
         }.flatten
     }
+
+  object OverwriteQueryParam extends OptionalQueryParamDecoderMatcher[Boolean]("overwrite")
 
   private val routes: AuthedRoutes[Claims, F] = AuthedRoutes.of[Claims, F] {
 
@@ -93,11 +92,11 @@ class GolferRoutes[F[_]: Applicative](us: UserStore[F],
     case authReq @ GET -> Root / "handicap" as id =>
       runDbOp(us.getHandicapHistory(PlayerId(id.playerId)), InvalidPlayerProvided, authReq.req)
 
-    case authReq @ GET -> Root / "result" / IntVar(gameId) as _ =>
-      runDbOp(processGolfResult(GameId(gameId), None), InvalidGameProvided, authReq.req)
+    case authReq @ GET -> Root / "result" / IntVar(gameId) :? OverwriteQueryParam(b) as _ =>
+      runDbOp(processGolfResult(GameId(gameId), None, b.getOrElse(false)), InvalidGameProvided, authReq.req)
 
-    case authReq @ GET -> Root / "result" / IntVar(gameId) / "hole" / IntVar(holeId) as _ =>
-      runDbOp(processGolfResult(GameId(gameId), Option(Hole(holeId))), InvalidGameProvided, authReq.req)
+    case authReq @ GET -> Root / "result" / IntVar(gameId) / "hole" / IntVar(holeId) :? OverwriteQueryParam(b) as _ =>
+      runDbOp(processGolfResult(GameId(gameId), Option(Hole(holeId)), b.getOrElse(false)), InvalidGameProvided, authReq.req)
 
   }
 
@@ -107,7 +106,9 @@ class GolferRoutes[F[_]: Applicative](us: UserStore[F],
 
 object GolferRoutes {
 
-  def apply[F[_]: Sync](userStore: UserStore[F], secretKey: String, getStatistic: (Distance, Location) => F[Option[PGAStatistic]]) =
+  def apply[F[_]](userStore: UserStore[F], secretKey: String, getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(
+    implicit F: Sync[F]
+  ) =
     new GolferRoutes[F](userStore, secretKey, getStatistic)
 
 }
