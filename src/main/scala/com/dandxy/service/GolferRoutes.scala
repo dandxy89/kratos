@@ -3,6 +3,7 @@ package com.dandxy.service
 import cats.effect.Sync
 import cats.syntax.all._
 import cats.{ Applicative, MonadError }
+import cats.instances.list._
 import com.dandxy.db.UserStore
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input.Handicap
@@ -18,7 +19,7 @@ import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.strokes.GolfResult
 import com.dandxy.golf.entity.Location
 import com.dandxy.golf.input.Distance
-import com.dandxy.strokes.StrokesGainedCalculator.calculate
+import com.dandxy.strokes.StrokesGainedCalculator.calculateMany
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.util.Codecs._
 import org.http4s.circe.CirceEntityDecoder._
@@ -37,6 +38,7 @@ class GolferRoutes[F[_]: Applicative](us: UserStore[F],
 ) extends Http4sDsl[F] {
 
   val middleware: AuthMiddleware[F, Claims] = JwtAuthMiddleware[F, Claims](secretKey, Seq(JwtAlgorithm.HS256))
+  val defaultHandicap: Handicap             = Handicap(0)
 
   def runDbOp[A](op: F[A], e: DomainError, r: Request[F])(implicit ME: MonadError[F, Throwable],
                                                           c: ToHttpResponse[F, A]): F[Response[F]] =
@@ -45,16 +47,16 @@ class GolferRoutes[F[_]: Applicative](us: UserStore[F],
       case Left(_)      => e.negotiate(r)
     }
 
-  def processGolfResult(g: GameId, h: Option[Hole]): F[GolfResult] =
+  def processGolfResult(g: GameId, h: Option[Hole]): F[List[GolfResult]] =
     us.getResultByIdentifier(g, h).flatMap {
-      case Some(value) => value.pure[F]
+      case Some(value) => List(value).pure[F]
       case None =>
         (us.getByGameAndMaybeHole(g, h), us.getGameHandicap(g)).mapN { (in, hd) =>
           for {
-            r <- calculate[F](getStatistic)(hd.getOrElse(Handicap(0)), in, h)
-            _ <- us.addPlayerShots(r.shots)
-            _ <- us.addResultByIdentifier(r.result, h)
-          } yield r.result
+            r <- calculateMany[F](getStatistic)(hd.getOrElse(defaultHandicap), in)
+            _ <- r.traverse(sg => us.addPlayerShots(sg.shots))
+            _ <- r.traverse(sg => us.addResultByIdentifier(sg.result, h))
+          } yield r.map(_.result)
         }.flatten
     }
 

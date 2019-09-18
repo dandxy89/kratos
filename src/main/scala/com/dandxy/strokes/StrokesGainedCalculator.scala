@@ -87,12 +87,20 @@ object StrokesGainedCalculator {
       StablefordPoints(input.head.par, h, input.head.strokeIndex, shotCount)
     )
 
-  def calculate[F[_]](
+  def calculateOne[F[_]](
     dbOp: GetStat[F]
-  )(h: Handicap, input: List[UserShotInput], hole: Option[Hole])(implicit F: Monad[F]): F[StrokesGainded] =
+  )(h: Handicap, in: List[UserShotInput], hole: Option[Hole])(implicit F: Monad[F]): F[StrokesGainded] =
     for {
-      inp <- F.point(determineId(hole, input.filter(_.location.locationId <= 6)))
+      inp <- F.point(determineId(hole, in.filter(_.location.locationId <= 6)))
       met <- getMetrics(dbOp)(inp)
       stg <- F.map(F.point(met))(getAllStrokesGained)
-    } yield StrokesGainded(aggregateResults(stg, h, countShots(input)), stg)
+    } yield StrokesGainded(aggregateResults(stg, h, countShots(in)), stg)
+
+  def calculateMany[F[_]](dbOp: GetStat[F])(h: Handicap, input: List[UserShotInput])(implicit F: Monad[F]): F[List[StrokesGainded]] = {
+    val uniqueHoles = input.map(_.hole).distinct
+
+    uniqueHoles
+      .map(hole => calculateOne(dbOp)(h, input, Option(hole)))
+      .sequence
+  }
 }

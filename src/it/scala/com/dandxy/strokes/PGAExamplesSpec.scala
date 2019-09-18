@@ -45,6 +45,6 @@ class PGAExamplesSpec extends FlatSpec with Matchers with SimulationTestData {
   }
 
   "Calculate" should "return all of the metrics in one case class" in {
-    calculate(dbCalled)(Handicap(0), pgaExample, Some(Hole(8))).unsafeRunSync() shouldBe pgaExpectedResult
+    calculateOne(dbCalled)(Handicap(0), pgaExample, Some(Hole(8))).unsafeRunSync() shouldBe pgaExpectedResult
   }
 }

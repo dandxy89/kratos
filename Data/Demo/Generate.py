@@ -307,7 +307,7 @@ def get_request(url, auth_token):
 if __name__ == "__main__":
     # Config
     player = 3
-    token = ""
+    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg3NjM4OTMsImlhdCI6MTU2ODc1NjY5MywicGxheWVySWQiOjN9.VX2YSS1KJp6wsCJcMJF2Sw1VvFw_B7Eon0gYuC7NhiA"
 
     # Iterate and push
     for _ in np.arange(1):
@@ -326,7 +326,11 @@ if __name__ == "__main__":
             shots_added = put_request("http://localhost:8080/golf/game/shot", token, course_shots)
 
             # Invoke the strokes gained calculation
-            status_code = get_request("http://localhost:8080/golf/result/{}".format(server_game_id), token)
+            for i in np.arange(18):
+                status_code = get_request("http://localhost:8080/golf/result/{}/hole/{}".format(server_game_id, i + 1), token)
+
+            # Game Result
+            status_code = get_request("http://localhost:8080/golf/result/{}".format(server_game_id), token) 
             print("Loaded Game ID: {}\n".format(server_game_id))
 
         # Ignore all errors
