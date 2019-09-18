@@ -1,7 +1,7 @@
 
 # Overview of Application
 
-The purpose of this backend application is to record, calculate and analyse golf data. 
+The purpose of this backend application is to record, calculate and analyse golf data.
 
 The primary focus intially has been to incorporate the Strokes Gained methodology into the App whereby upon saving to the database the application will calculate the metrics for the given Hole and Game.
 
@@ -16,17 +16,17 @@ From PGA Tours Website:
     Strokes gained statistics have had a growing influence in the game of golf. 
     
     That should continue with the introduction of three new strokes gained statistics: strokes gained: off-the-tee, strokes gained: approach-the-green and strokes gained: around-the-green.
-    
+
 Measurements:
 
-*   Stokes Gained = Off-the-tee + approach-the-green + around-the-green + putting
-*   Strokes gained - off-the-tee: measures player performance off the tee on all par-4s and par-5s. 
-*   Strokes gained - approach-the-green: measures player performance on approach shots. Approach shots include all shots that are not from the tee on par-4 and par-5 holes and are not included in strokes gained: around-the-green and strokes gained: putting. Approach shots include tee shots on par-3s.
-*   Strokes gained - around-the-green: measures player performance on any shot within 30 yards of the edge of the green. This statistic does not include any shots taken on the putting green.    
-*   Strokes Gained - Putting: how many strokes you gained or lost vs. PGA Tour average for putting
-    
+* Stokes Gained = Off-the-tee + approach-the-green + around-the-green + putting
+* Strokes gained - off-the-tee: measures player performance off the tee on all par-4s and par-5s.
+* Strokes gained - approach-the-green: measures player performance on approach shots. Approach shots include all shots that are not from the tee on par-4 and par-5 holes and are not included in strokes gained: around-the-green and strokes gained: putting. Approach shots include tee shots on par-3s.
+* Strokes gained - around-the-green: measures player performance on any shot within 30 yards of the edge of the green. This statistic does not include any shots taken on the putting green.
+* Strokes Gained - Putting: how many strokes you gained or lost vs. PGA Tour average for putting
+
 Worked example:
-    
+
 | Shot  | Location                                                  | Baseline from location | Next location       | Baseline from next location | Strokes gained               |
 |-------|-----------------------------------------------------------|------------------------|---------------------|-----------------------------|------------------------------|
 | 1     | 446 yards (tee box)                                       | 4.100                  | 116 yards (fairway) | 2.825                       | (4.100 - 2.825) - 1 = +0.275 |
@@ -39,10 +39,10 @@ Worked example:
 
 ## Useful command
 
-*   Kill all dockers: ```docker kill $(docker ps -q)```
-*   Temporary database: ```docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 postgres```
-*   Long-term development: ```docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres```
-*   Command line connection to postgres: ```psql -h localhost -U postgres -d postgres```
+* Kill all dockers: ```docker kill $(docker ps -q)```
+* Temporary database: ```docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 postgres```
+* Long-term development: ```docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres```
+* Command line connection to postgres: ```psql -h localhost -U postgres -d postgres```
 
 ## Http4s Server
 
