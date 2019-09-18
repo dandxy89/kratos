@@ -122,8 +122,10 @@ def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duf
             shot_distance = duff_generator(0, find_club_id(clubs, club)[2])
 
         else:
-            club = generator(config[hole_type][9 + ind][0], config[hole_type][9 + ind][1])
-            shot_distance = generator(find_club_id(clubs, club)[1], find_club_id(clubs, club)[2])
+            club = generator(config[hole_type][9 + ind]
+                             [0], config[hole_type][9 + ind][1])
+            shot_distance = generator(find_club_id(clubs, club)[
+                                      1], find_club_id(clubs, club)[2])
 
         accum += shot_distance
         accum_shot += 1
@@ -307,10 +309,10 @@ def get_request(url, auth_token):
 if __name__ == "__main__":
     # Config
     player = 3
-    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg3NjM4OTMsImlhdCI6MTU2ODc1NjY5MywicGxheWVySWQiOjN9.VX2YSS1KJp6wsCJcMJF2Sw1VvFw_B7Eon0gYuC7NhiA"
+    token = ""
 
     # Iterate and push
-    for _ in np.arange(1):
+    for _ in np.arange(1000):
         try:
             # Create a Game ID
             #server_game_id = 1
@@ -323,16 +325,14 @@ if __name__ == "__main__":
             #print(json.dumps(course_shots, cls=NumpyEncoder))
 
             # Add the shots to the DB
-            shots_added = put_request("http://localhost:8080/golf/game/shot", token, course_shots)
+            shots_added = put_request(
+                "http://localhost:8080/golf/game/shot", token, course_shots)
 
             # Invoke the strokes gained calculation
-            for i in np.arange(18):
-                status_code = get_request("http://localhost:8080/golf/result/{}/hole/{}".format(server_game_id, i + 1), token)
-
-            # Game Result
-            status_code = get_request("http://localhost:8080/golf/result/{}".format(server_game_id), token) 
+            status_code = get_request(
+                "http://localhost:8080/golf/result/{}".format(server_game_id), token)
             print("Loaded Game ID: {}\n".format(server_game_id))
 
-        # Ignore all errors
+        # Ignore recursion errors
         except RecursionError:
             continue

@@ -67,8 +67,7 @@ object StrokesGainedCalculator {
   def getStrokesGainedAroundTheGreen(in: List[UserShotInput]): Option[Strokes] =
     combineAll(filterApproachShots(in).filter(v => v.distance.value <= 30).map(_.strokesGained))
 
-  def countShots(input: List[UserShotInput]): Int =
-    input.foldLeft[Int](0) { case (a, b) => a + b.location.shots }
+  def countShots(input: List[UserShotInput]): Int = input.size
 
   private def determineId(filterHole: Option[Hole], input: List[UserShotInput]): List[UserShotInput] = filterHole match {
     case Some(h) => input.filter(in => in.hole == h)
@@ -84,7 +83,7 @@ object StrokesGainedCalculator {
       getStrokesGainedApproachTheGreen(input, input.head.par),
       getStrokesGainedAroundTheGreen(input),
       getStrokesGainedPutting(input),
-      StablefordPoints(input.head.par, h, input.head.strokeIndex, shotCount)
+      StablefordPoints(input.head.par, h, input.last.strokeIndex, shotCount)
     )
 
   def calculateOne[F[_]](
@@ -99,6 +98,8 @@ object StrokesGainedCalculator {
   def calculateMany[F[_]](dbOp: GetStat[F])(h: Handicap, input: List[UserShotInput])(implicit F: Monad[F]): F[List[StrokesGainded]] = {
     val uniqueHoles = input.map(_.hole).distinct
 
-    uniqueHoles.traverse(hole => calculateOne(dbOp)(h, input, Option(hole)))
+    uniqueHoles.traverse { hole =>
+      calculateOne(dbOp)(h, input.filter(_.hole == hole).sortBy(_.hole.id * -1), Option(hole))
+    }
   }
 }
