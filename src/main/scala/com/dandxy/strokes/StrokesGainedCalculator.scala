@@ -99,8 +99,6 @@ object StrokesGainedCalculator {
   def calculateMany[F[_]](dbOp: GetStat[F])(h: Handicap, input: List[UserShotInput])(implicit F: Monad[F]): F[List[StrokesGainded]] = {
     val uniqueHoles = input.map(_.hole).distinct
 
-    uniqueHoles
-      .map(hole => calculateOne(dbOp)(h, input, Option(hole)))
-      .sequence
+    uniqueHoles.traverse(hole => calculateOne(dbOp)(h, input, Option(hole)))
   }
 }

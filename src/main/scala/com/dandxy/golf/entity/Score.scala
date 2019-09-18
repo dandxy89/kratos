@@ -3,6 +3,7 @@ package com.dandxy.golf.entity
 import doobie.util.Meta
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder }
+import cats.kernel.Semigroup
 
 sealed trait Score {
   def name: String
@@ -56,6 +57,11 @@ object Score {
     val s: Int       = value
   }
 
+  final case class Aggregate(value: Int) extends Score {
+    val name: String = s"Strokes: $value"
+    val s: Int       = value
+  }
+
   private def fromInt(shotCount: Int): Score = shotCount match {
     case -3 => Albatross
     case -2 => Eagle
@@ -86,4 +92,8 @@ object Score {
   implicit val meta: Meta[Score]  = Meta[Int].imap(fromId)(_.s)
   implicit val en: Encoder[Score] = Encoder.instance(_.s.asJson)
   implicit val de: Decoder[Score] = Decoder.instance(_.as[Int].map(fromId))
+
+  implicit val sg: Semigroup[Score] = new Semigroup[Score] {
+    def combine(x: Score, y: Score): Score = Aggregate(x.s + y.s)
+  }
 }
