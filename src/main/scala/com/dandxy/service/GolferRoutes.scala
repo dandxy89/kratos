@@ -5,10 +5,10 @@ import cats.effect.Concurrent
 import cats.syntax.all._
 import com.dandxy.db.UserStore
 import com.dandxy.golf.entity.Location
-import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
-import com.dandxy.golf.input.{Distance, Handicap}
+import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
+import com.dandxy.golf.input.{ Distance, Handicap }
 import com.dandxy.golf.pga.Statistic.PGAStatistic
-import com.dandxy.jwt.{Claims, JwtAuthMiddleware}
+import com.dandxy.jwt.{ Claims, JwtAuthMiddleware }
 import com.dandxy.middleware.http4s.ToHttpResponse
 import com.dandxy.middleware.http4s.content.defaults._
 import com.dandxy.middleware.http4s.content.syntax._
@@ -16,15 +16,15 @@ import com.dandxy.model.error.DomainError
 import com.dandxy.model.error.DomainError._
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.GolfClubData
-import com.dandxy.model.user.Identifier.{GameId, Hole}
-import com.dandxy.service.GolfResultService.{processGolfResult, processHoleResult}
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
+import com.dandxy.service.GolfResultService.{ processGolfResult, processHoleResult }
 import com.dandxy.strokes.GolfResult
 import com.dandxy.util.Codecs._
 import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.AuthMiddleware
-import org.http4s.{AuthedRoutes, HttpRoutes, Request, Response}
+import org.http4s.{ AuthedRoutes, HttpRoutes, Request, Response }
 import pdi.jwt.JwtAlgorithm
 
 import scala.language.higherKinds
@@ -43,7 +43,7 @@ class GolferRoutes[F[_]](us: UserStore[F], secretKey: String, getStatistic: (Dis
       case Left(_)      => e.negotiate(r)
     }
 
-  val processingGolfResult: (GameId, Option[Hole], Boolean) => F[GolfResult]         = processGolfResult(us, getStatistic)
+  val processingGolfResult: (GameId, Boolean) => F[GolfResult]                       = processGolfResult(us, getStatistic)
   val processingHoleResult: (GameId, Option[Hole], Boolean) => F[Option[GolfResult]] = processHoleResult(us, getStatistic)
 
   object OverwriteQueryParam extends OptionalQueryParamDecoderMatcher[Boolean]("overwrite")
@@ -82,10 +82,13 @@ class GolferRoutes[F[_]](us: UserStore[F], secretKey: String, getStatistic: (Dis
       runDbOp(us.getHandicapHistory(PlayerId(id.playerId)), InvalidPlayerProvided, authReq.req)
 
     case authReq @ GET -> Root / "result" / IntVar(gameId) :? OverwriteQueryParam(b) as _ =>
-      runDbOp(processingGolfResult(GameId(gameId), None, b.getOrElse(false)), InvalidGameProvided, authReq.req)
+      runDbOp(processingGolfResult(GameId(gameId), b.getOrElse(false)), InvalidGameProvided, authReq.req)
 
     case authReq @ GET -> Root / "result" / IntVar(gameId) / "hole" / IntVar(holeId) :? OverwriteQueryParam(b) as _ =>
       runDbOp(processingHoleResult(GameId(gameId), Option(Hole(holeId)), b.getOrElse(false)), InvalidGameProvided, authReq.req)
+
+    case authReq @ GET -> Root / "aggregate" / IntVar(gameId) as _ =>
+      runDbOp(us.aggregateGameResult(GameId(gameId)), InvalidPlayerProvided, authReq.req)
 
   }
 

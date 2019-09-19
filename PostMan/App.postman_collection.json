@@ -62,7 +62,7 @@
 					"response": []
 				},
 				{
-					"name": "Registration",
+					"name": "POST Registration",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -100,7 +100,7 @@
 					"response": []
 				},
 				{
-					"name": "Login Example",
+					"name": "GET Login Example",
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -524,7 +524,7 @@
 					"response": []
 				},
 				{
-					"name": "Handicap History",
+					"name": "GET Handicap History",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -647,6 +647,60 @@
 								"33",
 								"hole",
 								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Aggregate game",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg5MzU5OTEsImlhdCI6MTU2ODkyODc5MSwicGxheWVySWQiOjN9.tENxmyy5sP3fSHBQ-WbTxs7n3JEhupK6OhFOWcBjoMk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/golf/aggregate/34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"golf",
+								"aggregate",
+								"34"
+							],
+							"query": [
+								{
+									"key": "Accept",
+									"value": "application/json",
+									"disabled": true
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"disabled": true
+								}
 							]
 						}
 					},

@@ -20,11 +20,11 @@ object GolfResultService {
   def processGolfResult[F[_]](
     us: UserStore[F],
     getStatistic: (Distance, Location) => F[Option[PGAStatistic]]
-  )(g: GameId, h: Option[Hole], overwrite: Boolean)(implicit F: Concurrent[F]): F[GolfResult] =
-    us.getResultByIdentifier(g, h).flatMap {
+  )(g: GameId, overwrite: Boolean)(implicit F: Concurrent[F]): F[GolfResult] =
+    us.getResultByIdentifier(g, None).flatMap {
       case Some(value) if !overwrite => value.pure[F]
       case _ =>
-        (us.getByGameAndMaybeHole(g, h), us.getGameHandicap(g)).mapN { (in, hd) =>
+        (us.getByGameAndMaybeHole(g, None), us.getGameHandicap(g)).mapN { (in, hd) =>
           for {
             d <- calculateMany[F](getStatistic)(hd.getOrElse(defaultHandicap), in)
             a <- F.start(d.traverse(sg => us.addResultByIdentifier(sg.result, sg.shots.headOption.map(_.hole))))

@@ -1,5 +1,6 @@
 package com.dandxy.strokes
 
+import com.dandxy.golf.input.GolfInput.UserShotInput
 import com.dandxy.golf.input.Handicap
 import com.dandxy.model.user.Identifier.Hole
 import com.dandxy.strokes.StrokesGainedCalculator._
@@ -42,5 +43,10 @@ class CalculateStrokesGainedSpec extends FlatSpec with Matchers with SimulationT
 
   it should "par Five Example Big Drive Out of Bounds" in {
     runIO(calculateOne(dbCalled)(myHandicap, parFiveExampleBigDriveOutOfBounds, Some(Hole(8)))) shouldBe expectedParFiveExampleBigDriveOutOfBounds
+  }
+
+  it should "correctly calculate many holes at once" in {
+    val manyHoles: List[UserShotInput] = parThreeExample ++ parFourExample ++ parFiveExample
+    runIO(calculateMany(dbCalled)(myHandicap, manyHoles)).size shouldBe 3
   }
 }

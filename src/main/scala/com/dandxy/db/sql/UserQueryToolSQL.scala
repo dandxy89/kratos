@@ -157,16 +157,16 @@ object UserQueryToolSQL {
          |""".stripMargin.query[HandicapWithDate].to[List]
 
   private[db] def fetchAggregateGameResult(gameId: GameId): ConnectionIO[List[AggregateGameResult]] =
-    sql""" SELECT agg.game_id, agg.hole, s.distance, s.par, s.stroke_index, agg.shot_count, agg.strokes_gained_sum
+    sql""" SELECT agg.game_id, agg.hole, agg.total_distance, s.par, s.stroke_index, agg.shot_count, agg.strokes_gained_sum
          | FROM
          | (
-         |    SELECT game_id, hole, MAX(shot) AS shot_count, SUM(strokes_gained) strokes_gained_sum
+         |    SELECT game_id, hole, MAX(shot) AS shot_count, SUM(strokes_gained) AS strokes_gained_sum, SUM(distance) AS total_distance
          |    FROM player.shot
          |    WHERE game_id = $gameId
          |    GROUP BY game_id, hole
          | ) agg
          | LEFT JOIN (
-         |    SELECT game_id, hole, par, stroke_index, distance
+         |    SELECT game_id, hole, par, stroke_index
          |    FROM player.shot
          |    WHERE game_id = $gameId AND shot = 1
          | ) s ON agg.game_id = s.game_id AND agg.hole = s.hole
