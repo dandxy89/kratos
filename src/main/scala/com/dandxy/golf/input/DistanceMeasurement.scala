@@ -40,7 +40,6 @@ object DistanceMeasurement {
     case _ => Feet
   }
 
-  // Instances
   implicit val meta: Meta[DistanceMeasurement]  = Meta[Int].imap(fromId)(_.id)
   implicit val en: Encoder[DistanceMeasurement] = Encoder.instance(_.id.asJson)
   implicit val de: Decoder[DistanceMeasurement] = Decoder.instance(_.as[Int].map(fromId))

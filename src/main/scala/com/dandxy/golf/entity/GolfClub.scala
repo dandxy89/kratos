@@ -165,7 +165,6 @@ object GolfClub {
       case _  => Putter
     }
 
-  // Instances
   implicit val meta: Meta[GolfClub]  = Meta[Int].imap(fromInt)(_.dbIndex)
   implicit val en: Encoder[GolfClub] = Encoder.instance(_.dbIndex.asJson)
   implicit val de: Decoder[GolfClub] = Decoder.instance(_.as[Int].map(fromInt))

@@ -6,7 +6,8 @@ import cats.kernel.Semigroup
 import cats.syntax.all._
 import com.dandxy.db.UserStore
 import com.dandxy.golf.entity.Location
-import com.dandxy.golf.input.{ Distance, Handicap }
+import com.dandxy.golf.input.Distance
+import com.dandxy.golf.input.Handicap.defaultHandicap
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.strokes.GolfResult
@@ -14,9 +15,7 @@ import com.dandxy.strokes.StrokesGainedCalculator.calculateMany
 
 import scala.language.higherKinds
 
-object GolfResultHandler {
-
-  private val defaultHandicap: Handicap = Handicap(0)
+object GolfResultService {
 
   def processGolfResult[F[_]](
     us: UserStore[F],

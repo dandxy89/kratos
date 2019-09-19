@@ -19,7 +19,6 @@ object Temperature {
     def toCelsius: Double = (value - 32.0) / (9.0 / 5)
   }
 
-  // Instances
   implicit val meta: Meta[Temperature]  = Meta[Double].imap[Temperature](v => Celsius(v))(_.toCelsius)
   implicit val en: Encoder[Temperature] = Encoder.instance(_.toCelsius.asJson)
   implicit val de: Decoder[Temperature] = Decoder.instance(_.as[Double].map(Celsius))

@@ -38,7 +38,6 @@ object WindSpeed {
     case _ => StrongWindy
   }
 
-  // Instances
   implicit val meta: Meta[WindSpeed]  = Meta[Int].imap(fromId)(_.id)
   implicit val en: Encoder[WindSpeed] = Encoder.instance(_.id.asJson)
   implicit val de: Decoder[WindSpeed] = Decoder.instance(_.as[Int].map(fromId))

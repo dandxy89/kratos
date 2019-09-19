@@ -10,6 +10,9 @@ import io.circe.syntax._
 final case class Handicap(value: Double) extends AnyVal
 
 object Handicap {
+
+  val defaultHandicap: Handicap = Handicap(0)
+
   // Instances
   implicit val meta: Meta[Handicap]  = Meta[Double].imap(Handicap(_))(_.value)
   implicit val en: Encoder[Handicap] = Encoder.instance(_.value.asJson)

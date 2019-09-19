@@ -42,7 +42,6 @@ object Par {
     case _ => ParSeven
   }
 
-  // Instances
   implicit val meta: Meta[Par]  = Meta[Int].imap(fromInt)(_.strokes)
   implicit val en: Encoder[Par] = Encoder.instance(_.strokes.asJson)
   implicit val de: Decoder[Par] = Decoder.instance(_.as[Int].map(fromInt))

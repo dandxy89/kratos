@@ -17,7 +17,7 @@ import com.dandxy.model.error.DomainError._
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.GolfClubData
 import com.dandxy.model.user.Identifier.{GameId, Hole}
-import com.dandxy.service.GolfResultHandler.{processGolfResult, processHoleResult}
+import com.dandxy.service.GolfResultService.{processGolfResult, processHoleResult}
 import com.dandxy.strokes.GolfResult
 import com.dandxy.util.Codecs._
 import org.http4s.circe.CirceEntityDecoder._

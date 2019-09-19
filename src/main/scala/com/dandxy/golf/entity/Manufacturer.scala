@@ -44,7 +44,6 @@ object Manufacturer {
     case _ => Ping
   }
 
-  // Instances
   implicit val meta: Meta[Manufacturer]  = Meta[Int].imap(fromInt)(_.id)
   implicit val en: Encoder[Manufacturer] = Encoder.instance(_.id.asJson)
   implicit val de: Decoder[Manufacturer] = Decoder.instance(_.as[Int].map(fromInt))
