@@ -38,7 +38,6 @@ object ShotHeight {
     case _ => Putt
   }
 
-  // Instances
   implicit val meta: Meta[ShotHeight]  = Meta[Int].imap(fromId)(_.id)
   implicit val en: Encoder[ShotHeight] = Encoder.instance(_.id.asJson)
   implicit val de: Decoder[ShotHeight] = Decoder.instance(_.as[Int].map(fromId))

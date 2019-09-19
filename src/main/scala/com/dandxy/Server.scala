@@ -45,6 +45,7 @@ object Server extends IOApp {
       server <- BlazeServerBuilder[F]
         .bindHttp(conf.server.port, conf.server.host)
         .withHttpApp(httpApp)
+        .withoutBanner
         .resource
     } yield server
 

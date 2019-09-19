@@ -68,7 +68,6 @@ object Orientation {
     case _ => LongRight
   }
 
-  // Instances
   implicit val meta: Meta[Orientation]  = Meta[Int].imap(fromId)(_.code)
   implicit val en: Encoder[Orientation] = Encoder.instance(_.code.asJson)
   implicit val de: Decoder[Orientation] = Decoder.instance(_.as[Int].map(fromId))

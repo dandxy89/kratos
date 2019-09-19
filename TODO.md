@@ -21,9 +21,10 @@
 * Add game endpoint  - DONE
 * Add shot endpoint - DONE
 * Add email verification endpoint - DONE
-* Add postman - TODO
-* Add stats endpoint
-* Compare to pga
+* Add postman - DONE
+* Add more comprehensive testing - TODO
+* Add stats endpoint - TODO
+* Compare to pga - TODO
 
 ## Deferred items
 

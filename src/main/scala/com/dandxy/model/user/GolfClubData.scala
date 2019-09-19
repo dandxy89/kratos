@@ -17,7 +17,6 @@ final case class GolfClubData(
 )
 
 object GolfClubData {
-  // Instances
   implicit val en: Encoder[GolfClubData] = deriveEncoder
   implicit val de: Decoder[GolfClubData] = deriveDecoder
 }

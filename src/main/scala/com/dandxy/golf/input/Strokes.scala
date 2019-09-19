@@ -14,7 +14,6 @@ object Strokes {
     override def combine(x: Strokes, y: Strokes): Strokes = Strokes(x.value + y.value)
   }
 
-  // Instances
   implicit val meta: Meta[Strokes]  = Meta[Double].imap(Strokes(_))(_.value)
   implicit val en: Encoder[Strokes] = Encoder.instance(_.value.asJson)
   implicit val de: Decoder[Strokes] = Decoder.instance(_.as[Double].map(Strokes(_)))

@@ -139,7 +139,6 @@ object Location {
     case _  => TwoShotPenalty
   }
 
-  // Instances
   implicit val meta: Meta[Location]  = Meta[Int].imap(fromId)(_.locationId)
   implicit val en: Encoder[Location] = Encoder.instance(_.locationId.asJson)
   implicit val de: Decoder[Location] = Decoder.instance(_.as[Int].map(fromId))
