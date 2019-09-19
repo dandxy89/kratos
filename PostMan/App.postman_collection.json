@@ -148,7 +148,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDQ0MjEsImlhdCI6MTU2ODI5NzIyMSwicGxheWVySWQiOjN9.L_e8uYgVVSUB6ty7_n0RmT3jyPbUPATL-tktwrmYEZo",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -182,7 +182,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDQ0MjEsImlhdCI6MTU2ODI5NzIyMSwicGxheWVySWQiOjN9.L_e8uYgVVSUB6ty7_n0RmT3jyPbUPATL-tktwrmYEZo",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -223,7 +223,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDU1NzMsImlhdCI6MTU2ODI5ODM3MywicGxheWVySWQiOjN9.0tiRWZYzi4FbaeTwnU9iQPRK4rt-CfrYZZeoVNoWawc",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -243,7 +243,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"playerId\": 3,\n    \"gameStartTime\": 1568241871,\n    \"courseName\": \"Burhill Golf Club - New Course\",\n    \"handicap\": 6.3,\n    \"ballUsed\": \"Truesoft\",\n    \"temperature\": 18.2\n}"
+							"raw": "{\n    \"playerId\": 3,\n    \"gameStartTime\": 1568241842,\n    \"courseName\": \"Burhill Golf Club - New Course\",\n    \"handicap\": 6.3,\n    \"ballUsed\": \"Truesoft\",\n    \"temperature\": 18.2\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/golf/game",
@@ -268,7 +268,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -310,7 +310,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -352,7 +352,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -394,7 +394,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDU1NzMsImlhdCI6MTU2ODI5ODM3MywicGxheWVySWQiOjN9.0tiRWZYzi4FbaeTwnU9iQPRK4rt-CfrYZZeoVNoWawc",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -406,11 +406,16 @@
 								"name": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":1,\n        \"par\":3,\n        \"distance\":154,\n        \"location\":1,\n        \"club\":19,\n        \"strokeIndex\":3\n    },\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":2,\n        \"par\":3,\n        \"distance\":154,\n        \"location\":1,\n        \"club\":30,\n        \"strokeIndex\":3\n    }\n]"
+							"raw": "[\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":1,\n        \"par\":3,\n        \"distance\":210,\n        \"location\":1,\n        \"club\":15,\n        \"strokeIndex\":1\n    },\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":2,\n        \"par\":3,\n        \"distance\":10,\n        \"location\":6,\n        \"club\":25,\n        \"strokeIndex\":1\n    },\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":3,\n        \"par\":3,\n        \"distance\":4,\n        \"location\":6,\n        \"club\":25,\n        \"strokeIndex\":1\n    }\n]"
 						},
 						"url": {
 							"raw": "http://localhost:8080/golf/game/shot",
@@ -436,7 +441,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -456,7 +461,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/golf/game/5/shot",
+							"raw": "http://localhost:8080/golf/game/4/shot",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -465,7 +470,7 @@
 							"path": [
 								"golf",
 								"game",
-								"5",
+								"4",
 								"shot"
 							]
 						}
@@ -480,7 +485,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyNTI3ODgsImlhdCI6MTU2ODI0NTU4OCwicGxheWVySWQiOjN9.zVp4Y4QFchNR3AgUVUbdC6viT3uDF62i9HDagiZdwNE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NDA3MTQsImlhdCI6MTU2ODgzMzUxNCwicGxheWVySWQiOjN9.whZiPIBEKHp0jrqK8c7qKqEJkxOphBom7gLygSzG6l8",
 									"type": "string"
 								}
 							]
@@ -500,7 +505,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/golf/game/5/shot/hole/1",
+							"raw": "http://localhost:8080/golf/game/27/shot/hole/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -509,10 +514,10 @@
 							"path": [
 								"golf",
 								"game",
-								"5",
+								"27",
 								"shot",
 								"hole",
-								"1"
+								"8"
 							]
 						}
 					},
@@ -526,7 +531,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgyMDkxNjksImlhdCI6MTU2ODIwMTk2OSwicGxheWVySWQiOjN9.o8g50NVoCkyP2Ctj1BwZad1fEQNyI2EXAGcFXoeHcZM",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -567,7 +572,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDQ0MjEsImlhdCI6MTU2ODI5NzIyMSwicGxheWVySWQiOjN9.L_e8uYgVVSUB6ty7_n0RmT3jyPbUPATL-tktwrmYEZo",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
 									"type": "string"
 								}
 							]
@@ -610,7 +615,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NjgzMDU1NzMsImlhdCI6MTU2ODI5ODM3MywicGxheWVySWQiOjN9.0tiRWZYzi4FbaeTwnU9iQPRK4rt-CfrYZZeoVNoWawc",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NDA3MTQsImlhdCI6MTU2ODgzMzUxNCwicGxheWVySWQiOjN9.whZiPIBEKHp0jrqK8c7qKqEJkxOphBom7gLygSzG6l8",
 									"type": "string"
 								}
 							]
@@ -630,7 +635,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/golf/result/4/hole/1",
+							"raw": "http://localhost:8080/golf/result/33/hole/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -639,9 +644,9 @@
 							"path": [
 								"golf",
 								"result",
-								"4",
+								"33",
 								"hole",
-								"1"
+								"8"
 							]
 						}
 					},
