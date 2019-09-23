@@ -3,12 +3,11 @@ package com.dandxy.golf.entity
 import cats.Eq
 import com.dandxy.db.sql.TableName
 import com.dandxy.golf.entity.Penalty._
+import doobie.implicits._
 import doobie.util.Meta
 import doobie.util.fragment.Fragment
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder }
-import doobie.implicits._
-import doobie.util.fragment.Fragment
 
 sealed trait PGAStatistics {
   val tableName: Fragment

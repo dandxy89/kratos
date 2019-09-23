@@ -4,11 +4,12 @@ import cats.effect._
 import com.dandxy.jwt.GenerateToken
 import com.dandxy.model.player.PlayerId
 import com.dandxy.testData.MockRouteTestData
-import org.scalatest.{FlatSpec, Matchers}
-import org.http4s.{Method, Request}
+import org.scalatest.{ FlatSpec, Matchers }
+import org.http4s.{ Method, Request }
+import org.http4s.Status
+import com.dandxy.golf.input.GolfInput.UserGameInput
 
 import scala.concurrent.ExecutionContext
-import org.http4s.Status
 
 class GolferRoutesSpec extends FlatSpec with Matchers with MockRouteTestData {
 
@@ -17,7 +18,7 @@ class GolferRoutesSpec extends FlatSpec with Matchers with MockRouteTestData {
   val testKey            = "test_secret_key"
   val validToken: String = GenerateToken.prepareToken(1, testKey)(PlayerId(3))
 
-  val makeRequestWithToken: (Method, String, String) => Request[IO] = 
+  val makeRequestWithToken: (Method, String, String) => Request[IO] =
     makeRequest(validToken)
 
   implicit private val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
@@ -27,11 +28,12 @@ class GolferRoutesSpec extends FlatSpec with Matchers with MockRouteTestData {
   it should "get clubs to the db" in {
     val req = makeRequestWithToken(Method.GET, "club", "")
     val res = golfingRoute(req).value.unsafeRunSync()
-    val expectedResultBody = """[{"playerId":3,"club":15,"typicalShape":null,"typicalHeight":null,"manufacturer":null,"typicalDistance":100.0,"distanceType":3}]"""
+    val expectedResultBody =
+      """[{"playerId":3,"club":15,"typicalShape":null,"typicalHeight":null,"manufacturer":null,"typicalDistance":100.0,"distanceType":3}]"""
 
     res match {
       case None => fail("Did not match on route correctly")
-      case Some(value) => 
+      case Some(value) =>
         value.status shouldBe Status.Ok
         value.as[String].unsafeRunSync() shouldBe expectedResultBody
     }
@@ -43,9 +45,45 @@ class GolferRoutesSpec extends FlatSpec with Matchers with MockRouteTestData {
 
     res match {
       case None => fail("Did not match on route correctly")
-      case Some(value) => 
+      case Some(value) =>
         value.status shouldBe Status.Ok
         value.as[String].unsafeRunSync() shouldBe "2"
     }
-  }  
+  }
+
+  it should "get all the games in the db" in {
+    val req = makeRequestWithToken(Method.GET, "game/all", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+    val expectedResultBody =
+      """[{"playerId":3,"gameStartTime":1231233123,"courseName":"Test Course","handicap":5.0,"ballUsed":null,"greenSpeed":null,"temperature":null,"windSpeed":null,"gameId":null}]"""
+
+    res match {
+      case None => fail("Did not match on route correctly")
+      case Some(value) =>
+        value.status shouldBe Status.Ok
+        value.as[String].unsafeRunSync() shouldBe expectedResultBody
+    }
+  }
+
+  it should "get specific game in the db" in {
+    val req = makeRequestWithToken(Method.GET, "game/6", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+    val expectedResultBody =
+      """[{"playerId":3,"gameStartTime":1231233123,"courseName":"Test Course","handicap":5.0,"ballUsed":null,"greenSpeed":null,"temperature":null,"windSpeed":null,"gameId":null}]"""
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
+
+  it should "get game which doesn't exist in the db" in {
+    val req = makeRequestWithToken(Method.GET, "game/3", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
 }

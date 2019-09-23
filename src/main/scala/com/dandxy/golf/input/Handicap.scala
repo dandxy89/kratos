@@ -3,9 +3,9 @@ package com.dandxy.golf.input
 import java.sql.Timestamp
 
 import doobie.util.Meta
-import io.circe.{ Decoder, Encoder }
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.syntax._
+import io.circe.{ Decoder, Encoder }
 
 final case class Handicap(value: Double) extends AnyVal
 

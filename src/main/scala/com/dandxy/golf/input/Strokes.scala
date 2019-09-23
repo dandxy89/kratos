@@ -2,8 +2,8 @@ package com.dandxy.golf.input
 
 import cats.kernel.Monoid
 import doobie.util.Meta
-import io.circe.{ Decoder, Encoder }
 import io.circe.syntax._
+import io.circe.{ Decoder, Encoder }
 
 final case class Strokes(value: Double) extends AnyVal
 
