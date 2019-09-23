@@ -1,7 +1,7 @@
 package com.dandxy.util
 
-import org.scalatest.{ FlatSpec, Matchers }
 import cats.implicits._
+import org.scalatest.{ FlatSpec, Matchers }
 
 class HelpersSpec extends FlatSpec with Matchers {
 

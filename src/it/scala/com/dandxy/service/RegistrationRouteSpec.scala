@@ -5,9 +5,6 @@ import java.sql.Timestamp
 import cats.effect.IO
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.{ Password, UserRegistration }
-import io.circe.Json
-import io.circe.parser.parse
-
 import org.http4s.{ Header, HttpRoutes, Method, Request, Status, Uri }
 import org.scalatest.{ FlatSpec, Matchers }
 

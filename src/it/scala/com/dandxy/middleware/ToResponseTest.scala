@@ -3,8 +3,8 @@ package com.dandxy.middleware
 import cats.effect.IO
 import com.dandxy.middleware.OutputType.{ ACase, CustomModelA, CustomModelB }
 import com.dandxy.middleware.http4s.ToHttpResponse
-import com.dandxy.middleware.http4s.content.syntax._
 import com.dandxy.middleware.http4s.content.defaults._
+import com.dandxy.middleware.http4s.content.syntax._
 import io.circe.Encoder
 import io.circe.syntax._
 import org.http4s.circe._

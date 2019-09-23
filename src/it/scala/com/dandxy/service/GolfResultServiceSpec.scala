@@ -1,77 +1,21 @@
 package com.dandxy.service
 
 import cats.effect._
-import org.scalatest.{ FlatSpec, Matchers }
-import com.dandxy.db.UserStore
-import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.UserRegistration
-import com.dandxy.model.user.Password
-import java.sql.Timestamp
-import com.dandxy.golf.input.GolfInput.UserGameInput
-import com.dandxy.model.user.UserEmail
-import com.dandxy.model.user.Identifier.GameId
-import com.dandxy.model.user.GolfClubData
-import com.dandxy.golf.input.GolfInput.UserShotInput
-import com.dandxy.golf.input.HandicapWithDate
-import com.dandxy.model.user.Identifier.Hole
-import com.dandxy.model.user.AggregateGameResult
+import com.dandxy.golf.entity.Score.{ Aggregate, ParredHole }
+import com.dandxy.golf.input.{ Points, Strokes }
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
+import com.dandxy.service.GolfResultService._
 import com.dandxy.strokes.GolfResult
-import com.dandxy.golf.input.Distance
-import com.dandxy.golf.entity.Location
-import com.dandxy.golf.pga.Statistic.PGAStatistic
-import com.dandxy.golf.input.Handicap
-import GolfResultService._
-import com.dandxy.golf.input.Points
-import com.dandxy.golf.entity.Score.Aggregate
-import com.dandxy.testData.SimulationTestData
-import com.dandxy.golf.entity.Score.ParredHole
-import com.dandxy.golf.input.Strokes
+import com.dandxy.testData.MockRouteTestData
+import org.scalatest.{ FlatSpec, Matchers }
 
 import scala.concurrent.ExecutionContext
 
-class GolfResultServiceSpec extends FlatSpec with Matchers with SimulationTestData {
+class GolfResultServiceSpec extends FlatSpec with Matchers with MockRouteTestData {
 
   behavior of "GolfResultServiceSpec"
 
   implicit private val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
-
-  val mockStat: (Distance, Location) => IO[Option[PGAStatistic]] =
-    (_, _) => IO.pure(Option(PGAStatistic(Distance(100), 1.1)))
-
-  def dbResult(game: GameId): GolfResult =
-    GolfResult(game, Aggregate(3), None, None, None, None, None, Points(2))
-
-  val mockStore = new UserStore[IO] {
-
-    def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): IO[List[UserShotInput]] =
-      IO.pure(parThreeExample ++ parFourExample ++ parFiveExample)
-
-    def addPlayerShots(input: List[UserShotInput]): IO[Int] =
-      IO.pure(1989)
-
-    def addResultByIdentifier(result: GolfResult, h: Option[Hole]): IO[Int] =
-      IO.pure(1989)
-
-    def getResultByIdentifier(game: GameId, h: Option[Hole]): IO[Option[GolfResult]] =
-      IO.pure(Option(dbResult(game)))
-
-    def getGameHandicap(game: GameId): IO[Option[Handicap]] =
-      IO.pure(Option(Handicap(6.3)))
-
-    // Not required for testing
-    def gdprPurge(playerId: PlayerId): IO[Int]                                                                      = ???
-    def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): IO[PlayerId] = ???
-    def attemptLogin(email: UserEmail, rawPassword: Password): IO[Option[PlayerId]]                                 = ???
-    def addClubData(playerId: PlayerId, input: List[GolfClubData]): IO[Int]                                         = ???
-    def getUserClubs(playerId: PlayerId): IO[List[GolfClubData]]                                                    = ???
-    def getAllPlayerGames(playerId: PlayerId): IO[List[UserGameInput]]                                              = ???
-    def getPlayerGame(gameId: GameId): IO[Option[UserGameInput]]                                                    = ???
-    def addPlayerGame(game: UserGameInput): IO[GameId]                                                              = ???
-    def deletePlayerGame(gameId: GameId): IO[Int]                                                                   = ???
-    def dropByHole(gameId: GameId, hole: Hole): IO[Int]                                                             = ???
-    def getHandicapHistory(playerId: PlayerId): IO[List[HandicapWithDate]]                                          = ???
-    def aggregateGameResult(gameId: GameId): IO[List[AggregateGameResult]]                                          = ???
-  }
 
   it should "processHoleResult" in {
     val res1 = processHoleResult(mockStore, mockStat)(GameId(123), Option(Hole(1)), true).unsafeRunSync()

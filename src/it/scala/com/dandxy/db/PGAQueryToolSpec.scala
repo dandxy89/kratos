@@ -7,7 +7,6 @@ import com.dandxy.db.util.HealthCheck
 import com.dandxy.db.util.HealthCheck.OK
 import com.dandxy.golf.entity.Location
 import com.dandxy.golf.entity.Location.{ Bunker, Fairway, OnTheGreen, Recovery, Rough, TeeBox }
-import com.dandxy.golf.entity.PGAStatistics
 import com.dandxy.golf.input.Distance
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.util.PostgresDockerService

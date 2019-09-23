@@ -14,8 +14,7 @@ import com.dandxy.golf.input.{ Distance, Points, Strokes }
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.user.Identifier
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
-import com.dandxy.strokes.GolfResult
-import com.dandxy.strokes.StrokesGained
+import com.dandxy.strokes.{ GolfResult, StrokesGained }
 
 trait SimulationTestData {
 

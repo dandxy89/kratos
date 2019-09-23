@@ -1,26 +1,17 @@
 package com.dandxy.service
 
 import cats.effect.IO
-import cats.implicits._
 import com.dandxy.jwt.GenerateToken
-import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.{ Password, UserEmail }
+import com.dandxy.testData.MockRouteTestData
+import org.http4s.util.CaseInsensitiveString
 import org.http4s.{ Header, Method, Request, Status, Uri }
 import org.scalatest.{ FlatSpec, Matchers }
-import org.http4s.util.CaseInsensitiveString
 
 import scala.language.higherKinds
 
-class LoginRouteSpec extends FlatSpec with Matchers {
+class LoginRouteSpec extends FlatSpec with Matchers with MockRouteTestData {
 
   behavior of "Login Route"
-
-  def mockAttemptLogin: (UserEmail, Password) => IO[Option[PlayerId]] =
-    (e, _) =>
-      e match {
-        case UserEmail("test@gmail.com") => IO.pure(Option(PlayerId(1)))
-        case _                           => None.pure[IO]
-      }
 
   it should "return 200 OK when the attempt login succeeds" in {
     val route = LoginRoute[IO](mockAttemptLogin, GenerateToken.prepareToken(1, "test_secret_key"))

@@ -12,11 +12,11 @@ import com.dandxy.golf.entity.Manufacturer.Miura
 import com.dandxy.golf.entity.Orientation.{ LongLeft, MiddleLeft }
 import com.dandxy.golf.entity.Par.ParThree
 import com.dandxy.golf.entity.Score.Birdie
-import com.dandxy.golf.input.{ Distance, Handicap, Points, Strokes, WindSpeed }
 import com.dandxy.golf.input.DistanceMeasurement.Yards
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input.ShotHeight.Low
 import com.dandxy.golf.input.ShotShape.Straight
+import com.dandxy.golf.input._
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
@@ -24,7 +24,6 @@ import com.dandxy.strokes.GolfResult
 import com.dandxy.util.{ Helpers, PostgresDockerService }
 import org.scalatest.concurrent.Eventually
 import org.scalatest.{ BeforeAndAfterAll, FlatSpec, Matchers }
-import cats.implicits._
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
