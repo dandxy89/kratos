@@ -22,11 +22,7 @@ sealed trait Probabilities extends Statistic {
 
 object Probabilities {
 
-  final case class PGAPuttingProbability(distance: Distance,
-                                         onePutt: Double,
-                                         twoPutt: Double,
-                                         threePutt: Double,
-                                         expectedPutt: Double)
+  final case class PGAPuttingProbability(distance: Distance, onePutt: Double, twoPutt: Double, threePutt: Double, expectedPutt: Double)
       extends Probabilities
 
   // Fairway // Rough
