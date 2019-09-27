@@ -130,4 +130,14 @@ class GolferRoutesSpec extends FlatSpec with Matchers with MockRouteTestData {
       case Some(value) => value.status shouldBe Status.Ok
     }
   }
+
+  it should "get PGA statistic when on the Green" in {
+    val req = makeRequestWithToken(Method.GET, "statistic/location/6/distance/10", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
 }
