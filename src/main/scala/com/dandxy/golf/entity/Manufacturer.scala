@@ -1,8 +1,8 @@
 package com.dandxy.golf.entity
 
 import doobie.util.Meta
-import io.circe.{ Decoder, Encoder }
 import io.circe.syntax._
+import io.circe.{ Decoder, Encoder }
 
 trait Manufacturer {
   def company: String

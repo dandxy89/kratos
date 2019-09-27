@@ -1,8 +1,8 @@
 package com.dandxy.golf.input
 
 import doobie.util.Meta
-import io.circe.{ Decoder, Encoder }
 import io.circe.syntax._
+import io.circe.{ Decoder, Encoder }
 
 sealed trait DistanceMeasurement {
   def toYards(input: Double): Double

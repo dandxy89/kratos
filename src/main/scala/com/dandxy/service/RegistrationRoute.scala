@@ -14,8 +14,8 @@ import com.dandxy.model.player.{ PlayerId, Registration }
 import com.dandxy.model.user.{ Password, UserRegistration }
 import com.dandxy.util.Codecs._
 import org.http4s.HttpRoutes
-import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.circe.CirceEntityDecoder._
+import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl
 
 import scala.language.higherKinds

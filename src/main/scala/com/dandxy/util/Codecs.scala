@@ -22,6 +22,7 @@ object Codecs {
       val status = value match {
         case _: InvalidDistance | InvalidDataProvided | InvalidPlayerProvided | InvalidGameProvided => Status.BadRequest
         case _: StatisticNotKnown                                                                   => Status.NotFound
+        case NoContentInDB                                                                          => Status.NoContent
       }
 
       Response[F](status).withEntity(value).pure[OptionT[F, ?]]

@@ -1,8 +1,8 @@
 package com.dandxy.auth
 
+import com.dandxy.auth.PasswordAuth._
 import com.dandxy.model.user.Password
 import org.scalatest.{ FlatSpec, Matchers }
-import com.dandxy.auth.PasswordAuth._
 
 class PasswordAuthSpec extends FlatSpec with Matchers {
 

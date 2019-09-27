@@ -11,23 +11,27 @@ sealed trait DomainError {
 object DomainError {
 
   final case class InvalidDistance(distance: Distance) extends DomainError {
-    def msg: String = s" Invalid distance: $distance"
+    val msg: String = s" Invalid distance: $distance"
   }
 
   final case class StatisticNotKnown(distance: Distance) extends DomainError {
-    def msg: String = s" Statistic distance not known: $distance"
+    val msg: String = s" Statistic distance not known: $distance"
   }
 
   case object InvalidDataProvided extends DomainError {
-    override def msg: String = "Invalid data provided to service"
+    val msg: String = "Invalid data provided to service"
   }
 
   case object InvalidPlayerProvided extends DomainError {
-    override def msg: String = "Invalid player id"
+    val msg: String = "Invalid player id"
   }
 
   case object InvalidGameProvided extends DomainError {
-    override def msg: String = "Invalid game id"
+    val msg: String = "Invalid game id"
+  }
+
+  case object NoContentInDB extends DomainError {
+    val msg: String = ""
   }
 
   implicit val e: Encoder[DomainError] = Encoder.instance { e =>

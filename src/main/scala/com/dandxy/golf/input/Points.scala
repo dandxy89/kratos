@@ -1,9 +1,9 @@
 package com.dandxy.golf.input
 
+import cats.kernel.Semigroup
 import doobie.util.Meta
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder }
-import cats.kernel.Semigroup
 
 final case class Points(value: Int)
 

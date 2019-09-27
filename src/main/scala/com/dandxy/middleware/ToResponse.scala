@@ -1,8 +1,8 @@
 package com.dandxy.middleware
 
 import cats.data.{ Kleisli, OptionT }
-import cats.instances.stream._
 import cats.instances.option._
+import cats.instances.stream._
 import cats.syntax.all._
 import cats.{ ~>, Applicative, Contravariant, FlatMap, Functor, Monad, MonoidK }
 import com.dandxy.middleware.ToResponse.{ apply, instance }

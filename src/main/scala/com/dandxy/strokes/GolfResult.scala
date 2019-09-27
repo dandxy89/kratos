@@ -1,13 +1,13 @@
 package com.dandxy.strokes
 
 import cats.implicits._
+import cats.kernel.Semigroup
 import com.dandxy.golf.entity.Score
+import com.dandxy.golf.entity.Score.Aggregate
 import com.dandxy.golf.input.{ Points, Strokes }
 import com.dandxy.model.user.Identifier.GameId
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.{ Decoder, Encoder }
-import cats.kernel.Semigroup
-import com.dandxy.golf.entity.Score.Aggregate
 
 final case class GolfResult(
   id: GameId,

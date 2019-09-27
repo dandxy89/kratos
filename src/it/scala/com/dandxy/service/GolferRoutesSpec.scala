@@ -1,60 +1,133 @@
-// package com.dandxy.service
+package com.dandxy.service
 
-// import java.sql.Timestamp
+import cats.effect._
+import com.dandxy.jwt.GenerateToken
+import com.dandxy.model.player.PlayerId
+import com.dandxy.testData.MockRouteTestData
+import org.scalatest.{ FlatSpec, Matchers }
+import org.http4s.{ Method, Request }
+import org.http4s.Status
+import com.dandxy.golf.input.GolfInput.UserGameInput
 
-// import cats.effect.IO
-// import com.dandxy.jwt.GenerateToken
-// import com.dandxy.model.player.PlayerId
-// import org.scalatest.FlatSpec
-// import com.dandxy.golf.entity.Location
-// import com.dandxy.golf.input.Distance
-// import com.dandxy.golf.pga.Statistic.PGAStatistic
-// import com.dandxy.db.UserStore
-// import cats.effect.Bracket
-// import com.dandxy.auth.PlayerHash
-// import com.dandxy.auth.PasswordAuth.{ hashPassword, verifyPassword }
-// import com.dandxy.config.AuthSalt
-// import com.dandxy.db.sql.TableName._
-// import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-// import com.dandxy.golf.input.{ Handicap, HandicapWithDate }
-// import com.dandxy.model.player.PlayerId
-// import com.dandxy.model.user.Identifier.{ GameId, Hole }
-// import com.dandxy.model.user._
-// import com.dandxy.strokes.GolfResult
-// import doobie.implicits._
-// import doobie.util.transactor.Transactor
+import scala.concurrent.ExecutionContext
 
-// class GolferRoutesSpec extends FlatSpec {
+class GolferRoutesSpec extends FlatSpec with Matchers with MockRouteTestData {
 
-//   behavior of "Golf Routes"
+  behavior of "Golf Routes"
 
-//   val testKey                                                            = "test_secret_key"
-//   val validToken: String                                                 = GenerateToken.prepareToken(1, testKey)(PlayerId(1))
-//   val mockGetStatistic: (Distance, Location) => IO[Option[PGAStatistic]] = ???
+  val testKey            = "test_secret_key"
+  val validToken: String = GenerateToken.prepareToken(1, testKey)(PlayerId(3))
 
-//   val mockUserStore = new UserStore[IO] {
-//     def gdprPurge(playerId: PlayerId): IO[Int]                                                                      = ???
-//     def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): IO[PlayerId] = ???
-//     def attemptLogin(email: UserEmail, rawPassword: Password): IO[Option[PlayerId]]                                 = ???
-//     def addClubData(playerId: PlayerId, input: List[GolfClubData]): IO[Int]                                         = ???
-//     def getUserClubs(playerId: PlayerId): IO[List[GolfClubData]]                                                    = ???
-//     def getAllPlayerGames(playerId: PlayerId): IO[List[UserGameInput]]                                              = ???
-//     def getPlayerGame(gameId: GameId): IO[Option[UserGameInput]]                                                    = ???
-//     def addPlayerGame(game: UserGameInput): IO[GameId]                                                              = ???
-//     def deletePlayerGame(gameId: GameId): IO[Int]                                                                   = ???
-//     def dropByHole(gameId: GameId, hole: Hole): IO[Int]                                                             = ???
-//     def addPlayerShots(input: List[UserShotInput]): IO[Int]                                                         = ???
-//     def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): IO[List[UserShotInput]]                          = ???
-//     def getHandicapHistory(playerId: PlayerId): IO[List[HandicapWithDate]]                                          = ???
-//     def aggregateGameResult(gameId: GameId): IO[List[AggregateGameResult]]                                          = ???
-//     def addResultByIdentifier(result: GolfResult, h: Option[Hole]): IO[Int]                                         = ???
-//     def getResultByIdentifier(game: GameId, h: Option[Hole]): IO[Option[GolfResult]]                                = ???
-//     def getGameHandicap(game: GameId): IO[Option[Handicap]]                                                         = ???
-//   }
+  val makeRequestWithToken: (Method, String, String) => Request[IO] =
+    makeRequest(validToken)
 
-//   val golfingRoute = GolferRoutes[IO](mockUserStore, testKey, mockGetStatistic).golferRoutes
+  implicit private val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
-//   it should "add clubs to the db" in {
-//     pending
-//   }
-// }
+  val golfingRoute = GolferRoutes[IO](mockStore, testKey, mockStat).golferRoutes
+
+  it should "get clubs to the db" in {
+    val req = makeRequestWithToken(Method.GET, "club", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+    val expectedResultBody =
+      """[{"playerId":3,"club":15,"typicalShape":null,"typicalHeight":null,"manufacturer":null,"typicalDistance":100.0,"distanceType":3}]"""
+
+    res match {
+      case None => fail("Did not match on route correctly")
+      case Some(value) =>
+        value.status shouldBe Status.Ok
+        value.as[String].unsafeRunSync() shouldBe expectedResultBody
+    }
+  }
+
+  it should "add clubs to the db" in {
+    val req = makeRequestWithToken(Method.PUT, "club", addClubBody)
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None => fail("Did not match on route correctly")
+      case Some(value) =>
+        value.status shouldBe Status.Ok
+        value.as[String].unsafeRunSync() shouldBe "2"
+    }
+  }
+
+  it should "get all the games in the db" in {
+    val req = makeRequestWithToken(Method.GET, "game/all", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+    val expectedResultBody =
+      """[{"playerId":3,"gameStartTime":1231233123,"courseName":"Test Course","handicap":5.0,"ballUsed":null,"greenSpeed":null,"temperature":null,"windSpeed":null,"gameId":null}]"""
+
+    res match {
+      case None => fail("Did not match on route correctly")
+      case Some(value) =>
+        value.status shouldBe Status.Ok
+        value.as[String].unsafeRunSync() shouldBe expectedResultBody
+    }
+  }
+
+  it should "get specific game in the db" in {
+    val req = makeRequestWithToken(Method.GET, "game/6", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+    val expectedResultBody =
+      """[{"playerId":3,"gameStartTime":1231233123,"courseName":"Test Course","handicap":5.0,"ballUsed":null,"greenSpeed":null,"temperature":null,"windSpeed":null,"gameId":null}]"""
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
+
+  it should "get game which doesn't exist in the db" in {
+    val req = makeRequestWithToken(Method.GET, "game/3", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
+
+  it should "generate an new Game Id on receipt of a PUT request" in {
+    val req = makeRequestWithToken(Method.PUT, "game", addGame)
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None => fail("Did not match on route correctly")
+      case Some(value) =>
+        println(value.as[String].unsafeRunSync())
+        value.status shouldBe Status.Ok
+    }
+  }
+
+  it should "delete a game by Id" in {
+    val req = makeRequestWithToken(Method.DELETE, "game/1", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
+
+  it should "get handicap history" in {
+    val req = makeRequestWithToken(Method.GET, "handicap", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None => fail("Did not match on route correctly")
+      case Some(value) =>
+        value.status shouldBe Status.Ok
+        value.as[String].unsafeRunSync() shouldBe """[{"value":3.0,"dt":1231231221},{"value":3.1,"dt":1231231231}]"""
+    }
+  }
+
+  it should "get aggregate result" in {
+    val req = makeRequestWithToken(Method.GET, "aggregate/10", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
+}
