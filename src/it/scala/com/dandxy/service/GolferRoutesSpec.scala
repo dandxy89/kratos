@@ -86,4 +86,48 @@ class GolferRoutesSpec extends FlatSpec with Matchers with MockRouteTestData {
       case Some(value) => value.status shouldBe Status.Ok
     }
   }
+
+  it should "generate an new Game Id on receipt of a PUT request" in {
+    val req = makeRequestWithToken(Method.PUT, "game", addGame)
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None => fail("Did not match on route correctly")
+      case Some(value) =>
+        println(value.as[String].unsafeRunSync())
+        value.status shouldBe Status.Ok
+    }
+  }
+
+  it should "delete a game by Id" in {
+    val req = makeRequestWithToken(Method.DELETE, "game/1", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
+
+  it should "get handicap history" in {
+    val req = makeRequestWithToken(Method.GET, "handicap", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None => fail("Did not match on route correctly")
+      case Some(value) =>
+        value.status shouldBe Status.Ok
+        value.as[String].unsafeRunSync() shouldBe """[{"value":3.0,"dt":1231231221},{"value":3.1,"dt":1231231231}]"""
+    }
+  }
+
+  it should "get aggregate result" in {
+    val req = makeRequestWithToken(Method.GET, "aggregate/10", "")
+    val res = golfingRoute(req).value.unsafeRunSync()
+
+    res match {
+      case None        => fail("Did not match on route correctly")
+      case Some(value) => value.status shouldBe Status.Ok
+    }
+  }
 }

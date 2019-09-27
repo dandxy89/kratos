@@ -18,6 +18,7 @@ import org.http4s.Method
 import org.http4s.{ Header, Request, Uri }
 import com.dandxy.golf.entity.GolfClub.FourIron
 import com.dandxy.golf.input.DistanceMeasurement.Feet
+import com.dandxy.golf.entity.Par
 
 trait MockRouteTestData extends SimulationTestData {
 
@@ -80,16 +81,28 @@ trait MockRouteTestData extends SimulationTestData {
         )
     }
 
+    def deletePlayerGame(gameId: GameId): IO[Int] = IO.pure(1)
+
+    def getHandicapHistory(playerId: PlayerId): IO[List[HandicapWithDate]] =
+      IO.pure(
+        List(HandicapWithDate(Handicap(3), new Timestamp(1231231221)), HandicapWithDate(Handicap(3.1), new Timestamp(1231231231)))
+      )
+
+    def addPlayerGame(game: UserGameInput): IO[GameId] = IO.pure(GameId(10))
+
+    def aggregateGameResult(gameId: GameId): IO[List[AggregateGameResult]] =
+      IO.pure(
+        List(
+          AggregateGameResult(gameId, Hole(3), Distance(340), Par.ParFour, 1, 5, None)
+        )
+      )
+
     // Not required for testing
     def gdprPurge(playerId: PlayerId): IO[Int]                                                                      = ???
     def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): IO[PlayerId] = ???
     def attemptLogin(email: UserEmail, rawPassword: Password): IO[Option[PlayerId]]                                 = ???
+    def dropByHole(gameId: GameId, hole: Hole): IO[Int]                                                             = ???
 
-    def addPlayerGame(game: UserGameInput): IO[GameId]                     = ???
-    def deletePlayerGame(gameId: GameId): IO[Int]                          = ???
-    def dropByHole(gameId: GameId, hole: Hole): IO[Int]                    = ???
-    def getHandicapHistory(playerId: PlayerId): IO[List[HandicapWithDate]] = ???
-    def aggregateGameResult(gameId: GameId): IO[List[AggregateGameResult]] = ???
   }
 
   val addClubBody: String =
@@ -114,6 +127,18 @@ trait MockRouteTestData extends SimulationTestData {
       |    "distanceType":2
       |  }
       |]
+      |""".stripMargin
+
+  val addGame: String =
+    """
+      |{
+      |    "playerId": 3,
+      |    "gameStartTime": 1568241842,
+      |    "courseName": "Burhill Golf Club - New Course",
+      |    "handicap": 6.3,
+      |    "ballUsed": "Truesoft",
+      |    "temperature": 18.2
+      |}
       |""".stripMargin
 
 }
