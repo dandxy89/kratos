@@ -90,6 +90,9 @@ class GolferRoutes[F[_]](us: UserStore[F], secretKey: String, getStatistic: (Dis
     case authReq @ GET -> Root / "aggregate" / IntVar(gameId) as _ =>
       runDbOp(us.aggregateGameResult(GameId(gameId)), InvalidPlayerProvided, authReq.req)
 
+    case authReq @ GET -> Root / "statistic" / "location" / IntVar(location) / "distance" / IntVar(distance) as _ =>
+      runDbOp(getStatistic(Distance(distance.toDouble), Location.fromId(location)), InvalidPlayerProvided, authReq.req)
+
   }
 
   val golferRoutes: HttpRoutes[F] = middleware(routes)
