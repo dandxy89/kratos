@@ -3,24 +3,17 @@ package com.dandxy.service
 import cats.effect.IO
 import cats.effect.concurrent.Ref
 import com.dandxy.db.util.HealthCheck.{ OK, Status, Warning }
+import com.dandxy.testData.MockRouteTestData
 import com.dandxy.util.PostgresDockerService
-import org.http4s.{ EntityDecoder, Header, Headers, Method, Request, Response, Uri }
-import org.scalatest.{ Assertion, FlatSpec, Matchers }
+import org.http4s.{ Header, Headers, Method, Request, Uri }
 
-class HealthRoutesSpec extends FlatSpec with Matchers {
+class HealthRoutesSpec extends MockRouteTestData {
 
   val service = new PostgresDockerService(5450)
 
   behavior of "Health Routes"
 
-  def endpointHealth(dbStatus: IO[Ref[IO, Status]]): HealthRoutes[IO] =
-    HealthRoutes[IO](dbStatus.unsafeRunSync())
-
-  def responseMatcher[A](r: Option[Response[IO]], expected: A)(implicit ee: EntityDecoder[IO, A]): Assertion =
-    r match {
-      case Some(value) => value.as[A].unsafeRunSync() shouldBe expected
-      case None        => fail("Failed to get correct response from route")
-    }
+  def endpointHealth(dbStatus: IO[Ref[IO, Status]]): HealthRoutes[IO] = HealthRoutes[IO](dbStatus.unsafeRunSync())
 
   val goodHealth: IO[Ref[IO, Status]] = Ref[IO].of[Status](OK)
   val badHealth: IO[Ref[IO, Status]]  = Ref[IO].of[Status](Warning)
@@ -34,7 +27,7 @@ class HealthRoutesSpec extends FlatSpec with Matchers {
       .run(request)
       .value
 
-    responseMatcher[String](resp.unsafeRunSync(), """"Pong"""")
+    validateResult(resp.unsafeRunSync(), _.as[String].unsafeRunSync() shouldBe """"Pong"""")
   }
 
   it should "respond correctly when checking the db status" in {
@@ -46,12 +39,13 @@ class HealthRoutesSpec extends FlatSpec with Matchers {
       .run(request)
       .value
 
+    validateResult(goodResp.unsafeRunSync(), _.as[String].unsafeRunSync() shouldBe """{"postgres":{"status":"Ok"}}""")
+
     val badResp = endpointHealth(badHealth)
       .healthService
       .run(request)
       .value
 
-    responseMatcher[String](goodResp.unsafeRunSync(), """{"postgres":{"status":"Ok"}}""")
-    responseMatcher[String](badResp.unsafeRunSync(), """{"postgres":{"status":"Warning"}}""")
+    validateResult(badResp.unsafeRunSync(), _.as[String].unsafeRunSync() shouldBe """{"postgres":{"status":"Warning"}}""")
   }
 }

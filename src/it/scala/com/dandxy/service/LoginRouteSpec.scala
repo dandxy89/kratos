@@ -4,12 +4,11 @@ import cats.effect.IO
 import com.dandxy.jwt.GenerateToken
 import com.dandxy.testData.MockRouteTestData
 import org.http4s.util.CaseInsensitiveString
-import org.http4s.{ Header, Method, Request, Status, Uri }
-import org.scalatest.{ FlatSpec, Matchers }
+import org.http4s.{Header, Method, Request, Status, Uri}
 
 import scala.language.higherKinds
 
-class LoginRouteSpec extends FlatSpec with Matchers with MockRouteTestData {
+class LoginRouteSpec extends MockRouteTestData {
 
   behavior of "Login Route"
 
@@ -20,12 +19,8 @@ class LoginRouteSpec extends FlatSpec with Matchers with MockRouteTestData {
 
     val res = route.loginRoute.run(req).value.unsafeRunSync()
 
-    res match {
-      case Some(value) =>
-        value.status shouldBe Status.Ok
-        value.headers.get(CaseInsensitiveString("Authorization")).isEmpty shouldBe false
-      case None => fail()
-    }
+    validateResult(res, _.status shouldBe Status.Ok)
+    validateResult(res, _.headers.get(CaseInsensitiveString("Authorization")).isEmpty shouldBe false)
   }
 
   it should "return 401 OK when the attempt login fails" in {
@@ -35,9 +30,6 @@ class LoginRouteSpec extends FlatSpec with Matchers with MockRouteTestData {
 
     val res = route.loginRoute.run(req).value.unsafeRunSync()
 
-    res match {
-      case Some(value) => value.status shouldBe Status.Unauthorized
-      case None        => fail()
-    }
+    validateResult(res, _.status shouldBe Status.Unauthorized)
   }
 }
