@@ -6,20 +6,20 @@ import cats.effect.IO
 import cats.implicits._
 import com.dandxy.db.UserStore
 import com.dandxy.golf.entity.GolfClub.FourIron
-import com.dandxy.golf.entity.{ Location, Par }
 import com.dandxy.golf.entity.Score.Aggregate
+import com.dandxy.golf.entity.{Location, Par}
 import com.dandxy.golf.input.DistanceMeasurement.Feet
-import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
-import com.dandxy.golf.input.{ Distance, Handicap, HandicapWithDate, Points }
+import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.golf.input.{Distance, Handicap, HandicapWithDate, Points}
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{ GameId, Hole }
+import com.dandxy.model.user.Identifier.{GameId, Hole}
 import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
-import org.http4s.{ Header, Method, Request, Response, Uri }
-import org.scalatest.{ Assertion, FlatSpec, Matchers }
+import org.http4s.{Header, Method, Request, Response, Uri}
+import org.scalatest.{Assertion, FlatSpec, Matchers}
 
-trait MockRouteTestData extends SimulationTestData with FlatSpec with Matchers {
+trait MockRouteTestData extends FlatSpec with Matchers with SimulationTestData {
 
   def validateResult(resp: Option[Response[IO]], cond: Response[IO] => Assertion): Unit =
     resp match {
