@@ -7,11 +7,10 @@ import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.service.GolfResultService._
 import com.dandxy.strokes.GolfResult
 import com.dandxy.testData.MockRouteTestData
-import org.scalatest.{ FlatSpec, Matchers }
 
 import scala.concurrent.ExecutionContext
 
-class GolfResultServiceSpec extends FlatSpec with Matchers with MockRouteTestData {
+class GolfResultServiceSpec extends MockRouteTestData {
 
   behavior of "GolfResultServiceSpec"
 
@@ -56,6 +55,7 @@ class GolfResultServiceSpec extends FlatSpec with Matchers with MockRouteTestDat
       Some(Strokes(-2.7)),
       Points(9)
     )
+
     res2 shouldBe GolfResult(GameId(126), Aggregate(3), None, None, None, None, None, Points(2))
   }
 }

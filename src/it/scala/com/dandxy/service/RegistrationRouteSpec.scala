@@ -5,10 +5,10 @@ import java.sql.Timestamp
 import cats.effect.IO
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.{ Password, UserRegistration }
+import com.dandxy.testData.MockRouteTestData
 import org.http4s.{ Header, HttpRoutes, Method, Request, Status, Uri }
-import org.scalatest.{ FlatSpec, Matchers }
 
-class RegistrationRouteSpec extends FlatSpec with Matchers {
+class RegistrationRouteSpec extends MockRouteTestData {
 
   behavior of "Registration Route"
 
@@ -24,10 +24,7 @@ class RegistrationRouteSpec extends FlatSpec with Matchers {
       .withEntity(validBody)
       .withHeaders(Header("Accept", "application/json"), Header("Content-Type", "application/json"))
 
-    route.run(req).value.unsafeRunSync() match {
-      case Some(value) => value.status shouldBe Status.Ok
-      case None        => fail("Did not get a response from the server")
-    }
+    validateResult(route.run(req).value.unsafeRunSync(), _.status shouldBe Status.Ok)
   }
 
   it should "return a correct error if unsuccessful" in {
@@ -40,9 +37,6 @@ class RegistrationRouteSpec extends FlatSpec with Matchers {
       .withEntity(validBody)
       .withHeaders(Header("Accept", "application/json"), Header("Content-Type", "application/json"))
 
-    route.run(req).value.unsafeRunSync() match {
-      case Some(value) => value.status shouldBe Status.BadRequest
-      case None        => fail("Did not get a response from the server")
-    }
+    validateResult(route.run(req).value.unsafeRunSync(), _.status shouldBe Status.BadRequest)
   }
 }
