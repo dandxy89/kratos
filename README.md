@@ -56,3 +56,14 @@ Yet to be decided / built.
 
 * ```sbt clean coverage it:test coverageReport``` - run the tests and generate a coverage report
 * ```bash <(curl -s https://codecov.io/bash) -t 2136d990-e22d-4501-8293-501f554bf29f``` - push results to [codecov.io](https://codecov.io/gh/dandxy89/kratos)
+
+# Documents
+
+All documents relating to this project are located [here](/docs)
+
+Items include:
+
+* Route descriptions
+* Metric Ideas
+* Project TODO list
+* Deferrals
