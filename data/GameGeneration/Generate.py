@@ -1,5 +1,5 @@
 import json
-
+import asyncio
 import numpy as np
 import pandas as pd
 import requests as r
@@ -16,6 +16,9 @@ class NumpyEncoder(json.JSONEncoder):
         else:
             return super(NumpyEncoder, self).default(obj)
 
+
+PLAYER = 3
+TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzEyNjU0NzYsImlhdCI6MTU3MTI1ODI3NiwicGxheWVySWQiOjN9.JIJTyanm2U4EJUxV8JxyvFejHAV69TF6M_FqiTHvj8w"
 
 HOLE_CONFIG = [
     # Course configuration
@@ -306,33 +309,42 @@ def get_request(url, auth_token):
     return response.status_code
 
 
+async def generate_game_data():
+    try:
+        # Create a Game ID
+        #server_game_id = 1
+        server_game_id = create_game(TOKEN, PLAYER)
+
+        # Generate a course worth of shots
+        course_shots = generate_course(
+            HOLE_CONFIG, GOLF_CLUBS, PUTT_LENGTH, server_game_id)
+        print("Course count of shots: {}".format(len(course_shots)))
+        #print(json.dumps(course_shots, cls=NumpyEncoder))
+
+        # Add the shots to the DB
+        shots_added = put_request(
+            "http://localhost:8080/golf/game/shot", TOKEN, course_shots)
+
+        # Invoke the strokes gained calculation
+        status_code = get_request(
+            "http://localhost:8080/golf/result/{}".format(server_game_id), TOKEN)
+        print("Loaded Game ID: {}\n".format(server_game_id))
+
+        return 1
+
+    # Ignore recursion errors
+    except RecursionError:
+        return 0
+
+
+async def main():
+    coros = [generate_game_data() for _ in range(1000)]
+    await asyncio.gather(*coros)
+
+
 if __name__ == "__main__":
-    # Config
-    player = 3
-    token = ""
-
-    # Iterate and push
-    for _ in np.arange(1000):
-        try:
-            # Create a Game ID
-            #server_game_id = 1
-            server_game_id = create_game(token, player)
-
-            # Generate a course worth of shots
-            course_shots = generate_course(
-                HOLE_CONFIG, GOLF_CLUBS, PUTT_LENGTH, server_game_id)
-            print("Course count of shots: {}".format(len(course_shots)))
-            #print(json.dumps(course_shots, cls=NumpyEncoder))
-
-            # Add the shots to the DB
-            shots_added = put_request(
-                "http://localhost:8080/golf/game/shot", token, course_shots)
-
-            # Invoke the strokes gained calculation
-            status_code = get_request(
-                "http://localhost:8080/golf/result/{}".format(server_game_id), token)
-            print("Loaded Game ID: {}\n".format(server_game_id))
-
-        # Ignore recursion errors
-        except RecursionError:
-            continue
+    import time
+    s = time.perf_counter()
+    asyncio.run(main())
+    elapsed = time.perf_counter() - s
+    print(f"{__file__} executed in {elapsed:0.2f} seconds.")
