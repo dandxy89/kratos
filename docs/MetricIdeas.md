@@ -1,37 +1,38 @@
 # Statistics and Scorecards
 
 * Games metrics:
-  * Get ordered list of stokes gained by club - In Scope
-  * Get best x shots - In Scope
-  * Get worst x shots - In Scope
-  * Get strength by hole
-  * Best X shots - In Scope
-  * Worst X shots - In Scope
-  * Greens in regulation (GIR) - In Scope
-  * Fairways hit - In Scope
-  * Shot orientation per club - Out of Scope
-  * Average distance per club - Out of Scope
-  * Best performing club - In Scope
-  * Worst performing club - In Scope
-  * Displays without worst X shots - In Scope
-  * View by 3-6-9 hole splits - In Scope
-  * Scorecard view - In Scope
-  * What if Analysis? SHot distance vs shot distance from hole
-  * Putts to hole from distance(s) x
-  * Putts per round
-  * Penalties per round
-  * Up and downs
-  * Scrambles
-  * Chip ins
-  * Sand saves
-  * Putts per Green in Regulation
-  * Putts per Non Green in Regulation
-  * First Putt distance Green in Regulation
-  * First Putt distance Non Green in Regulation 
-  * Holed putt distance
-  * Drive Length
-  * Fairsway hit
-  * Eagles, Birdies, Pars
-  * First 6, Middle 6 and Last 6
+  * Get ordered list of stokes gained by club - In Scope - READY
+  * Get best x shots - In Scope - READY - By Club too
+  * Get worst x shots - In Scope - READY - By Club too
+  * Greens in regulation (GIR) - In Scope - READY
+  * Fairways hit - In Scope - READY
+  * Average distance per club - In Scope - READY
+  * Best performing club - In Scope - READY
+  * Worst performing club - In Scope - READY
+  * Displays without worst X shots - In Scope - READY
+  * Putts per round - In Scope - READY
+  * Penalties per round - In Scope - READY
+  * Drive Length by Club - In Scope - READY
+  * Holed putt distance - In Scope - READY
+  * Putts to hole from distance(s) - In Scope - READY
+  * Eagles, Birdies, Pars, ... - In Scope - READY
   * Score 3, 4 and 5
+  * First 6, Middle 6 and Last 6
   * Compare against round, last 3 rounds, all-time
+  * Putts per Green in Regulation - In Scope
+  * Putts per Non Green in Regulation - In Scope
+  * First Putt distance Green in Regulation - In Scope
+  * First Putt distance Non Green in Regulation - In Scope
+
+* Need classification:
+  * What if Analysis? Shot distance vs shot distance from hole
+
+* Out of Scope v1:
+  * Get strength by hole - Need a definition - Not in Scope
+  * Shot orientation per club - Out of Scope
+  * Scorecard view - In Scope
+  * Up and downs - In Scope
+  * Scrambles - In Scope
+  * Chip ins - In Scope
+  * Sand saves - In Scope
+  * View by 3-6-9 hole splits - In Scopex
