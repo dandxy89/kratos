@@ -4,4 +4,5 @@ CREATE TABLE player.email_marketing (
     marketing BOOLEAN NOT NULL
 );
 
-CREATE UNIQUE INDEX player_marketing_index on player.email_marketing (player_id);
+CREATE UNIQUE INDEX player_marketing_index ON player.email_marketing (player_id);
+
