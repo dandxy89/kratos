@@ -1,6 +1,6 @@
 # Statistics and Scorecards
 
-* Games metrics:
+* Games metrics
   * Get ordered list of stokes gained by club - In Scope - READY
   * Get best x shots - In Scope - READY - By Club too
   * Get worst x shots - In Scope - READY - By Club too
@@ -16,7 +16,8 @@
   * Holed putt distance - In Scope - READY
   * Putts to hole from distance(s) - In Scope - READY
   * Eagles, Birdies, Pars, ... - In Scope - READY
-  * Score 3, 4 and 5
+* Metrics to define
+  * Up and downs - In Scope
   * First 6, Middle 6 and Last 6
   * Compare against round, last 3 rounds, all-time
   * Putts per Green in Regulation - In Scope
@@ -31,7 +32,6 @@
   * Get strength by hole - Need a definition - Not in Scope
   * Shot orientation per club - Out of Scope
   * Scorecard view - In Scope
-  * Up and downs - In Scope
   * Scrambles - In Scope
   * Chip ins - In Scope
   * Sand saves - In Scope
