@@ -2,8 +2,8 @@
 
 * Games metrics
   * Get ordered list of stokes gained by club - In Scope - READY
-  * Get best x shots - In Scope - READY - By Club too
-  * Get worst x shots - In Scope - READY - By Club too
+  * Get best x shots - In Scope - READY - (TODO: By Club too)
+  * Get worst x shots - In Scope - READY - (TODO: By Club too)
   * Greens in regulation (GIR) - In Scope - READY
   * Fairways hit - In Scope - READY
   * Average distance per club - In Scope - READY
@@ -16,6 +16,7 @@
   * Holed putt distance - In Scope - READY
   * Putts to hole from distance(s) - In Scope - READY
   * Eagles, Birdies, Pars, ... - In Scope - READY
+
 * Metrics to define
   * Up and downs - In Scope
   * First 6, Middle 6 and Last 6
