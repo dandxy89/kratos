@@ -5,6 +5,9 @@ import com.dandxy.jwt.GenerateToken
 import com.dandxy.model.player.PlayerId
 import com.dandxy.testData.MockRouteTestData
 import org.http4s.{ HttpRoutes, Method, Request, Status }
+import com.dandxy.jwt.{ Claims, JwtAuthMiddleware }
+import pdi.jwt.JwtAlgorithm
+import org.http4s.server.AuthMiddleware
 
 import scala.concurrent.ExecutionContext
 
@@ -20,7 +23,9 @@ class GolferRoutesSpec extends MockRouteTestData {
 
   implicit private val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
-  val golfingRoute: HttpRoutes[IO] = GolferRoutes[IO](mockStore, testKey, mockStat).golferRoutes
+  val middleware: AuthMiddleware[IO, Claims] = JwtAuthMiddleware[IO, Claims](testKey, Seq(JwtAlgorithm.HS256))
+
+  val golfingRoute: HttpRoutes[IO] = GolferRoutes[IO](mockStore, middleware, mockStat).golferRoutes
 
   it should "get clubs to the db" in {
     val req = makeRequestWithToken(Method.GET, "club", "")

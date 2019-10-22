@@ -20,9 +20,9 @@ final case class DatabaseConfig(driver: String,
 
 object DatabaseConfig extends StrictLogging {
 
-  def dbTransactor[F[_]: Async: ContextShift](dbc: DatabaseConfig,
-                                              connEc: ExecutionContext,
-                                              blocker: Blocker): Resource[F, HikariTransactor[F]] =
+  def hikariDbTransactor[F[_]: Async: ContextShift](dbc: DatabaseConfig,
+                                                    connEc: ExecutionContext,
+                                                    blocker: Blocker): Resource[F, HikariTransactor[F]] =
     HikariTransactor.newHikariTransactor[F](
       dbc.driver,
       s"jdbc:postgresql://${dbc.host}:${dbc.port}/",

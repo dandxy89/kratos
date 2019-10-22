@@ -2,7 +2,7 @@ package com.dandxy.db
 
 import cats.effect.Bracket
 import com.dandxy.db.sql.MetricsSQL._
-import com.dandxy.golf.input.{Distance, Strokes}
+import com.dandxy.golf.input.{ Distance, Strokes }
 import com.dandxy.model.stats._
 import com.dandxy.model.user.Identifier.GameId
 import doobie.implicits._
@@ -71,7 +71,7 @@ class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[
 
 }
 
-object MetricsStore {
+object MetricsStoreInterpreter {
 
   def apply[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F]): MetricsStoreInterpreter[F, A] =
     new MetricsStoreInterpreter[F, A](xa: Transactor[F])

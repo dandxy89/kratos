@@ -8,7 +8,7 @@ import com.dandxy.golf.entity.Location
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input.{ Distance, Handicap }
 import com.dandxy.golf.pga.Statistic.PGAStatistic
-import com.dandxy.jwt.{ Claims, JwtAuthMiddleware }
+import com.dandxy.jwt.{ Claims }
 import com.dandxy.middleware.http4s.ToHttpResponse
 import com.dandxy.middleware.http4s.content.defaults._
 import com.dandxy.middleware.http4s.content.syntax._
@@ -25,16 +25,15 @@ import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.AuthMiddleware
 import org.http4s.{ AuthedRoutes, HttpRoutes, Request, Response }
-import pdi.jwt.JwtAlgorithm
 
 import scala.language.higherKinds
 
-class GolferRoutes[F[_]](us: UserStore[F], secretKey: String, getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(
-  implicit F: Concurrent[F]
-) extends Http4sDsl[F] {
+class GolferRoutes[F[_]](us: UserStore[F],
+                         middleware: AuthMiddleware[F, Claims],
+                         getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(implicit F: Concurrent[F])
+    extends Http4sDsl[F] {
 
-  val middleware: AuthMiddleware[F, Claims] = JwtAuthMiddleware[F, Claims](secretKey, Seq(JwtAlgorithm.HS256))
-  val defaultHandicap: Handicap             = Handicap(0)
+  val defaultHandicap: Handicap = Handicap(0)
 
   def runDbOp[A](op: F[A], e: DomainError, r: Request[F])(implicit ME: MonadError[F, Throwable],
                                                           c: ToHttpResponse[F, A]): F[Response[F]] =
@@ -101,8 +100,9 @@ class GolferRoutes[F[_]](us: UserStore[F], secretKey: String, getStatistic: (Dis
 
 object GolferRoutes {
 
-  def apply[F[_]](userStore: UserStore[F], secretKey: String, getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(
-    implicit F: Concurrent[F]
-  ) = new GolferRoutes[F](userStore, secretKey, getStatistic)
+  def apply[F[_]](userStore: UserStore[F],
+                  middleware: AuthMiddleware[F, Claims],
+                  getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(implicit F: Concurrent[F]) =
+    new GolferRoutes[F](userStore, middleware, getStatistic)
 
 }

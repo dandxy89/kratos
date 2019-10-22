@@ -1,6 +1,6 @@
 package com.dandxy.db.sql
 
-import com.dandxy.golf.input.{Distance, Strokes}
+import com.dandxy.golf.input.{ Distance, Strokes }
 import com.dandxy.model.stats._
 import com.dandxy.model.user.Identifier.GameId
 import doobie._
