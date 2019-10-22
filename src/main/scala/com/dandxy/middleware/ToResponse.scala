@@ -37,11 +37,13 @@ trait ToResponse[F[_], M, B, A] { self =>
 }
 
 trait LowPrioImplicits {
+
   implicit def exportedToResponse[F[_], M, B, A](implicit exported: Exported[ToResponse[F, M, B, A]]): ToResponse[F, M, B, A] =
     exported.instance
 }
 
 trait ToResponseInstances extends LowPrioImplicits {
+
   implicit def flatMapResponse[F[_]: FlatMap, M, B, A](implicit encoder: ToResponse[F, M, B, A]): ToResponse[F, M, B, F[A]] =
     ToResponse.instanceF((media, value) => value.flatMap(encoder.run(media)(_).value))
 

@@ -28,6 +28,7 @@ object GolfResult {
   // Instances
   implicit val en: Encoder[GolfResult] = deriveEncoder
   implicit val de: Decoder[GolfResult] = deriveDecoder
+
   implicit val sg: Semigroup[GolfResult] = new Semigroup[GolfResult] {
 
     def combine(x: GolfResult, y: GolfResult): GolfResult =

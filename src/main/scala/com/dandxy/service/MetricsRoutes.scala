@@ -10,7 +10,7 @@ import org.http4s.{ AuthedRoutes, HttpRoutes }
 import scala.language.higherKinds
 
 class MetricsRoutes[F[_]](ms: MetricsStore[F], middleware: AuthMiddleware[F, Claims])(implicit F: Concurrent[F]) extends Http4sDsl[F] {
-  
+
   val xy = ms
 
   private val routes: AuthedRoutes[Claims, F] = AuthedRoutes.of[Claims, F] {
@@ -23,7 +23,7 @@ class MetricsRoutes[F[_]](ms: MetricsStore[F], middleware: AuthMiddleware[F, Cla
 
 object MetricsRoutes {
 
-  def apply[F[_]](ms: MetricsStore[F], middleware: AuthMiddleware[F, Claims])(implicit F: Concurrent[F]) = 
+  def apply[F[_]](ms: MetricsStore[F], middleware: AuthMiddleware[F, Claims])(implicit F: Concurrent[F]) =
     new MetricsRoutes[F](ms, middleware)
 
 }

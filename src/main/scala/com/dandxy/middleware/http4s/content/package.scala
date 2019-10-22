@@ -22,6 +22,7 @@ package object content {
     }
 
   object defaults {
+
     implicit def entityEncoderResponse[F[_]: Applicative, T](implicit ee: EntityEncoder[F, T]): Exported[ToHttpResponse[F, T]] =
       Exported(fromEncoder[F, T](_ => Status.Ok))
   }

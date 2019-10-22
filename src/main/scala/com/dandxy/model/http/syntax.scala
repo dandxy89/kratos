@@ -1,6 +1,7 @@
 package com.dandxy.model.http
 
 object syntax {
+
   implicit class ResponseOps[A](val value: A)(implicit isRequest: IsResponse[A]) {
     def status: Int                 = isRequest.status(value)
     def contentLength: Option[Long] = isRequest.contentLength(value)
