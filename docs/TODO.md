@@ -23,5 +23,11 @@
 * Add email verification endpoint - DONE
 * Add postman - DONE
 * Add more comprehensive testing - DONE
-* Add stats endpoint - In-Progress
+* Add Stats endpoints - TODO
+  * Add stats endpoint - In-Progress
+  * Add stats db spec - In-Progress
+  * Add stats route spec - In-Progress
+  * Add stats model - DONE
+  * Add circe coders for model - In-Progress
+  * Add stats test sql - DONE
 * Compare to pga - TODO
