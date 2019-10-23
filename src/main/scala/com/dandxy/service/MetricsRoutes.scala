@@ -25,7 +25,9 @@ class MetricsRoutes[F[_]](ms: MetricsStore[F], middleware: AuthMiddleware[F, Cla
                                                           c: ToHttpResponse[F, A]): F[Response[F]] =
     ME.attempt(op).flatMap {
       case Right(value) => value.negotiate(r)
-      case Left(_)      => e.negotiate(r)
+      case Left(error)      => 
+        println(error.getMessage())
+        e.negotiate(r)
     }
 
   private val routes: AuthedRoutes[Claims, F] = AuthedRoutes.of[Claims, F] {

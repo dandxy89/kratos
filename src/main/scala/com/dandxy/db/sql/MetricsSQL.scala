@@ -1,6 +1,7 @@
 package com.dandxy.db.sql
 
-import com.dandxy.golf.input.{ Distance, Strokes }
+import com.dandxy.db.sql.SQLOrder.Descending
+import com.dandxy.golf.input.{Distance, Strokes}
 import com.dandxy.model.stats._
 import com.dandxy.model.user.Identifier.GameId
 import doobie._
@@ -113,13 +114,19 @@ object MetricsSQL {
          | WHERE m.game_id = $gameId AND shot = 1 AND (m.distance - n.distance) > 0 AND m.par > 3
          | GROUP BY club """.stripMargin.query[AverageDriveDistance].to[List]
 
-  private[this] def getDirection(best: Boolean): String = if (best) "ASC" else "DESC"
-
-  private[db] def getXStrokesGainedShots(gameId: GameId, n: Int, best: Boolean): ConnectionIO[List[StrokesGainedResults]] =
-    sql""" SELECT hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index
-         | FROM player.shot
-         | WHERE game_id = $gameId
-         | ORDER BY strokes_gained ${getDirection(best)}
-         | LIMIT $n """.stripMargin.query[StrokesGainedResults].to[List]
-
+  private[db] def getXStrokesGainedShots(gameId: GameId, n: Int, best: SQLOrder): ConnectionIO[List[StrokesGainedResults]] =
+    best match {
+      case Descending =>
+        sql""" SELECT hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index
+             | FROM player.shot
+             | WHERE game_id = $gameId
+             | ORDER BY strokes_gained DESC
+             | LIMIT $n """.stripMargin.query[StrokesGainedResults].to[List]
+      case _ =>
+        sql""" SELECT hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index
+             | FROM player.shot
+             | WHERE game_id = $gameId AND strokes_gained IS NOT NULL
+             | ORDER BY strokes_gained ASC
+             | LIMIT $n """.stripMargin.query[StrokesGainedResults].to[List]
+    }
 }

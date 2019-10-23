@@ -4,6 +4,7 @@ import cats.effect.Bracket
 import com.dandxy.db.sql.MetricsSQL._
 import com.dandxy.golf.input.{ Distance, Strokes }
 import com.dandxy.model.stats._
+import com.dandxy.db.sql.SQLOrder._
 import com.dandxy.model.user.Identifier.GameId
 import doobie.implicits._
 import doobie.util.transactor.Transactor
@@ -24,8 +25,6 @@ trait MetricsStore[F[_]] {
   def holedPuttDistance(gameId: GameId): F[Option[Distance]]
   def puttsToHoleDistance(gameId: GameId, size: Int, max: Int): F[List[PuttsByDistanceToHole]]
   def standardScores(gameId: GameId): F[List[StandardScores]]
-  // def bestPerformingClub(gameId: GameId): F[GolfClub]
-  // def worstPerformingClub(gameId: GameId): F[GolfClub]
 }
 
 class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F]) extends MetricsStore[F] {
@@ -34,10 +33,10 @@ class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[
     getStrokesGainedByClub(gameId).transact(xa)
 
   def bestXShots(gameId: GameId, n: Int): F[List[StrokesGainedResults]] =
-    getXStrokesGainedShots(gameId, n, best = true).transact(xa)
+    getXStrokesGainedShots(gameId, n, best = Ascending).transact(xa)
 
   def worstXShots(gameId: GameId, n: Int): F[List[StrokesGainedResults]] =
-    getXStrokesGainedShots(gameId, n, best = false).transact(xa)
+    getXStrokesGainedShots(gameId, n, best = Descending).transact(xa)
 
   def greenInRegulation(gameId: GameId): F[Option[InRegulation]] =
     getGameGreensInRegulation(gameId).transact(xa)

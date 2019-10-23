@@ -12,7 +12,7 @@ final case class StrokesGainedResults(hole: Hole,
                                       distance: Distance,
                                       ballLocation: Location,
                                       club: GolfClub,
-                                      strokesGained: Strokes,
+                                      strokesGained: Option[Strokes],
                                       strokesIndex: Int)
 
 object StrokesGainedResults {
