@@ -19,7 +19,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -50,7 +50,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -81,7 +81,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -112,7 +112,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -144,7 +144,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -152,7 +152,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/metrics/putting/12/3/120",
+									"raw": "http://localhost:8080/metrics/putting/12/10/120",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -162,7 +162,7 @@
 										"metrics",
 										"putting",
 										"12",
-										"3",
+										"10",
 										"120"
 									]
 								}
@@ -177,7 +177,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -208,7 +208,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -242,7 +242,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -250,7 +250,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/metrics/strokes_gained/shots/worst/12/1",
+									"raw": "http://localhost:8080/metrics/strokes_gained/shots/worst/12/5",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -262,7 +262,7 @@
 										"shots",
 										"worst",
 										"12",
-										"1"
+										"5"
 									]
 								}
 							},
@@ -276,7 +276,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -308,7 +308,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -341,7 +341,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -373,7 +373,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzI5MDYsImlhdCI6MTU3MTgyNTcwNiwicGxheWVySWQiOjN9.93JkpWkRS-RLGpM9d_QG8kMk-qOPUwWq14J5n__LpfI",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
 											"type": "string"
 										}
 									]
@@ -653,7 +653,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzYzNTIsImlhdCI6MTU3MTgyOTE1MiwicGxheWVySWQiOjN9.SE28G35JDE7y_-xzq6Xj0lCYozL04zyZMsWBGDPffNM",
 											"type": "string"
 										}
 									]
@@ -1003,7 +1003,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg5MzU5OTEsImlhdCI6MTU2ODkyODc5MSwicGxheWVySWQiOjN9.tENxmyy5sP3fSHBQ-WbTxs7n3JEhupK6OhFOWcBjoMk",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzYzNTIsImlhdCI6MTU3MTgyOTE1MiwicGxheWVySWQiOjN9.SE28G35JDE7y_-xzq6Xj0lCYozL04zyZMsWBGDPffNM",
 											"type": "string"
 										}
 									]
@@ -1022,7 +1022,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/golf/aggregate/34",
+									"raw": "http://localhost:8080/golf/aggregate/12",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1031,7 +1031,7 @@
 									"path": [
 										"golf",
 										"aggregate",
-										"34"
+										"12"
 									],
 									"query": [
 										{
