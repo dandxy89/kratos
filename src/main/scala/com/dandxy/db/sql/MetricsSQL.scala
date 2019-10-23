@@ -12,10 +12,7 @@ object MetricsSQL {
     sql""" SELECT club, MIN(strokes_gained), AVG(strokes_gained), MAX(strokes_gained)
          | FROM player.shot
          | WHERE game_id = $gameId
-         | GROUP BY club """
-      .stripMargin
-      .query[StokesGainedByClub]
-      .to[List]
+         | GROUP BY club """.stripMargin.query[StokesGainedByClub].to[List]
 
   private[db] def getGameGreensInRegulation(gameId: GameId): ConnectionIO[Option[InRegulation]] =
     sql""" SELECT SUM( CASE WHEN ball_location = 6 THEN 1 ELSE 0 END ) AS GreenCount,
@@ -50,9 +47,7 @@ object MetricsSQL {
          | FROM "player"."shot"
          | WHERE game_id = $gameId AND ball_location > 6 """.stripMargin.query[Strokes].option
 
-  private[db] def getPuttsToHoleFromDistance(gameId: GameId,
-                                             size: Int,
-                                             max: Int): ConnectionIO[List[PuttsByDistanceToHole]] =
+  private[db] def getPuttsToHoleFromDistance(gameId: GameId, size: Int, max: Int): ConnectionIO[List[PuttsByDistanceToHole]] =
     sql""" SELECT width_bucket(s.distance, 0, $max, $max / $size) * $size AS PuttDistanceWindow
          |        , COUNT(*) AS CountStrokes
          | FROM player.shot s
@@ -102,7 +97,7 @@ object MetricsSQL {
          |    SELECT  shot_serial
          |    FROM "player"."shot"
          |    WHERE game_id = $gameId
-         |    ORDER BY strokes_gained ASC
+         |    ORDER BY strokes_gained DESC
          |    LIMIT $n
          | ) AND game_id = $gameId
          | GROUP BY game_id """.stripMargin.query[Strokes]
@@ -118,14 +113,13 @@ object MetricsSQL {
          | WHERE m.game_id = $gameId AND shot = 1 AND (m.distance - n.distance) > 0 AND m.par > 3
          | GROUP BY club """.stripMargin.query[AverageDriveDistance].to[List]
 
-  private[this] def getDirection(best: Boolean): String = if (best) "ASC" else "DSC"
+  private[this] def getDirection(best: Boolean): String = if (best) "ASC" else "DESC"
 
   private[db] def getXStrokesGainedShots(gameId: GameId, n: Int, best: Boolean): ConnectionIO[List[StrokesGainedResults]] =
     sql""" SELECT hole, shot, par, distance, ball_location, club, strokes_gained, stroke_index
          | FROM player.shot
          | WHERE game_id = $gameId
          | ORDER BY strokes_gained ${getDirection(best)}
-         | LIMIT $n
-         | """.stripMargin.query[StrokesGainedResults].to[List]
+         | LIMIT $n """.stripMargin.query[StrokesGainedResults].to[List]
 
 }
