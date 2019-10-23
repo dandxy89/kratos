@@ -15,14 +15,14 @@ trait MetricsStore[F[_]] {
   def bestXShots(gameId: GameId, n: Int): F[List[StrokesGainedResults]]
   def worstXShots(gameId: GameId, n: Int): F[List[StrokesGainedResults]]
   def greenInRegulation(gameId: GameId): F[Option[InRegulation]]
-  def fairwaysHit(gameId: GameId): F[Option[InRegulation]]
+  def fairwaysInRegulation(gameId: GameId): F[Option[InRegulation]]
   def averageDistanceByClub(gameId: GameId): F[List[ClubDistance]]
   def strokesGainedWithoutXShots(gameId: GameId, n: Int): F[Option[Strokes]]
   def puttsPerRound(gameId: GameId): F[Option[Strokes]]
   def penaltiesPerRound(gameId: GameId): F[Option[Strokes]]
   def averageDriveLength(gameId: GameId): F[List[AverageDriveDistance]]
   def holedPuttDistance(gameId: GameId): F[Option[Distance]]
-  def puttsToHoleDistance(gameId: GameId, size: Distance, max: Distance): F[List[PuttsByDistanceToHole]]
+  def puttsToHoleDistance(gameId: GameId, size: Int, max: Int): F[List[PuttsByDistanceToHole]]
   def standardScores(gameId: GameId): F[List[StandardScores]]
   // def bestPerformingClub(gameId: GameId): F[GolfClub]
   // def worstPerformingClub(gameId: GameId): F[GolfClub]
@@ -42,7 +42,7 @@ class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[
   def greenInRegulation(gameId: GameId): F[Option[InRegulation]] =
     getGameGreensInRegulation(gameId).transact(xa)
 
-  def fairwaysHit(gameId: GameId): F[Option[InRegulation]] =
+  def fairwaysInRegulation(gameId: GameId): F[Option[InRegulation]] =
     getFairwaysInRegulation(gameId).transact(xa)
 
   def averageDistanceByClub(gameId: GameId): F[List[ClubDistance]] =
@@ -63,7 +63,7 @@ class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[
   def holedPuttDistance(gameId: GameId): F[Option[Distance]] =
     getHoledPuttDistance(gameId).option.transact(xa)
 
-  def puttsToHoleDistance(gameId: GameId, size: Distance, max: Distance): F[List[PuttsByDistanceToHole]] =
+  def puttsToHoleDistance(gameId: GameId, size: Int, max: Int): F[List[PuttsByDistanceToHole]] =
     getPuttsToHoleFromDistance(gameId, size, max).transact(xa)
 
   def standardScores(gameId: GameId): F[List[StandardScores]] =

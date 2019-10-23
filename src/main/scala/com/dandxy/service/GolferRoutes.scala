@@ -8,7 +8,7 @@ import com.dandxy.golf.entity.Location
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input.{ Distance, Handicap }
 import com.dandxy.golf.pga.Statistic.PGAStatistic
-import com.dandxy.jwt.{ Claims }
+import com.dandxy.jwt.Claims
 import com.dandxy.middleware.http4s.ToHttpResponse
 import com.dandxy.middleware.http4s.content.defaults._
 import com.dandxy.middleware.http4s.content.syntax._

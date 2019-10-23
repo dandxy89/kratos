@@ -51,8 +51,8 @@ object MetricsSQL {
          | WHERE game_id = $gameId AND ball_location > 6 """.stripMargin.query[Strokes].option
 
   private[db] def getPuttsToHoleFromDistance(gameId: GameId,
-                                             size: Distance,
-                                             max: Distance): ConnectionIO[List[PuttsByDistanceToHole]] =
+                                             size: Int,
+                                             max: Int): ConnectionIO[List[PuttsByDistanceToHole]] =
     sql""" SELECT width_bucket(s.distance, 0, $max, $max / $size) * $size AS PuttDistanceWindow
          |        , COUNT(*) AS CountStrokes
          | FROM player.shot s
