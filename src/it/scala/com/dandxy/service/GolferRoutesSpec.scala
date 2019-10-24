@@ -25,7 +25,7 @@ class GolferRoutesSpec extends MockRouteTestData {
 
   val middleware: AuthMiddleware[IO, Claims] = JwtAuthMiddleware[IO, Claims](testKey, Seq(JwtAlgorithm.HS256))
 
-  val golfingRoute: HttpRoutes[IO] = GolferRoutes[IO](mockStore, middleware, mockStat).golferRoutes
+  val golfingRoute: HttpRoutes[IO] = GolferRoutes[IO](mockUserStore, middleware, mockStat).golferRoutes
 
   it should "get clubs to the db" in {
     val req = makeRequestWithToken(Method.GET, "club", "")

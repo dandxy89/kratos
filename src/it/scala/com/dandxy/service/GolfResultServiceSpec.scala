@@ -17,8 +17,8 @@ class GolfResultServiceSpec extends MockRouteTestData {
   implicit private val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
   it should "processHoleResult" in {
-    val res1 = processHoleResult(mockStore, mockStat)(GameId(123), Option(Hole(1)), true).unsafeRunSync()
-    val res2 = processHoleResult(mockStore, mockStat)(GameId(124), Option(Hole(1)), false).unsafeRunSync()
+    val res1 = processHoleResult(mockUserStore, mockStat)(GameId(123), Option(Hole(1)), true).unsafeRunSync()
+    val res2 = processHoleResult(mockUserStore, mockStat)(GameId(124), Option(Hole(1)), false).unsafeRunSync()
 
     res1 match {
       case None => fail()
@@ -42,8 +42,8 @@ class GolfResultServiceSpec extends MockRouteTestData {
   }
 
   it should "processGolfResult" in {
-    val res1 = processGolfResult(mockStore, mockStat)(GameId(125), true).unsafeRunSync()
-    val res2 = processGolfResult(mockStore, mockStat)(GameId(126), false).unsafeRunSync()
+    val res1 = processGolfResult(mockUserStore, mockStat)(GameId(125), true).unsafeRunSync()
+    val res2 = processGolfResult(mockUserStore, mockStat)(GameId(126), false).unsafeRunSync()
 
     res1 shouldBe GolfResult(
       GameId(125),
