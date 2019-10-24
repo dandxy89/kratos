@@ -15,9 +15,7 @@ import scala.language.higherKinds
 class LoginRoute[F[_]](authenticator: BasicAuthenticator[F, PlayerId], newToken: PlayerId => String)(implicit F: Sync[F])
     extends Http4sDsl[F] {
 
-  private val realm = "golfApp"
-
-  val basicAuth: AuthMiddleware[F, PlayerId] = BasicAuth(realm, authenticator)
+  val basicAuth: AuthMiddleware[F, PlayerId] = BasicAuth("golfApp", authenticator)
 
   def loginRoute: HttpRoutes[F] =
     basicAuth(AuthedRoutes.of[PlayerId, F] {
