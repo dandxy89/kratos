@@ -15,7 +15,7 @@ import com.dandxy.util.Codecs._
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.AuthMiddleware
-import org.http4s.{AuthedRoutes, HttpRoutes, Request, Response}
+import org.http4s.{ AuthedRoutes, HttpRoutes, Request, Response }
 
 import scala.language.higherKinds
 
@@ -25,7 +25,7 @@ class MetricsRoutes[F[_]](ms: MetricsStore[F], middleware: AuthMiddleware[F, Cla
                                                           c: ToHttpResponse[F, A]): F[Response[F]] =
     ME.attempt(op).flatMap {
       case Right(value) => value.negotiate(r)
-      case Left(error)      => 
+      case Left(error) =>
         println(error.getMessage())
         e.negotiate(r)
     }
@@ -41,11 +41,29 @@ class MetricsRoutes[F[_]](ms: MetricsStore[F], middleware: AuthMiddleware[F, Cla
     case authReq @ GET -> Root / "gir" / IntVar(gameId) as _ =>
       runDbOp(ms.greenInRegulation(GameId(gameId)), InvalidGameProvided, authReq.req)
 
+    case authReq @ GET -> Root / "gir" / "holes" / IntVar(gameId) as _ =>
+      runDbOp(ms.holesWhereGIR(GameId(gameId)), InvalidGameProvided, authReq.req)
+
+    case authReq @ GET -> Root / "gir" / "holes" / "not" / IntVar(gameId) as _ =>
+      runDbOp(ms.holesWhereNotGIR(GameId(gameId)), InvalidGameProvided, authReq.req)
+
     case authReq @ GET -> Root / "putting" / "round" / IntVar(gameId) as _ =>
       runDbOp(ms.puttsPerRound(GameId(gameId)), InvalidGameProvided, authReq.req)
 
     case authReq @ GET -> Root / "putting" / IntVar(gameId) / IntVar(bucketSize) / IntVar(limit) as _ =>
       runDbOp(ms.puttsToHoleDistance(GameId(gameId), bucketSize, limit), InvalidGameProvided, authReq.req)
+
+    case authReq @ GET -> Root / "putting" / "gir" / IntVar(gameId) as _ =>
+      runDbOp(ms.averagePuttsWhenGIR(GameId(gameId)), InvalidGameProvided, authReq.req)
+
+    case authReq @ GET -> Root / "putting" / "gir" / "not" / IntVar(gameId) as _ =>
+      runDbOp(ms.averagePuttsWhenNotGIR(GameId(gameId)), InvalidGameProvided, authReq.req)
+
+    case authReq @ GET -> Root / "putting" / "first" / "gir" / IntVar(gameId) as _ =>
+      runDbOp(ms.firstPuttDistanceGIR(GameId(gameId)), InvalidGameProvided, authReq.req)
+
+    case authReq @ GET -> Root / "putting" / "first" / "gir" / "not" / IntVar(gameId) as _ =>
+      runDbOp(ms.firstPuttDistanceNotGIR(GameId(gameId)), InvalidGameProvided, authReq.req)
 
     case authReq @ GET -> Root / "penalties" / IntVar(gameId) as _ =>
       runDbOp(ms.penaltiesPerRound(GameId(gameId)), InvalidGameProvided, authReq.req)

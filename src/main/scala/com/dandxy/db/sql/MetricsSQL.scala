@@ -1,9 +1,9 @@
 package com.dandxy.db.sql
 
 import com.dandxy.db.sql.SQLOrder.Descending
-import com.dandxy.golf.input.{Distance, Strokes}
+import com.dandxy.golf.input.{ Distance, Strokes }
 import com.dandxy.model.stats._
-import com.dandxy.model.user.Identifier.GameId
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import doobie._
 import doobie.implicits._
 
@@ -20,7 +20,13 @@ object MetricsSQL {
          |        COUNT(ball_location) AS TotalHolesPlayed
          | FROM player.shot
          | WHERE game_id = $gameId
-         |       AND ( par = 3 and shot = 2 OR par = 4 and shot = 3 OR par = 5 and shot = 4 )
+         |       AND ( 
+         |              (par = 3 and shot <= 2) 
+         |           OR 
+         |              (par = 4 and shot <= 3) 
+         |           OR 
+         |              (par = 5 and shot <= 4) 
+         | )
          | GROUP BY game_id """.stripMargin.query[InRegulation].option
 
   private[db] def getFairwaysInRegulation(gameId: GameId): ConnectionIO[Option[InRegulation]] =
@@ -28,7 +34,13 @@ object MetricsSQL {
          |        COUNT(ball_location) AS TotalHolesPlayed
          | FROM player.shot 
          | WHERE game_id = $gameId
-         |       AND ( par = 4 and shot = 2 OR par = 5 and shot = 2 )
+         |       AND ( 
+         |              (par = 3 and shot <= 2) 
+         |          OR 
+         |              (par = 4 and shot <= 3) 
+         |          OR 
+         |              (par = 5 and shot <= 4) 
+         | )
          | GROUP BY game_id """.stripMargin.query[InRegulation].option
 
   private[db] def getAverageDistanceByClub(gameId: GameId): ConnectionIO[List[ClubDistance]] =
@@ -129,4 +141,161 @@ object MetricsSQL {
              | ORDER BY strokes_gained ASC
              | LIMIT $n """.stripMargin.query[StrokesGainedResults].to[List]
     }
+
+  private[db] def getHolesGIR(gameId: GameId): ConnectionIO[List[Hole]] =
+    sql""" SELECT hole
+         | FROM  player.shot
+         | WHERE game_id = $gameId
+         | AND (
+         |    (shot <= 2 AND par = 3 AND ball_location = 6)
+         |    OR
+         |    (shot <= 3 AND par = 3 AND ball_location = 6)
+         |    OR
+         |    (shot <= 4 AND par = 5 AND ball_location = 6)
+         | ) """.stripMargin.query[Hole].to[List]
+
+  private[db] def getHolesNotGIR(gameId: GameId): ConnectionIO[List[Hole]] =
+    sql""" SELECT DISTINCT hole
+         | FROM player.shot
+         | WHERE game_id = $gameId
+         | AND hole NOT IN (
+         |    SELECT hole
+         |    FROM player.shot
+         |    WHERE game_id = $gameId
+         |    AND (
+         |        (shot <= 2 AND par = 3 AND ball_location = 6)
+         |        OR
+         |        (shot <= 3 AND par = 4 AND ball_location = 6)
+         |        OR
+         |        (shot <= 4 AND par = 5 AND ball_location = 6)
+         |    )
+         | )
+         |""".stripMargin.query[Hole].to[List]
+
+  private[db] def getAveragePuttsWhenGIR(gameId: GameId): Query0[Strokes] =
+    sql""" SELECT CAST(CALC.NUM AS FLOAT) / CAST(CALC.DEMON AS FLOAT)
+         | FROM (
+         |    SELECT
+         |    (
+         |        SELECT COUNT(*)
+         |        FROM player.shot
+         |        WHERE game_id = $gameId
+         |        AND ball_location = 6
+         |        AND hole IN (
+         |            SELECT hole
+         |            FROM player.shot
+         |            WHERE game_id = $gameId
+         |            AND (
+         |                (shot <= 2 AND par = 3 AND ball_location = 6)
+         |                OR
+         |                (shot <= 3 AND par = 4 AND ball_location = 6)
+         |                OR
+         |                (shot <= 4 AND par = 5 AND ball_location = 6)
+         |            )
+         |        )
+         |    ) AS NUM,
+         |    (
+         |        SELECT COUNT(DISTINCT hole)
+         |        FROM player.shot
+         |        WHERE game_id = $gameId
+         |        AND (
+         |            (shot <= 2 AND par = 3 AND ball_location = 6)
+         |            OR
+         |            (shot <= 3 AND par = 4 AND ball_location = 6)
+         |            OR
+         |            (shot <= 4 AND par = 5 AND ball_location = 6)
+         |        )
+         |
+         |    ) AS DEMON
+         | ) CALC """.stripMargin.query[Strokes]
+
+  private[db] def getAveragePuttsWhenNotGIR(gameId: GameId): Query0[Strokes] =
+    sql""" SELECT CAST(CALC.NUM AS FLOAT) / CAST(CALC.DEMON AS FLOAT)
+         | FROM (
+         |    SELECT
+         |    (
+         |        SELECT COUNT(*)
+         |        FROM player.shot
+         |        WHERE game_id = $gameId
+         |        AND ball_location = 6
+         |        AND hole NOT IN (
+         |            SELECT hole
+         |            FROM player.shot
+         |            WHERE game_id = $gameId
+         |            AND (
+         |                (shot <= 2 AND par = 3 AND ball_location = 6)
+         |                OR
+         |                (shot <= 3 AND par = 4 AND ball_location = 6)
+         |                OR
+         |                (shot <= 4 AND par = 5 AND ball_location = 6)
+         |            )
+         |        )
+         |    ) AS NUM,
+         |    (
+         |        SELECT COUNT(DISTINCT hole)
+         |        FROM player.shot
+         |        WHERE game_id = $gameId
+         |        AND hole NOT IN (
+         |            SELECT hole
+         |            FROM player.shot
+         |            WHERE game_id = $gameId
+         |            AND (
+         |                (shot <= 2 AND par = 3 AND ball_location = 6)
+         |                OR
+         |                (shot <= 3 AND par = 4 AND ball_location = 6)
+         |                OR
+         |                (shot <= 4 AND par = 5 AND ball_location = 6)
+         |            )
+         |        )
+         |    ) AS DEMON
+         | ) CALC """.stripMargin.query[Strokes]
+
+  private[db] def getAverageFirstPuttWhenGIR(gameId: GameId): ConnectionIO[Option[Distance]] =
+    sql""" SELECT AVG(s.distance)
+         | FROM player.shot s
+         | INNER JOIN (
+         |    SELECT hole, MIN(shot) AS shot
+         |    FROM player.shot
+         |    WHERE game_id = $gameId 
+         |    AND ball_location = 6
+         |    AND hole IN (
+         |        SELECT hole
+         |        FROM player.shot
+         |        WHERE game_id = $gameId
+         |        AND (
+         |            (shot <= 2 AND par = 3 AND ball_location = 6)
+         |            OR
+         |            (shot <= 3 AND par = 4 AND ball_location = 6)
+         |            OR
+         |            (shot <= 3 AND par = 4 AND ball_location = 6)
+         |        )
+         |    )
+         |    GROUP BY hole
+         | ) j ON j.hole = s.hole AND j.shot = s.shot
+         | WHERE game_id = $gameId """.stripMargin.query[Distance].option
+
+  private[db] def getAverageFirstPuttWhenNotGIR(gameId: GameId): ConnectionIO[Option[Distance]] =
+    sql""" SELECT AVG(s.distance)
+         | FROM player.shot s
+         | INNER JOIN (
+         |    SELECT hole, MIN(shot) AS shot
+         |    FROM player.shot
+         |    WHERE game_id = $gameId
+         |    AND ball_location = 6
+         |    AND hole NOT IN (
+         |        SELECT hole
+         |        FROM player.shot
+         |        WHERE game_id = $gameId
+         |        AND (
+         |            (shot <= 2 AND par = 3 AND ball_location = 6)
+         |            OR
+         |            (shot <= 3 AND par = 4 AND ball_location = 6)
+         |            OR
+         |            (shot <= 3 AND par = 4 AND ball_location = 6)
+         |        )
+         |    )
+         |    GROUP BY hole
+         | ) j ON j.hole = s.hole AND j.shot = s.shot
+         | WHERE game_id = $gameId """.stripMargin.query[Distance].option
+
 }

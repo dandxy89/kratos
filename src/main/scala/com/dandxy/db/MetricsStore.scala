@@ -1,10 +1,12 @@
 package com.dandxy.db
 
 import cats.effect.Bracket
+import cats.syntax.functor._
 import com.dandxy.db.sql.MetricsSQL._
 import com.dandxy.golf.input.{ Distance, Strokes }
 import com.dandxy.model.stats._
 import com.dandxy.db.sql.SQLOrder._
+import com.dandxy.model.user.Identifier
 import com.dandxy.model.user.Identifier.GameId
 import doobie.implicits._
 import doobie.util.transactor.Transactor
@@ -25,6 +27,12 @@ trait MetricsStore[F[_]] {
   def holedPuttDistance(gameId: GameId): F[Option[Distance]]
   def puttsToHoleDistance(gameId: GameId, size: Int, max: Int): F[List[PuttsByDistanceToHole]]
   def standardScores(gameId: GameId): F[List[StandardScores]]
+  def holesWhereGIR(gameId: GameId): F[List[Identifier.Hole]]
+  def holesWhereNotGIR(gameId: GameId): F[List[Identifier.Hole]]
+  def averagePuttsWhenGIR(gameId: GameId): F[Option[Strokes]]
+  def averagePuttsWhenNotGIR(gameId: GameId): F[Option[Strokes]]
+  def firstPuttDistanceGIR(gameId: GameId): F[Option[Distance]]
+  def firstPuttDistanceNotGIR(gameId: GameId): F[Option[Distance]]
 }
 
 class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F]) extends MetricsStore[F] {
@@ -67,6 +75,24 @@ class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[
 
   def standardScores(gameId: GameId): F[List[StandardScores]] =
     getStandardScores(gameId).transact(xa)
+
+  def holesWhereGIR(gameId: GameId): F[List[Identifier.Hole]] =
+    getHolesGIR(gameId).transact(xa).map(_.distinct)
+
+  def holesWhereNotGIR(gameId: GameId): F[List[Identifier.Hole]] =
+    getHolesNotGIR(gameId).transact(xa).map(_.distinct)
+
+  def averagePuttsWhenGIR(gameId: GameId): F[Option[Strokes]] =
+    getAveragePuttsWhenGIR(gameId).option.transact(xa)
+
+  def averagePuttsWhenNotGIR(gameId: GameId): F[Option[Strokes]] =
+    getAveragePuttsWhenNotGIR(gameId).option.transact(xa)
+
+  def firstPuttDistanceGIR(gameId: GameId): F[Option[Distance]] =
+    getAverageFirstPuttWhenGIR(gameId).transact(xa)
+
+  def firstPuttDistanceNotGIR(gameId: GameId): F[Option[Distance]] =
+    getAverageFirstPuttWhenNotGIR(gameId).transact(xa)
 
 }
 
