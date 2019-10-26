@@ -23,9 +23,6 @@ import scala.language.higherKinds
 class RegistrationRoute[F[_]: Monad](registerUser: (UserRegistration, Password, Timestamp) => F[PlayerId])(implicit F: Sync[F])
     extends Http4sDsl[F] {
 
-  // GET /golfer/verify?token={Emailed JWT Token}
-  //    case GET -> Root / "verify" => ???
-
   val registrationRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
     case req @ POST -> Root / "golfer" =>
       val res: F[PlayerId] = for {

@@ -4,7 +4,7 @@ import cats.effect.IO
 import com.dandxy.jwt.GenerateToken
 import com.dandxy.testData.MockRouteTestData
 import org.http4s.util.CaseInsensitiveString
-import org.http4s.{Header, Method, Request, Status, Uri}
+import org.http4s.{ Header, Method, Request, Status, Uri }
 
 import scala.language.higherKinds
 

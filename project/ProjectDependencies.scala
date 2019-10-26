@@ -5,9 +5,9 @@ object ProjectDependencies extends {
   private[this] object Version {
     val argonPass          = "2.5"
     val circeVersion       = "0.11.1"
-    val doobieVersion      = "0.7.0-M5"
+    val doobieVersion      = "0.7.1"
     val fS2Version         = "1.0.4"
-    val http4sVersion      = "0.20.10"
+    val http4sVersion      = "0.20.11"
     val JwtVersion         = "3.1.0"
     val logbackVersion     = "1.2.3"
     val scalaLogVersion    = "3.9.2"

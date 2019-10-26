@@ -4,20 +4,21 @@ import java.sql.Timestamp
 
 import cats.effect.IO
 import cats.implicits._
-import com.dandxy.db.UserStore
-import com.dandxy.golf.entity.GolfClub.FourIron
+import com.dandxy.db.{ MetricsStore, UserStore }
+import com.dandxy.golf.entity.GolfClub.{ Driver, EightIron, FourIron, ThreeWood }
 import com.dandxy.golf.entity.Score.Aggregate
-import com.dandxy.golf.entity.{Location, Par}
+import com.dandxy.golf.entity.{ Location, Par }
 import com.dandxy.golf.input.DistanceMeasurement.Feet
-import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
-import com.dandxy.golf.input.{Distance, Handicap, HandicapWithDate, Points}
+import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
+import com.dandxy.golf.input._
 import com.dandxy.golf.pga.Statistic.PGAStatistic
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{GameId, Hole}
+import com.dandxy.model.stats._
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
-import org.http4s.{Header, Method, Request, Response, Uri}
-import org.scalatest.{Assertion, FlatSpec, Matchers}
+import org.http4s.{ Header, Method, Request, Response, Uri }
+import org.scalatest.{ Assertion, FlatSpec, Matchers }
 
 trait MockRouteTestData extends FlatSpec with Matchers with SimulationTestData {
 
@@ -48,7 +49,7 @@ trait MockRouteTestData extends FlatSpec with Matchers with SimulationTestData {
 
   def dbResult(game: GameId): GolfResult = GolfResult(game, Aggregate(3), None, None, None, None, None, Points(2))
 
-  val mockStore: UserStore[IO] = new UserStore[IO] {
+  val mockUserStore: UserStore[IO] = new UserStore[IO] {
 
     def getByGameAndMaybeHole(gameId: GameId, hole: Option[Hole]): IO[List[UserShotInput]] =
       IO.pure(parThreeExample ++ parFourExample ++ parFiveExample)
@@ -146,4 +147,94 @@ trait MockRouteTestData extends FlatSpec with Matchers with SimulationTestData {
       |}
       |""".stripMargin
 
+  val mockMetricsStore: MetricsStore[IO] = new MetricsStore[IO] {
+
+    def strokesGainedByClub(gameId: GameId): IO[List[StokesGainedByClub]] =
+      IO.pure(
+        List(
+          StokesGainedByClub(EightIron, Strokes(-1.2), Strokes(-0.5), Strokes(0.2))
+        )
+      )
+
+    def bestXShots(gameId: GameId, n: Int): IO[List[StrokesGainedResults]] =
+      IO.pure(
+        List(
+          StrokesGainedResults(Hole(10), 3, Par.ParFour, Distance(200), Location.Fairway, EightIron, Option(Strokes(-0.4)), 3)
+        )
+      )
+
+    def worstXShots(gameId: GameId, n: Int): IO[List[StrokesGainedResults]] =
+      IO.pure(
+        List(
+          StrokesGainedResults(Hole(10), 3, Par.ParFour, Distance(200), Location.Fairway, EightIron, Option(Strokes(1.4)), 3)
+        )
+      )
+
+    def greenInRegulation(gameId: GameId): IO[Option[InRegulation]] =
+      IO.pure(Option(InRegulation(12, 15)))
+
+    def fairwaysInRegulation(gameId: GameId): IO[Option[InRegulation]] =
+      IO.pure(Option(InRegulation(13, 15)))
+
+    def averageDistanceByClub(gameId: GameId): IO[List[ClubDistance]] =
+      IO.pure(
+        List(
+          ClubDistance(Driver, Distance(321)),
+          ClubDistance(ThreeWood, Distance(278))
+        )
+      )
+
+    def strokesGainedWithoutXShots(gameId: GameId, n: Int): IO[Option[Strokes]] =
+      IO.pure(Option(Strokes(-2.3)))
+
+    def puttsPerRound(gameId: GameId): IO[Option[Strokes]] =
+      IO.pure(Option(Strokes(34.0)))
+
+    def penaltiesPerRound(gameId: GameId): IO[Option[Strokes]] =
+      IO.pure(Option(Strokes(0.0)))
+
+    def averageDriveLength(gameId: GameId): IO[List[AverageDriveDistance]] =
+      IO.pure(
+        List(
+          AverageDriveDistance(EightIron, Distance(123)),
+          AverageDriveDistance(FourIron, Distance(193))
+        )
+      )
+
+    def holedPuttDistance(gameId: GameId): IO[Option[Distance]] =
+      IO.pure(Option(Distance(45)))
+
+    def puttsToHoleDistance(gameId: GameId, size: Int, max: Int): IO[List[PuttsByDistanceToHole]] =
+      IO.pure(
+        List(
+          PuttsByDistanceToHole(Distance(3), Strokes(3)),
+          PuttsByDistanceToHole(Distance(6), Strokes(2))
+        )
+      )
+
+    def standardScores(gameId: GameId): IO[List[StandardScores]] =
+      IO.pure(
+        List(
+          StandardScores(Strokes(1), Strokes(3), Strokes(5), Strokes(5), Strokes(2), Strokes(1), Strokes(0))
+        )
+      )
+
+    def holesWhereGIR(gameId: GameId): IO[List[Hole]] =
+      IO.pure(List(Hole(3), Hole(13)))
+
+    def holesWhereNotGIR(gameId: GameId): IO[List[Hole]] =
+      IO.pure(List(Hole(5), Hole(17)))
+
+    def averagePuttsWhenGIR(gameId: GameId): IO[Option[Strokes]] =
+      IO.pure(Option(Strokes(1.1234)))
+
+    def averagePuttsWhenNotGIR(gameId: GameId): IO[Option[Strokes]] =
+      IO.pure(Option(Strokes(1.23213)))
+
+    def firstPuttDistanceGIR(gameId: GameId): IO[Option[Distance]] =
+      IO.pure(Option(Distance(1.93213)))
+
+    def firstPuttDistanceNotGIR(gameId: GameId): IO[Option[Distance]] =
+      IO.pure(Option(Distance(19)))
+  }
 }

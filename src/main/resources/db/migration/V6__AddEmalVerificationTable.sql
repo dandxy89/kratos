@@ -4,4 +4,5 @@ CREATE TABLE player.email_verification (
     verified BOOLEAN NOT NULL
 );
 
-CREATE UNIQUE INDEX player_verification_index on player.email_verification (player_email);
+CREATE UNIQUE INDEX player_verification_index ON player.email_verification (player_email);
+

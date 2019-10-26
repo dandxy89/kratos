@@ -5,11 +5,10 @@ CREATE TABLE player.playerlookup (
     update_time TIMESTAMP NOT NULL,
     first_name VARCHAR(200) NOT NULL,
     last_name VARCHAR(200) NOT NULL,
-
-    CONSTRAINT master_player_id_pkey PRIMARY KEY(player_id)
+    CONSTRAINT master_player_id_pkey PRIMARY KEY (player_id)
 );
 
-CREATE UNIQUE INDEX player_email_index on player.playerlookup (player_email);
+CREATE UNIQUE INDEX player_email_index ON player.playerlookup (player_email);
 
 -- Password Storage
 CREATE TABLE userSecurity.hashedpassword (
@@ -18,7 +17,7 @@ CREATE TABLE userSecurity.hashedpassword (
     player_id INTEGER REFERENCES player.playerlookup
 );
 
-CREATE UNIQUE INDEX player_sec_email_index on userSecurity.hashedpassword (player_email);
+CREATE UNIQUE INDEX player_sec_email_index ON userSecurity.hashedpassword (player_email);
 
 -- Players clubs
 CREATE TABLE player.club_data (
@@ -45,7 +44,7 @@ CREATE TABLE player.game (
     wind_speed INTEGER
 );
 
-CREATE UNIQUE INDEX player_game_index on player.game (player_id, course, game_start_time);
+CREATE UNIQUE INDEX player_game_index ON player.game (player_id, course, game_start_time);
 
 -- Players Game result
 CREATE TABLE player.game_result (
@@ -60,7 +59,7 @@ CREATE TABLE player.game_result (
     points INTEGER NOT NULL
 );
 
-CREATE UNIQUE INDEX player_game_result_index on player.game_result (game_id);
+CREATE UNIQUE INDEX player_game_result_index ON player.game_result (game_id);
 
 -- Players hole result
 CREATE TABLE player.hole_result (
@@ -76,7 +75,7 @@ CREATE TABLE player.hole_result (
     points INTEGER NOT NULL
 );
 
-CREATE UNIQUE INDEX player_hole_result_index on player.hole_result (game_id, hole);
+CREATE UNIQUE INDEX player_hole_result_index ON player.hole_result (game_id, hole);
 
 -- Players shot
 CREATE TABLE player.shot (
@@ -95,4 +94,5 @@ CREATE TABLE player.shot (
     shot_height INTEGER
 );
 
-CREATE UNIQUE INDEX player_shot_index on player.shot (game_id, hole, shot);
+CREATE UNIQUE INDEX player_shot_index ON player.shot (game_id, hole, shot);
+

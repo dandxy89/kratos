@@ -3,7 +3,7 @@
 
 The purpose of this backend application is to record, calculate and analyse golf data.
 
-The primary focus intially has been to incorporate the Strokes Gained methodology into the App whereby upon saving to the database the application will calculate the metrics for the given Hole and Game.
+The primary focus initially has been to incorporate the Strokes Gained methodology into the App whereby upon saving to the database the application will calculate the metrics for the given Hole and Game.
 
 The intention longer term is to incorporate more analysis and modes to record shots but also different types of Games ( namely Sixes, Foursomes and Greensomes) and practice recording.
 
@@ -56,3 +56,21 @@ Yet to be decided / built.
 
 * ```sbt clean coverage it:test coverageReport``` - run the tests and generate a coverage report
 * ```bash <(curl -s https://codecov.io/bash) -t 2136d990-e22d-4501-8293-501f554bf29f``` - push results to [codecov.io](https://codecov.io/gh/dandxy89/kratos)
+
+## Code Count
+
+* Scala: 4560 lines
+* SQL: 3537
+* Python: 210
+* R: 37 
+
+# Documents
+
+All documents relating to this project are located [here](/docs)
+
+Items include:
+
+* Route descriptions
+* Metric Ideas
+* Project TODO list
+* Deferrals

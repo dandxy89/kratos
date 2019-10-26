@@ -1,0 +1,1354 @@
+{
+	"info": {
+		"_postman_id": "545be976-7352-4157-b994-f4e0e7732cb1",
+		"name": "Strokes Gained App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Development",
+			"item": [
+				{
+					"name": "Metrics",
+					"item": [
+						{
+							"name": "GET Login Example",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "dp@gmail.com",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "asd123",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/login/golfer",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"login",
+										"golfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Standard Scores",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/standard/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"standard",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fairways In Regulation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/fir/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"fir",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Greens In Regulation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/gir/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"gir",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Putts Per Round",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/round/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"round",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Putts Performance",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/12/10/120",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"12",
+										"10",
+										"120"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Penalties",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/penalties/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"penalties",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Best X Shots",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/strokes_gained/shots/best/12/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"strokes_gained",
+										"shots",
+										"best",
+										"12",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Worst X Shots",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/strokes_gained/shots/worst/12/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"strokes_gained",
+										"shots",
+										"worst",
+										"12",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Strokes Gained Club",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/strokes_gained/club/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"strokes_gained",
+										"club",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Strokes Gained Peformance w/o X Shots",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/strokes_gained/without/12/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"strokes_gained",
+										"without",
+										"12",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Club Distance",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/club/distance/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"club",
+										"distance",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Driving Distance",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4NjcyMzMsImlhdCI6MTU3MTg2MDAzMywicGxheWVySWQiOjN9.mFy9YE48mFBXM8KSy7-VMD-FiJ5nQZ5Y-UmT7v-BKcU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/driving/distance/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"driving",
+										"distance",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hole Where GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/gir/holes/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"gir",
+										"holes",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hole Where Not GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/gir/holes/not/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"gir",
+										"holes",
+										"not",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Average Putts When GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/gir/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"gir",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Average Putts When Not GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/gir/not/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"gir",
+										"not",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "First Putt Distance GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/first/gir/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"first",
+										"gir",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "First Putt Distance Not GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/first/gir/not/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"first",
+										"gir",
+										"not",
+										"12"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Basic",
+					"item": [
+						{
+							"name": "POST Registration",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"user\" : {\n    \"email\" : \"dp@gmail.com\",\n    \"firstName\" : \"d\",\n    \"lastName\" : \"g\"\n  },\n  \"password\" : \"asd123\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/register/golfer",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"register",
+										"golfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Login Example",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "dp@gmail.com",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "asd123",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/login/golfer",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"login",
+										"golfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD Club Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"playerId\":3,\n    \"club\":1,\n    \"typicalShape\":3,\n    \"typicalHeight\":3,\n    \"manufacturer\":2,\n    \"typicalDistance\":278,\n    \"distanceType\":2\n  },\n  {\n    \"playerId\":3,\n    \"club\":2,\n    \"typicalShape\":2,\n    \"typicalHeight\":1,\n    \"manufacturer\":4,\n    \"typicalDistance\":234,\n    \"distanceType\":2\n  }\n]"
+								},
+								"url": {
+									"raw": "http://localhost:8080/golf/club",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"club"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Club Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/club",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"club"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD Games by Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"playerId\": 3,\n    \"gameStartTime\": 1568241842,\n    \"courseName\": \"Burhill Golf Club - New Course\",\n    \"handicap\": 6.3,\n    \"ballUsed\": \"Truesoft\",\n    \"temperature\": 18.2\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/golf/game",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"game"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Games by Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/game/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"game",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Games of Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzYzNTIsImlhdCI6MTU3MTgyOTE1MiwicGxheWVySWQiOjN9.SE28G35JDE7y_-xzq6Xj0lCYozL04zyZMsWBGDPffNM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/game/all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"game",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE All Games by Id Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/game/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"game",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD Shots for a Game",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":1,\n        \"par\":3,\n        \"distance\":210,\n        \"location\":1,\n        \"club\":15,\n        \"strokeIndex\":1\n    },\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":2,\n        \"par\":3,\n        \"distance\":10,\n        \"location\":6,\n        \"club\":25,\n        \"strokeIndex\":1\n    },\n    {\n        \"gameId\":4,\n        \"hole\":1,\n        \"shot\":3,\n        \"par\":3,\n        \"distance\":4,\n        \"location\":6,\n        \"club\":25,\n        \"strokeIndex\":1\n    }\n]"
+								},
+								"url": {
+									"raw": "http://localhost:8080/golf/game/shot",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"game",
+										"shot"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Shots for a Game",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/game/4/shot",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"game",
+										"4",
+										"shot"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Shots for a Game And Hole",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NDA3MTQsImlhdCI6MTU2ODgzMzUxNCwicGxheWVySWQiOjN9.whZiPIBEKHp0jrqK8c7qKqEJkxOphBom7gLygSzG6l8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/game/27/shot/hole/8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"game",
+										"27",
+										"shot",
+										"hole",
+										"8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Handicap History",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/handicap",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"handicap"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Result for a Game",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NTA1MzEsImlhdCI6MTU2ODg0MzMzMSwicGxheWVySWQiOjN9.E6tEEzjS6eSOltGRY8CRa8MaE9cCl4KPua4gLjC4guw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/result/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"result",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Result for a Game and Hole",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1Njg4NDA3MTQsImlhdCI6MTU2ODgzMzUxNCwicGxheWVySWQiOjN9.whZiPIBEKHp0jrqK8c7qKqEJkxOphBom7gLygSzG6l8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/result/33/hole/8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"result",
+										"33",
+										"hole",
+										"8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Aggregate game",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE4MzYzNTIsImlhdCI6MTU3MTgyOTE1MiwicGxheWVySWQiOjN9.SE28G35JDE7y_-xzq6Xj0lCYozL04zyZMsWBGDPffNM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/golf/aggregate/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"golf",
+										"aggregate",
+										"12"
+									],
+									"query": [
+										{
+											"key": "Accept",
+											"value": "application/json",
+											"disabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "PingPong",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/health/ping",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"health",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DB Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/health/db/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"health",
+								"db",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Production",
+			"item": []
+		}
+	]
+}
