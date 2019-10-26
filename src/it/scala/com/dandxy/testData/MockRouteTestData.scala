@@ -4,6 +4,7 @@ import java.sql.Timestamp
 
 import cats.effect.IO
 import cats.implicits._
+import com.dandxy.auth.Password
 import com.dandxy.db.{ MetricsStore, UserStore }
 import com.dandxy.golf.entity.GolfClub.{ Driver, EightIron, FourIron, ThreeWood }
 import com.dandxy.golf.entity.Score.Aggregate

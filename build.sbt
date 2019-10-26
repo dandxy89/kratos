@@ -1,7 +1,7 @@
-ThisBuild / organization := "com.dandxy89"
-ThisBuild / scalaVersion := "2.12.9"
-ThisBuild / version := Version()
-ThisBuild / name := "StrokesGained"
+organization := "com.dandxy89"
+scalaVersion := "2.12.9"
+version := Version()
+name := "StrokesGained"
 
 lazy val root = (project in file("."))
   .configs(IntegrationTest)

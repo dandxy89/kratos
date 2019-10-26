@@ -4,7 +4,7 @@ import java.sql.Timestamp
 
 import cats.effect.Bracket
 import com.dandxy.auth.PasswordAuth.{ hashPassword, verifyPassword }
-import com.dandxy.auth.PlayerHash
+import com.dandxy.auth.{ Password, PlayerHash }
 import com.dandxy.config.AuthSalt
 import com.dandxy.db.sql.TableName._
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }

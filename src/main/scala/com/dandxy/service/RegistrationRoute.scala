@@ -6,12 +6,13 @@ import java.time.LocalDateTime
 import cats.Monad
 import cats.effect.Sync
 import cats.implicits._
+import com.dandxy.auth.Password
 import com.dandxy.middleware.http4s.content.defaults._
 import com.dandxy.middleware.http4s.content.syntax._
 import com.dandxy.model.error.DomainError
 import com.dandxy.model.error.DomainError.InvalidDataProvided
 import com.dandxy.model.player.{ PlayerId, Registration }
-import com.dandxy.model.user.{ Password, UserRegistration }
+import com.dandxy.model.user.UserRegistration
 import com.dandxy.util.Codecs._
 import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityDecoder._

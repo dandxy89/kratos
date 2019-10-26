@@ -10,7 +10,7 @@ import com.dandxy.util.RouteUtils.runDbOp
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.AuthMiddleware
-import org.http4s.{AuthedRoutes, HttpRoutes}
+import org.http4s.{ AuthedRoutes, HttpRoutes }
 
 import scala.language.higherKinds
 

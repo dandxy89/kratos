@@ -3,7 +3,7 @@ package com.dandxy.db.sql
 import java.sql.Timestamp
 
 import cats.implicits._
-import com.dandxy.auth.PlayerHash
+import com.dandxy.auth.{ Password, PlayerHash }
 import com.dandxy.golf.entity.{ GolfClub, Location, Orientation, Par }
 import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input._
