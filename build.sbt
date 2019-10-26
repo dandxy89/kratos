@@ -15,3 +15,5 @@ Test / fork := false
 Test / testForkedParallel := false
 IntegrationTest / fork := false
 IntegrationTest / testForkedParallel := false
+
+resolvers += Resolver.mavenLocal
