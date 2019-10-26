@@ -226,7 +226,7 @@ trait MockRouteTestData extends FlatSpec with Matchers with SimulationTestData {
       IO.pure(List(Hole(5), Hole(17)))
 
     def averagePuttsWhenGIR(gameId: GameId): IO[Option[Strokes]] =
-      IO.pure(Option(Strokes(12.0)))
+      IO.pure(Option(Strokes(1.1234)))
 
     def averagePuttsWhenNotGIR(gameId: GameId): IO[Option[Strokes]] =
       IO.pure(Option(Strokes(1.23213)))
