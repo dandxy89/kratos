@@ -19,6 +19,7 @@ object ProjectDependencies extends {
     val profigVersion      = "2.3.4"
     val scala4jLogging     = "1.7.26"
     val circeConfigVersion = "0.6.1"
+    val kratosLibVersion   = "0.0.1-SNAPSHOT"
   }
 
   def apply(): Seq[ModuleID] = Seq(
@@ -52,6 +53,8 @@ object ProjectDependencies extends {
     "org.scalaz"                 %% "scalaz-zio"              % Version.zioVersion,
     "org.scalaz"                 %% "scalaz-zio-interop-cats" % Version.zioVersion,
     "org.scalatest"              %% "scalatest"               % Version.scalaTestVersion % "it, test",
+    // Kratos Libraries
+    "com.dandxy89" %% "kratos-middleware" % Version.kratosLibVersion,
     // Compiler Plugins
     compilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.4"),
     compilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.3.0-M4")
