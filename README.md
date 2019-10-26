@@ -74,3 +74,16 @@ Items include:
 * Metric Ideas
 * Project TODO list
 * Deferrals
+
+## Local Dependencies
+
+You'll need to publish both `auth` and `middleware` projects locally:
+
+* Auth - ```git clone git@github.com:dandxy89/kratos-auth.git```
+* Middleware - ```git clone git@github.com:dandxy89/kratos-middlewares.git```
+
+Then run the following to publish locally:
+
+```bash
+sh publishLibraryLocally.sh
+```

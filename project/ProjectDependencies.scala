@@ -55,6 +55,7 @@ object ProjectDependencies extends {
     "org.scalatest"              %% "scalatest"               % Version.scalaTestVersion % "it, test",
     // Kratos Libraries
     "com.dandxy89" %% "kratos-middleware" % Version.kratosLibVersion,
+    "com.dandxy89" %% "kratos-auth"       % Version.kratosLibVersion,
     // Compiler Plugins
     compilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.4"),
     compilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.3.0-M4")

@@ -3,8 +3,9 @@ package com.dandxy.service
 import java.sql.Timestamp
 
 import cats.effect.IO
+import com.dandxy.auth.Password
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.{ Password, UserRegistration }
+import com.dandxy.model.user.UserRegistration
 import com.dandxy.testData.MockRouteTestData
 import org.http4s.{ Header, HttpRoutes, Method, Request, Status, Uri }
 

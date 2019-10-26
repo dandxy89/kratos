@@ -1,6 +1,7 @@
 package com.dandxy.model.player
 
-import com.dandxy.model.user.{ Password, UserRegistration }
+import com.dandxy.auth.Password
+import com.dandxy.model.user.UserRegistration
 import io.circe.generic.semiauto._
 import io.circe.{ Decoder, Encoder }
 

@@ -4,7 +4,7 @@ import java.sql.Timestamp
 
 import cats.effect.{ IO, Timer }
 import cats.implicits._
-import com.dandxy.auth.Salt
+import com.dandxy.auth.{ Password, Salt }
 import com.dandxy.config.{ AuthSalt, DatabaseConfig }
 import com.dandxy.golf.entity.GolfClub.{ Driver, FourIron, Putter }
 import com.dandxy.golf.entity.Location.{ OnTheGreen, TeeBox }

@@ -2,8 +2,9 @@ package com.dandxy.service
 
 import cats.effect.Sync
 import cats.implicits._
+import com.dandxy.auth.Password
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.{ Password, UserEmail }
+import com.dandxy.model.user.UserEmail
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.AuthMiddleware
 import org.http4s.server.middleware.authentication.BasicAuth
