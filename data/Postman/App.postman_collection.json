@@ -12,6 +12,47 @@
 					"name": "Metrics",
 					"item": [
 						{
+							"name": "GET Login Example",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "dp@gmail.com",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "asd123",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/login/golfer",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"login",
+										"golfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Standard Scores",
 							"request": {
 								"auth": {
@@ -391,6 +432,203 @@
 										"metrics",
 										"driving",
 										"distance",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hole Where GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/gir/holes/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"gir",
+										"holes",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hole Where Not GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/gir/holes/not/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"gir",
+										"holes",
+										"not",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Average Putts When GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/gir/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"gir",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Average Putts When Not GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/gir/not/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"gir",
+										"not",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "First Putt Distance GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/first/gir/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"first",
+										"gir",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "First Putt Distance Not GIR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb2xmZXIiLCJleHAiOjE1NzE5NjI4NzMsImlhdCI6MTU3MTk1NTY3MywicGxheWVySWQiOjN9.TAB4hq5fID4ZQeUmkSqbXXxsAYCrdkzX9KvaPj59sSc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/metrics/putting/first/gir/not/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"metrics",
+										"putting",
+										"first",
+										"gir",
+										"not",
 										"12"
 									]
 								}
