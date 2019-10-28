@@ -2,7 +2,6 @@ package com.dandxy.golf.input
 
 import java.sql.Timestamp
 
-import doobie.util.Meta
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder }
@@ -13,8 +12,6 @@ object Handicap {
 
   val defaultHandicap: Handicap = Handicap(0)
 
-  // Instances
-  implicit val meta: Meta[Handicap]  = Meta[Double].imap(Handicap(_))(_.value)
   implicit val en: Encoder[Handicap] = Encoder.instance(_.value.asJson)
   implicit val de: Decoder[Handicap] = Decoder.instance(_.as[Double].map(Handicap(_)))
 }

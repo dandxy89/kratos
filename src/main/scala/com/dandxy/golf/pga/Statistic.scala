@@ -26,7 +26,7 @@ object Probabilities {
       extends Probabilities
 
   // Fairway // Rough
-  final case class UpAndDownPercentage(distance: Distance, fromFairway: Int, fromRough: Int) extends Probabilities //
+  final case class UpAndDownPercentage(distance: Distance, fromFairway: Int, fromRough: Int) extends Probabilities
 
   // Fairway // Rough
   final case class StrokesToGoPercentage(distance: Distance, fromFairway: Int, fromRough: Int) extends Probabilities

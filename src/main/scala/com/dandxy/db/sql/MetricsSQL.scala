@@ -9,6 +9,8 @@ import doobie.implicits._
 
 object MetricsSQL {
 
+  import PostgresInstances._
+
   private[db] def getStrokesGainedByClub(gameId: GameId): ConnectionIO[List[StokesGainedByClub]] =
     sql""" SELECT club, MIN(strokes_gained), AVG(strokes_gained), MAX(strokes_gained)
          | FROM player.shot

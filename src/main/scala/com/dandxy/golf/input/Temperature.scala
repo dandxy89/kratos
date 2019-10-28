@@ -1,6 +1,5 @@
 package com.dandxy.golf.input
 
-import doobie.util.Meta
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder }
 
@@ -15,12 +14,9 @@ object Temperature {
   }
 
   final case class Fahrenheit(value: Double) extends Temperature {
-    // (T(°F) - 32) / (9 / 5)
-    def toCelsius: Double = (value - 32.0) / (9.0 / 5)
+    def toCelsius: Double = (value - 32.0) / (9.0 / 5) // (T(°F) - 32) / (9 / 5)
   }
 
-  implicit val meta: Meta[Temperature]  = Meta[Double].imap[Temperature](v => Celsius(v))(_.toCelsius)
   implicit val en: Encoder[Temperature] = Encoder.instance(_.toCelsius.asJson)
   implicit val de: Decoder[Temperature] = Decoder.instance(_.as[Double].map(Celsius))
-
 }

@@ -1,8 +1,7 @@
 package com.dandxy.golf.input
 
-import doobie.util.Meta
 import io.circe.syntax._
-import io.circe.{ Decoder, Encoder }
+import io.circe.{Decoder, Encoder}
 
 sealed trait ShotHeight {
   def description: String
@@ -38,7 +37,6 @@ object ShotHeight {
     case _ => Putt
   }
 
-  implicit val meta: Meta[ShotHeight]  = Meta[Int].imap(fromId)(_.id)
   implicit val en: Encoder[ShotHeight] = Encoder.instance(_.id.asJson)
   implicit val de: Decoder[ShotHeight] = Decoder.instance(_.as[Int].map(fromId))
 }

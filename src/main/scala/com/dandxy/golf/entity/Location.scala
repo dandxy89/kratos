@@ -4,10 +4,9 @@ import cats.Eq
 import com.dandxy.db.sql.TableName
 import com.dandxy.golf.entity.Penalty._
 import doobie.implicits._
-import doobie.util.Meta
 import doobie.util.fragment.Fragment
 import io.circe.syntax._
-import io.circe.{ Decoder, Encoder }
+import io.circe.{Decoder, Encoder}
 
 sealed trait PGAStatistics {
   val tableName: Fragment
@@ -138,7 +137,6 @@ object Location {
     case _  => TwoShotPenalty
   }
 
-  implicit val meta: Meta[Location]  = Meta[Int].imap(fromId)(_.locationId)
   implicit val en: Encoder[Location] = Encoder.instance(_.locationId.asJson)
   implicit val de: Decoder[Location] = Decoder.instance(_.as[Int].map(fromId))
 }
