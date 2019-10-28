@@ -26,7 +26,6 @@ object GolfInput {
   ) extends GolfInput
 
   object UserGameInput {
-    // Instances
     import com.dandxy.util.Codecs.TimestampFormat
     implicit val en: Encoder[UserGameInput] = deriveEncoder
     implicit val de: Decoder[UserGameInput] = deriveDecoder

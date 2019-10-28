@@ -24,26 +24,15 @@ object ProjectDependencies extends {
 
   def apply(): Seq[ModuleID] = Seq(
     // Project dependencies
-    "com.outr"                   %% "profig"                  % Version.profigVersion,
     "de.mkammerer"               % "argon2-jvm"               % Version.argonPass,
     "co.fs2"                     %% "fs2-core"                % Version.fS2Version,
     "co.fs2"                     %% "fs2-io"                  % Version.fS2Version,
-    "org.http4s"                 %% "http4s-blaze-server"     % Version.http4sVersion,
-    "org.http4s"                 %% "http4s-blaze-client"     % Version.http4sVersion,
-    "org.http4s"                 %% "http4s-circe"            % Version.http4sVersion,
-    "org.http4s"                 %% "http4s-dsl"              % Version.http4sVersion,
-    "io.circe"                   %% "circe-generic"           % Version.circeVersion,
-    "io.circe"                   %% "circe-core"              % Version.circeVersion,
-    "io.circe"                   %% "circe-parser"            % Version.circeVersion,
-    "io.circe"                   %% "circe-generic-extras"    % Version.circeVersion,
-    "io.circe"                   %% "circe-jawn"              % Version.circeVersion,
     "io.circe"                   %% "circe-config"            % Version.circeConfigVersion,
     "org.tpolecat"               %% "doobie-core"             % Version.doobieVersion,
     "org.tpolecat"               %% "doobie-hikari"           % Version.doobieVersion,
     "org.tpolecat"               %% "doobie-postgres"         % Version.doobieVersion,
     "org.tpolecat"               %% "doobie-scalatest"        % Version.doobieVersion,
     "org.flywaydb"               % "flyway-core"              % Version.flywayVersion,
-    "com.pauldijou"              %% "jwt-core"                % Version.JwtVersion,
     "org.slf4j"                  % "slf4j-log4j12"            % Version.scala4jLogging,
     "com.typesafe.scala-logging" %% "scala-logging"           % Version.scalaLogVersion,
     "com.github.pureconfig"      %% "pureconfig"              % Version.pureConfigVersion,
@@ -58,6 +47,6 @@ object ProjectDependencies extends {
     "com.dandxy89" %% "kratos-auth"       % Version.kratosLibVersion,
     // Compiler Plugins
     compilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.4"),
-    compilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.3.0-M4")
+    compilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.3.1")
   )
 }

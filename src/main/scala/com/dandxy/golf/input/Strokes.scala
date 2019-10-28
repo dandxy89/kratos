@@ -1,9 +1,8 @@
 package com.dandxy.golf.input
 
 import cats.kernel.Monoid
-import doobie.util.Meta
 import io.circe.syntax._
-import io.circe.{ Decoder, Encoder }
+import io.circe.{Decoder, Encoder}
 
 final case class Strokes(value: Double) extends AnyVal
 
@@ -14,7 +13,6 @@ object Strokes {
     override def combine(x: Strokes, y: Strokes): Strokes = Strokes(x.value + y.value)
   }
 
-  implicit val meta: Meta[Strokes]  = Meta[Double].imap(Strokes(_))(_.value)
   implicit val en: Encoder[Strokes] = Encoder.instance(_.value.asJson)
   implicit val de: Decoder[Strokes] = Decoder.instance(_.as[Double].map(Strokes(_)))
 }

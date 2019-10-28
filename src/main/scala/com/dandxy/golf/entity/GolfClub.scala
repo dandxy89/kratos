@@ -1,8 +1,7 @@
 package com.dandxy.golf.entity
 
-import doobie.util.Meta
 import io.circe.syntax._
-import io.circe.{ Decoder, Encoder }
+import io.circe.{Decoder, Encoder}
 
 sealed trait GolfClub {
   def displayName: String
@@ -165,7 +164,6 @@ object GolfClub {
       case _  => Putter
     }
 
-  implicit val meta: Meta[GolfClub]  = Meta[Int].imap(fromInt)(_.dbIndex)
   implicit val en: Encoder[GolfClub] = Encoder.instance(_.dbIndex.asJson)
   implicit val de: Decoder[GolfClub] = Decoder.instance(_.as[Int].map(fromInt))
 }

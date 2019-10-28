@@ -1,8 +1,7 @@
 package com.dandxy.golf.entity
 
-import doobie.util.Meta
 import io.circe.syntax._
-import io.circe.{ Decoder, Encoder }
+import io.circe.{Decoder, Encoder}
 
 sealed trait Par {
   def strokes: Int
@@ -42,7 +41,6 @@ object Par {
     case _ => ParSeven
   }
 
-  implicit val meta: Meta[Par]  = Meta[Int].imap(fromInt)(_.strokes)
   implicit val en: Encoder[Par] = Encoder.instance(_.strokes.asJson)
   implicit val de: Decoder[Par] = Decoder.instance(_.as[Int].map(fromInt))
 }

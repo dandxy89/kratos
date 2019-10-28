@@ -1,8 +1,7 @@
 package com.dandxy.golf.entity
 
-import doobie.util.Meta
 import io.circe.syntax._
-import io.circe.{ Decoder, Encoder }
+import io.circe.{Decoder, Encoder}
 
 trait Manufacturer {
   def company: String
@@ -44,7 +43,6 @@ object Manufacturer {
     case _ => Ping
   }
 
-  implicit val meta: Meta[Manufacturer]  = Meta[Int].imap(fromInt)(_.id)
   implicit val en: Encoder[Manufacturer] = Encoder.instance(_.id.asJson)
   implicit val de: Decoder[Manufacturer] = Decoder.instance(_.as[Int].map(fromInt))
 }

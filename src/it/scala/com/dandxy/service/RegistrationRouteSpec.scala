@@ -7,7 +7,9 @@ import com.dandxy.auth.Password
 import com.dandxy.model.player.PlayerId
 import com.dandxy.model.user.UserRegistration
 import com.dandxy.testData.MockRouteTestData
-import org.http4s.{ Header, HttpRoutes, Method, Request, Status, Uri }
+import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+import io.circe.{Decoder, Encoder}
+import org.http4s.{Header, HttpRoutes, Method, Request, Status, Uri}
 
 class RegistrationRouteSpec extends MockRouteTestData {
 

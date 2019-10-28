@@ -1,8 +1,7 @@
 package com.dandxy.golf.input
 
-import doobie.util.Meta
 import io.circe.syntax._
-import io.circe.{ Decoder, Encoder }
+import io.circe.{Decoder, Encoder}
 
 sealed trait ShotShape {
   def description: String
@@ -74,7 +73,6 @@ object ShotShape {
     case _ => Stinger
   }
 
-  implicit val meta: Meta[ShotShape]  = Meta[Int].imap(fromId)(_.id)
   implicit val en: Encoder[ShotShape] = Encoder.instance(_.id.asJson)
   implicit val de: Decoder[ShotShape] = Decoder.instance(_.as[Int].map(fromId))
 }
