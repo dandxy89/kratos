@@ -3,7 +3,6 @@ import sbt.{ ModuleID, compilerPlugin, _ }
 object ProjectDependencies extends {
 
   private[this] object Version {
-    val argonPass          = "2.5"
     val circeVersion       = "0.11.1"
     val doobieVersion      = "0.7.1"
     val fS2Version         = "1.0.4"
@@ -24,7 +23,6 @@ object ProjectDependencies extends {
 
   def apply(): Seq[ModuleID] = Seq(
     // Project dependencies
-    "de.mkammerer"               % "argon2-jvm"               % Version.argonPass,
     "co.fs2"                     %% "fs2-core"                % Version.fS2Version,
     "co.fs2"                     %% "fs2-io"                  % Version.fS2Version,
     "io.circe"                   %% "circe-config"            % Version.circeConfigVersion,
