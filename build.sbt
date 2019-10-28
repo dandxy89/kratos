@@ -1,7 +1,7 @@
 organization := "com.dandxy89"
 scalaVersion := "2.12.9"
 version := Version()
-name := "StrokesGained"
+name := "kratos-backend"
 
 lazy val root = (project in file("."))
   .configs(IntegrationTest)
