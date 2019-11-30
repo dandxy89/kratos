@@ -3,17 +3,17 @@ import sbt.{ ModuleID, compilerPlugin, _ }
 object ProjectDependencies extends {
 
   private[this] object Version {
-    val circeVersion       = "0.11.1"
+    val circeVersion       = "0.11.2"
     val doobieVersion      = "0.7.1"
     val fS2Version         = "1.0.4"
-    val http4sVersion      = "0.20.11"
+    val http4sVersion      = "0.20.13"
     val JwtVersion         = "3.1.0"
     val logbackVersion     = "1.2.3"
     val scalaLogVersion    = "3.9.2"
     val pureConfigVersion  = "0.10.2"
     val zioVersion         = "1.0-RC4"
     val scalaTestVersion   = "3.0.5"
-    val flywayVersion      = "5.2.4"
+    val flywayVersion      = "6.1.0"
     val refindedVersion    = "0.9.8"
     val profigVersion      = "2.3.4"
     val scala4jLogging     = "1.7.26"
