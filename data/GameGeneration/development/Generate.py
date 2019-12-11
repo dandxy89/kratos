@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" Generate Game data
+""" development/Generate
+
+    Generate Game data
+
 """
 import asyncio
 import time
