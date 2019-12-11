@@ -11,7 +11,7 @@ object ProjectDependencies extends {
     val logbackVersion     = "1.2.3"
     val scalaLogVersion    = "3.9.2"
     val pureConfigVersion  = "0.10.2"
-    val zioVersion         = "1.0-RC17"
+    val zioVersion         = "1.0-RC4"
     val scalaTestVersion   = "3.0.5"
     val flywayVersion      = "6.1.0"
     val refindedVersion    = "0.9.8"
