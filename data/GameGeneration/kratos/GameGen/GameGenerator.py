@@ -60,7 +60,17 @@ def random_hole_selection(par_three, par_four, par_five):
         return random_hole_selection(par_three, par_four, par_five)
 
 
-def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duff, game_id, index, hole_par):
+def shot_generator(
+    config,
+    clubs,
+    remaining_shot,
+    hole_type,
+    remaining_dist,
+    duff,
+    game_id,
+    index,
+    hole_par,
+):
     """ Shot generator
     """
     accum = 0
@@ -75,10 +85,12 @@ def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duf
             shot_distance = duff_generator(0, find_club_id(clubs, club)[2])
 
         else:
-            club = generator(config[hole_type][9 + ind]
-                             [0], config[hole_type][9 + ind][1])
-            shot_distance = generator(find_club_id(clubs, club)[
-                                          1], find_club_id(clubs, club)[2])
+            club = generator(
+                config[hole_type][9 + ind][0], config[hole_type][9 + ind][1]
+            )
+            shot_distance = generator(
+                find_club_id(clubs, club)[1], find_club_id(clubs, club)[2]
+            )
 
         accum += shot_distance
         accum_shot += 1
@@ -91,7 +103,7 @@ def shot_generator(config, clubs, remaining_shot, hole_type, remaining_dist, duf
             "distance": shot_distance,
             "location": 1 if (remaining_shot - (ind - 1)) == 1 else 2,  # TODO
             "club": club,
-            "strokeIndex": index + 1
+            "strokeIndex": index + 1,
         }
 
         hits.append(payload)
@@ -116,7 +128,7 @@ def generate_putts(putt_config, n_putt, game_id, index, shots_remaining, hole_pa
             "distance": pl,
             "location": 6,
             "club": 25,
-            "strokeIndex": index + 1
+            "strokeIndex": index + 1,
         }
 
         shots_remaining -= 1
@@ -139,7 +151,8 @@ def generate_hole(config, clubs, criteria, putt_config, game_id, stroke_index):
     """
     # Select a hole to generate
     (hole_type, criteria, hole_par) = random_hole_selection(
-        criteria[0], criteria[1], criteria[2])
+        criteria[0], criteria[1], criteria[2]
+    )
     all_shots = []
 
     # Determine the number of shots to be taken
@@ -151,8 +164,9 @@ def generate_hole(config, clubs, criteria, putt_config, game_id, stroke_index):
     n_putt = fetch_putt(config[hole_type][6], shot_count)
 
     # Generator putt lengths
-    putts = generate_putts(putt_config, n_putt, game_id,
-                           stroke_index, shot_count, hole_par)
+    putts = generate_putts(
+        putt_config, n_putt, game_id, stroke_index, shot_count, hole_par
+    )
     all_shots = combine_list(all_shots, putts)
 
     # Shots remaining
@@ -161,7 +175,16 @@ def generate_hole(config, clubs, criteria, putt_config, game_id, stroke_index):
     # Duff shot setup
     if (remaining_shot - config[hole_type][7]) > 0:
         (accum, accum_shot, hits) = shot_generator(
-            config, clubs, remaining_shot, hole_type, 0, True, game_id, stroke_index, hole_par)
+            config,
+            clubs,
+            remaining_shot,
+            hole_type,
+            0,
+            True,
+            game_id,
+            stroke_index,
+            hole_par,
+        )
 
         # Remaining distances and shots
         dist -= accum
@@ -171,7 +194,16 @@ def generate_hole(config, clubs, criteria, putt_config, game_id, stroke_index):
 
     # Take the remaining shots
     (accum, accum_shot, hits) = shot_generator(
-        config, clubs, remaining_shot, hole_type, dist, False, game_id, stroke_index, hole_par)
+        config,
+        clubs,
+        remaining_shot,
+        hole_type,
+        dist,
+        False,
+        game_id,
+        stroke_index,
+        hole_par,
+    )
     all_shots = combine_list(all_shots, hits)
 
     # Remaining distances and shots
@@ -195,7 +227,9 @@ def generate_course(config, clubs, putt_config, game_id):
     # Generate a hole via a loop
     for stroke_index in np.arange(num_hole):
         # Run the generate hole function
-        (s, sc, td, hs) = generate_hole(config, clubs, criteria, putt_config, game_id, stroke_index)
+        (s, sc, td, hs) = generate_hole(
+            config, clubs, criteria, putt_config, game_id, stroke_index
+        )
         criteria = s
         shot_count += sc
         total_distance += td

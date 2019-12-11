@@ -23,7 +23,9 @@ async def generate_game_data():
         server_game_id = create_game(TOKEN, PLAYER)
 
         # Generate a course worth of shots
-        course_shots = generate_course(HOLE_CONFIG, GOLF_CLUBS, PUTT_LENGTH, server_game_id)
+        course_shots = generate_course(
+            HOLE_CONFIG, GOLF_CLUBS, PUTT_LENGTH, server_game_id
+        )
         print("Course count of shots: {}".format(len(course_shots)))
         # print(json.dumps(course_shots, cls=NumpyEncoder))
 
@@ -31,7 +33,9 @@ async def generate_game_data():
         _ = put_request("http://localhost:8080/golf/game/shot", TOKEN, course_shots)
 
         # Invoke the strokes gained calculation
-        _ = get_request("http://localhost:8080/golf/result/{}".format(server_game_id), TOKEN)
+        _ = get_request(
+            "http://localhost:8080/golf/result/{}".format(server_game_id), TOKEN
+        )
         print("Loaded Game ID: {}\n".format(server_game_id))
 
         return 1

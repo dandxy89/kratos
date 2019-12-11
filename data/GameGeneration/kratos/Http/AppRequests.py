@@ -19,7 +19,7 @@ def create_game(auth_token: str, player_id: int):
         "courseName": "Burhill Golf Club - New Course",
         "handicap": 6.3,
         "ballUsed": "Truesoft",
-        "temperature": 18.2
+        "temperature": 18.2,
     }
 
     return put_request("http://localhost:8080/golf/game", auth_token, payload)
@@ -34,8 +34,8 @@ def put_request(url, auth_token, payload):
         headers={
             "Authorization": "Bearer {}".format(auth_token),
             "Accept": "application/json",
-            "Content-Type": "application/json"
-        }
+            "Content-Type": "application/json",
+        },
     )
 
     return response.text
@@ -49,8 +49,8 @@ def get_request(url, auth_token):
         headers={
             "Authorization": "Bearer {}".format(auth_token),
             "Accept": "application/json",
-            "Content-Type": "application/json"
-        }
+            "Content-Type": "application/json",
+        },
     )
 
     return response.status_code

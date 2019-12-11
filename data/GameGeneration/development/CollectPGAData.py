@@ -8,5 +8,5 @@ from kratos.PGA.PGAUtils import run
 
 os.chdir("../")
 
-if '__main__' == __name__:
+if "__main__" == __name__:
     run()
