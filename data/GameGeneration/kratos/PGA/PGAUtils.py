@@ -6,8 +6,8 @@ import json
 import os
 from random import random
 from time import sleep
-from urllib.request import urlretrieve
 
+import pandas as pd
 import requests
 
 from kratos.PGA.PGAConstants import BASE_HOLE_URL, YEARS, TOURNEY_IDS, BASE_URL, BASE_DATA_DIR
@@ -55,6 +55,91 @@ def fetch_and_save(url, dir_path, fname):
     return data
 
 
+def tourney(course_ID, year):
+    '''
+    Pull scores from all players of a tournament
+        course_ID = course number as designated by PGA
+        year = year of tournament to grab data from
+    '''
+    tourn = requests.get('http://www.pgatour.com/data/R/{}/{}/tournsum.json'.format(course_ID,
+                                                                                    year)).json()
+    # load JSON for tournament and year specified
+    data = tourn['years'][0]['tours'][0]['trns'][0]  # ignore extraneous metadata for now, get straight to the meat
+
+    out = {'RoundNum': [], 'CourseID': [], 'RoundPos': [], 'RoundScore': [], 'PlayerID': [], 'Year': [],
+           'PlayerName': []}  # initialize dictionary for dumping info into
+
+    for player in data['plrs']:
+        # save some stuff for later
+        playername = player['name']['first'] + ' ' + player['name']['last']
+        playerID = player['plrNum']
+        for rnd in player['rnds']:
+            out['Year'].append(year)
+            out['PlayerName'].append(playername)
+            out['PlayerID'].append(playerID)
+            out['RoundNum'].append(rnd['rndNum'])
+            out['CourseID'].append(rnd['courseNum'])
+            out['RoundPos'].append(rnd['rndPos'])
+            out['RoundScore'].append(rnd['rndScr'])
+
+    return pd.DataFrame(out)
+
+
+def player(PlayerName, year):
+    '''
+    Pull scores from all tournaments for a single player
+        PlayerName = first and last name of player
+        year = year of to grab data from
+    '''
+    out = {'RoundNum': [], 'CourseID': [], 'RoundPos': [], 'RoundScore': [], 'PlayerID': [], 'Year': [],
+           'PlayerName': []}  # initialize dictionary for dumping info into
+
+    for CourseID in course_info(year)['CourseID']:  # get course IDs for all tournaments in given year
+        tourn = requests.get('http://www.pgatour.com/data/R/{}/{}/tournsum.json'.format(CourseID,
+                                                                                        year)).json()
+        # load JSON for course and year specified
+        data = tourn['years'][0]['tours'][0]['trns'][0][
+            'plrs']  # ignore extraneous metadata for now, get straight to the meat
+        checkname = data['name']['first'] + ' ' + data['name']['last']
+
+        for rnd in data:
+            if data['name']['first'] + ' ' + data['name']['last'] == PlayerName:
+                out['Year'].append(year)
+                out['PlayerName'].append(PlayerName)
+                out['PlayerID'].append(data['plrNum'])
+                out['RoundNum'].append(rnd['rndNum'])
+                out['CourseID'].append(rnd['courseNum'])
+                out['RoundPos'].append(rnd['rndPos'])
+                out['RoundScore'].append(rnd['rndScr'])
+
+    return pd.DataFrame(out)
+
+
+def course_info(year):
+    '''
+    Pull course information into DataFrame
+    year = year to grab data from
+    '''
+    out = {'CourseName': [], 'CourseID': [], 'TournName': []}  # initialize dictionary for dumping info into
+
+    # check all possible course numbers, given that they are 3-digit numbers
+    for course in ['%03d' % (x,) for x in range(101)]:
+        try:
+            tourn = requests.get('http://www.pgatour.com/data/R/{}/{}/tournsum.json'.format(course,
+                                                                                            year)).json()  # load JSON for course and year specified
+            data = tourn['years'][0]['tours'][0]['trns'][
+                0]  # ignore extraneous metadata for now, get straight to the meat
+            out['CourseName'].append(data['courses'][0]['courseName'])
+            out['CourseID'].append(data['courses'][0]['courseNum'])
+            out['TournName'].append(data['fullName'])
+            print('loading data from course #' + course)
+
+        except:
+            print(course + ' is not a valid course ID')
+
+    return pd.DataFrame(out)
+
+
 def run():
     for tid in TOURNEY_IDS:
         for yr in YEARS:
@@ -62,7 +147,6 @@ def run():
             data_dir = "{}/{}/{}".format(BASE_DATA_DIR, tid, yr)
 
             # fetch course summary info
-
             course_dir = "{}/course".format(data_dir)
             course_data = fetch_and_save(
                 "{}/course.json".format(data_url),
@@ -74,48 +158,47 @@ def run():
                 print("cannot find course for {}".format(tid))
                 continue
 
-            # fetch course details & imgs
-
-            for course in course_data["courses"]:
-                print("{}...".format(course["name"]))
-                cid = course["number"]
-                cid_dir = "{}/{}".format(course_dir, cid)
-
-                maybe_make_dir(cid_dir)
-                save(course, "{}/info.json".format(cid_dir))
-
-                holes = [
-                    {
-                        "num": num,
-                        "full": hole_url(yr, tid, cid, num, "full"),
-                        "green": hole_url(yr, tid, cid, num, "green"),
-                    } for num in range(1, 19)
-                ]
-                print("sample of hole URLs: {}".format(holes[:5]))
-
-                # try first hole
-                hole1 = holes[0]["full"]
-                result = requests.get(hole1, timeout=10).status_code
-                if result != 200:
-                    print("course {}: no 1st hole img ({})".format(cid, result))
-                    continue
-
-                hole_dir = "{}/holes".format(cid_dir)
-                maybe_make_dir(hole_dir)
-
-                for hole in holes:
-                    num = hole["num"]
-                    path_start = "{}/{}".format(hole_dir, "{0:02d}".format(num))
-                    try:
-                        urlretrieve(hole["full"], "{}_{}.jpg".format(path_start, "full"))
-                        urlretrieve(hole["green"], "{}_{}.jpg".format(path_start, "green"))
-                    except Exception as e:
-                        print("error with {} ({})".format(hole, str(e)))
-                    if num % 6 == 0:
-                        sleep(1 + random())
+            # # fetch course details & imgs
+            #
+            # for course in course_data["courses"]:
+            #     print("{}...".format(course["name"]))
+            #     cid = course["number"]
+            #     cid_dir = "{}/{}".format(course_dir, cid)
+            #
+            #     maybe_make_dir(cid_dir)
+            #     save(course, "{}/info.json".format(cid_dir))
+            #
+            #     holes = [
+            #         {
+            #             "num": num,
+            #             "full": hole_url(yr, tid, cid, num, "full"),
+            #             "green": hole_url(yr, tid, cid, num, "green"),
+            #         } for num in range(1, 19)
+            #     ]
+            #     print("sample of hole URLs: {}".format(holes[:5]))
+            #
+            #     # try first hole
+            #     hole1 = holes[0]["full"]
+            #     result = requests.get(hole1, timeout=10).status_code
+            #     if result != 200:
+            #         print("course {}: no 1st hole img ({})".format(cid, result))
+            #         continue
+            #
+            #     hole_dir = "{}/holes".format(cid_dir)
+            #     maybe_make_dir(hole_dir)
+            #
+            #     for hole in holes:
+            #         num = hole["num"]
+            #         path_start = "{}/{}".format(hole_dir, "{0:02d}".format(num))
+            #         try:
+            #             urlretrieve(hole["full"], "{}_{}.jpg".format(path_start, "full"))
+            #             urlretrieve(hole["green"], "{}_{}.jpg".format(path_start, "green"))
+            #         except Exception as e:
+            #             print("error with {} ({})".format(hole, str(e)))
+            #         if num % 6 == 0:
+            #             sleep(1 + random())
 
             # fetch tourney (scoring) summary
-
             summary = fetch_and_save(
                 "{}/leaderboard-v2.json".format(data_url),
                 data_dir,
@@ -127,7 +210,6 @@ def run():
                 continue
 
             # fetch player tourney scorecards
-
             players = [p["player_id"] for p in summary["leaderboard"]["players"]]
             print("{} players found".format(len(players)))
 
