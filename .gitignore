@@ -6,3 +6,5 @@
 *.xml
 !logback.xml
 .vscode/
+*venv/
+*__pycache__/
