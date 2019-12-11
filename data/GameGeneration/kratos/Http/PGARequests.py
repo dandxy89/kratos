@@ -7,10 +7,7 @@ import requests
 
 
 def tourney(course_ID, year):
-    """
-    Pull scores from all players of a tournament
-        course_ID = course number as designated by PGA
-        year = year of tournament to grab data from
+    """ Pull scores from all players of a tournament
     """
     tourn = requests.get(
         "http://www.pgatour.com/data/R/{}/{}/tournsum.json".format(course_ID, year)
