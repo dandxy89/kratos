@@ -1,0 +1,1 @@
+/Users/dandixey/Scala/kratos/StrokesGained/data/GameGeneration/resources/tournaments/*.json filter=lfs diff=lfs merge=lfs -text
