@@ -83,8 +83,8 @@ def process_document(input_df: pd.DataFrame, filter_value: tuple) -> pd.DataFram
         df.loc[:, "_club"] = None
 
         return df[COLUMNS]
-    except:
-        print(f"Unable to filter and process: {filter_value}")
+    except Exception as error:
+        print(f"Unable to filter and process: {filter_value} due to {error}")
         return pd.DataFrame(data=[], columns=COLUMNS)
 
 
