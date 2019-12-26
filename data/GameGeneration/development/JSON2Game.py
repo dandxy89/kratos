@@ -15,8 +15,10 @@ import pandas as pd
 
 warnings.filterwarnings("ignore")
 
-if "setup.py" not in os.listdir():
+if "setup.py" not in os.listdir(os.getcwd()):
     os.chdir("../")
+
+COLUMNS = ["_gameId", "_hole", "_shot", "_par", "_distance", "_location", "_club"]
 
 
 def location_mapping(row: dict) -> int:
@@ -66,20 +68,24 @@ def location_mapping(row: dict) -> int:
 def process_document(input_df: pd.DataFrame, filter_value: tuple) -> pd.DataFrame:
     """
     """
-    df = input_df.xs(filter_value)
+    try:
+        df = input_df.xs(filter_value)
 
-    df[["x1", "y1", "z1"]] = df[["x", "y", "z"]].shift(1)
-    df[["shotText_"]] = df[["shotText"]].shift(1)
+        df[["x1", "y1", "z1"]] = df[["x", "y", "z"]].shift(1)
+        df[["shotText_"]] = df[["shotText"]].shift(1)
 
-    df.loc[:, "_gameId"] = None
-    df.loc[:, "_hole"] = df["hole"]
-    df.loc[:, "_shot"] = df["n"]
-    df.loc[:, "_par"] = None
-    df.loc[:, "_distance"] = df.apply(lambda row: handler(row), axis=1)
-    df.loc[:, "_location"] = df.apply(lambda row: location_mapping(row), axis=1)
-    df.loc[:, "_club"] = None
+        df.loc[:, "_gameId"] = None
+        df.loc[:, "_hole"] = df["hole"]
+        df.loc[:, "_shot"] = df["n"]
+        df.loc[:, "_par"] = None
+        df.loc[:, "_distance"] = df.apply(lambda row: handler(row), axis=1)
+        df.loc[:, "_location"] = df.apply(lambda row: location_mapping(row), axis=1)
+        df.loc[:, "_club"] = None
 
-    return df[["_gameId", "_hole", "_shot", "_par", "_distance", "_location", "_club"]]
+        return df[COLUMNS]
+    except:
+        print(f"Unable to filter and process: {filter_value}")
+        return pd.DataFrame(data=[], columns=COLUMNS)
 
 
 def get_shot_one(text: str) -> int:
@@ -157,9 +163,10 @@ if __name__ == "__main__":
         f"Shot DF shape: shots={shots_df.shape[0]} - holes={unique_combinations.shape[0]}"
     )
 
+    print("Starting processing Games....")
     process_document_partial = partial(process_document, shots_df)
     res = run_pool_map(process_document_partial, unique_combinations.tolist())
-
+    print("Finished processing Games...")
     output_df = pd.concat(res, axis=0)
     output_df.to_parquet(
         "prepared_shots.parquet", engine="fastparquet", compression="gzip", index=False
