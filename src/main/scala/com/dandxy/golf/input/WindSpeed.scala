@@ -1,7 +1,7 @@
 package com.dandxy.golf.input
 
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 
 sealed trait WindSpeed {
   def description: String

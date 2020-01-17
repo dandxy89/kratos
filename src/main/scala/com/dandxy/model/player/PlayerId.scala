@@ -1,7 +1,7 @@
 package com.dandxy.model.player
 
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 
 final case class PlayerId(id: Int)
 

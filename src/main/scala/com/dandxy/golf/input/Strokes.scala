@@ -2,7 +2,7 @@ package com.dandxy.golf.input
 
 import cats.kernel.Monoid
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 
 final case class Strokes(value: Double) extends AnyVal
 

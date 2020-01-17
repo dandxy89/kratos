@@ -1,7 +1,7 @@
 package com.dandxy.golf.entity
 
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 
 sealed trait Orientation {
   def description: String

@@ -6,7 +6,7 @@ import com.dandxy.golf.entity.Penalty._
 import doobie.implicits._
 import doobie.util.fragment.Fragment
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 
 sealed trait PGAStatistics {
   val tableName: Fragment

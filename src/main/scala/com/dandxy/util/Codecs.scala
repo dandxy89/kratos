@@ -10,8 +10,8 @@ import com.dandxy.middleware.http4s.ToHttpResponse
 import com.dandxy.model.error.DomainError
 import com.dandxy.model.error.DomainError._
 import io.circe.Decoder.Result
-import io.circe.{Decoder, Encoder, HCursor, Json}
-import org.http4s.{EntityEncoder, Response, Status}
+import io.circe.{ Decoder, Encoder, HCursor, Json }
+import org.http4s.{ EntityEncoder, Response, Status }
 
 import scala.language.higherKinds
 

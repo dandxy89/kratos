@@ -2,7 +2,7 @@ package com.dandxy.golf.entity
 
 import cats.kernel.Semigroup
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 
 sealed trait Score {
   def name: String

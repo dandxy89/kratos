@@ -1,7 +1,7 @@
 package com.dandxy.golf.input
 
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 
 final case class Distance(value: Double) extends AnyVal
 

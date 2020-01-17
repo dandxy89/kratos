@@ -11,7 +11,7 @@ import com.dandxy.middleware.http4s.content.defaults._
 import com.dandxy.middleware.http4s.content.syntax._
 import com.dandxy.model.error.DomainError
 import com.dandxy.model.error.DomainError.InvalidDataProvided
-import com.dandxy.model.player.{PlayerId, Registration}
+import com.dandxy.model.player.{ PlayerId, Registration }
 import com.dandxy.model.user.UserRegistration
 import com.dandxy.util.Codecs._
 import org.http4s.HttpRoutes

@@ -3,12 +3,12 @@ package com.dandxy.db.sql
 import java.sql.Timestamp
 
 import cats.implicits._
-import com.dandxy.auth.{Password, PlayerHash}
-import com.dandxy.golf.entity.{GolfClub, Location, Orientation, Par}
-import com.dandxy.golf.input.GolfInput.{UserGameInput, UserShotInput}
+import com.dandxy.auth.{ Password, PlayerHash }
+import com.dandxy.golf.entity.{ GolfClub, Location, Orientation, Par }
+import com.dandxy.golf.input.GolfInput.{ UserGameInput, UserShotInput }
 import com.dandxy.golf.input._
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{GameId, Hole}
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
 import doobie._

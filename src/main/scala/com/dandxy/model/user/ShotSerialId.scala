@@ -1,7 +1,7 @@
 package com.dandxy.model.user
 
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 
 final case class ShotSerialId(id: Int)
 
