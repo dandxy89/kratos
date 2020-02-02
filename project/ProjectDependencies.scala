@@ -6,7 +6,7 @@ object ProjectDependencies extends {
     val circeVersion       = "0.11.2"
     val doobieVersion      = "0.7.1"
     val fS2Version         = "1.0.4"
-    val http4sVersion      = "0.20.15"
+    val http4sVersion      = "0.20.17"
     val JwtVersion         = "3.1.0"
     val logbackVersion     = "1.2.3"
     val scalaLogVersion    = "3.9.2"
