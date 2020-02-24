@@ -12,7 +12,7 @@ object ProjectDependencies extends {
     val scalaLogVersion    = "3.9.2"
     val pureConfigVersion  = "0.10.2"
     val zioVersion         = "1.0.0-RC17"
-    val scalaTestVersion   = "3.0.5"
+    val scalaTestVersion   = "3.1.1"
     val flywayVersion      = "6.1.0"
     val profigVersion      = "2.3.4"
     val scala4jLogging     = "1.7.26"
