@@ -14,7 +14,6 @@ import com.dandxy.strokes.StablefordCalculator.{ calculate => StablefordPoints }
 import com.dandxy.util.Helpers.{ combineAll, roundAt3 }
 
 import scala.annotation.tailrec
-import scala.language.higherKinds
 
 object StrokesGainedCalculator {
 

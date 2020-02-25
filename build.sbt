@@ -1,5 +1,5 @@
 organization := "com.dandxy89"
-scalaVersion := "2.12.10"
+scalaVersion := "2.13.1"
 version := Version()
 name := "kratos-backend"
 

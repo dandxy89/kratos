@@ -1,4 +1,4 @@
-package com.dandxy.db.util
+package com.dandxy.db.sql
 
 import doobie._
 import doobie.implicits._

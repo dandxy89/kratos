@@ -11,8 +11,6 @@ import com.dandxy.model.user.Identifier.GameId
 import doobie.implicits._
 import doobie.util.transactor.Transactor
 
-import scala.language.higherKinds
-
 trait MetricsStore[F[_]] {
   def strokesGainedByClub(gameId: GameId): F[List[StokesGainedByClub]]
   def bestXShots(gameId: GameId, n: Int): F[List[StrokesGainedResults]]
@@ -35,7 +33,7 @@ trait MetricsStore[F[_]] {
   def firstPuttDistanceNotGIR(gameId: GameId): F[Option[Distance]]
 }
 
-class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F]) extends MetricsStore[F] {
+class MetricsStoreInterpreter[F[_]: Bracket[*[_], Throwable], A](xa: Transactor[F]) extends MetricsStore[F] {
 
   def strokesGainedByClub(gameId: GameId): F[List[StokesGainedByClub]] =
     getStrokesGainedByClub(gameId).transact(xa)
@@ -98,7 +96,7 @@ class MetricsStoreInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[
 
 object MetricsStoreInterpreter {
 
-  def apply[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F]): MetricsStoreInterpreter[F, A] =
+  def apply[F[_]: Bracket[*[_], Throwable], A](xa: Transactor[F]): MetricsStoreInterpreter[F, A] =
     new MetricsStoreInterpreter[F, A](xa: Transactor[F])
 
 }

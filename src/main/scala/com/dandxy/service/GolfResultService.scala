@@ -13,8 +13,6 @@ import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.strokes.GolfResult
 import com.dandxy.strokes.StrokesGainedCalculator.calculateMany
 
-import scala.language.higherKinds
-
 object GolfResultService {
 
   def processGolfResult[F[_]](

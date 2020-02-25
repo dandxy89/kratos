@@ -22,8 +22,6 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.server.AuthMiddleware
 import org.http4s.{ AuthedRoutes, HttpRoutes }
 
-import scala.language.higherKinds
-
 class GolferRoutes[F[_]](us: UserStore[F],
                          middleware: AuthMiddleware[F, Claims],
                          getStatistic: (Distance, Location) => F[Option[PGAStatistic]])(implicit F: Concurrent[F])

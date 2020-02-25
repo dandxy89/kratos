@@ -9,7 +9,6 @@ import doobie.util.transactor.Transactor
 import fs2.Stream
 
 import scala.concurrent.duration._
-import scala.language.higherKinds
 
 object HealthCheck extends StrictLogging {
 

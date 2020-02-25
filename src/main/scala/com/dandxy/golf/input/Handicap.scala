@@ -9,7 +9,6 @@ import io.circe.{ Decoder, Encoder }
 final case class Handicap(value: Double) extends AnyVal
 
 object Handicap {
-
   val defaultHandicap: Handicap = Handicap(0)
 
   implicit val en: Encoder[Handicap] = Encoder.instance(_.value.asJson)
@@ -19,7 +18,6 @@ object Handicap {
 final case class HandicapWithDate(value: Handicap, dt: Timestamp)
 
 object HandicapWithDate {
-  // Instances
   import com.dandxy.util.Codecs.TimestampFormat
   implicit val en: Encoder[HandicapWithDate] = deriveEncoder
   implicit val de: Decoder[HandicapWithDate] = deriveDecoder
