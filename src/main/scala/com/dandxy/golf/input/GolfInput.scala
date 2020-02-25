@@ -4,10 +4,10 @@ import java.sql.Timestamp
 
 import com.dandxy.golf.entity._
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{GameId, Hole}
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
 import com.dandxy.model.user.ShotSerialId
-import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
-import io.circe.{Decoder, Encoder}
+import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
+import io.circe.{ Decoder, Encoder }
 
 sealed trait GolfInput
 

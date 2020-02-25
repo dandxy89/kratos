@@ -5,8 +5,8 @@ import com.dandxy.golf.entity._
 import com.dandxy.golf.input.Temperature.Celsius
 import com.dandxy.golf.input._
 import com.dandxy.model.player.PlayerId
-import com.dandxy.model.user.Identifier.{GameId, Hole}
-import com.dandxy.model.user.{ShotSerialId, UserEmail}
+import com.dandxy.model.user.Identifier.{ GameId, Hole }
+import com.dandxy.model.user.{ ShotSerialId, UserEmail }
 import doobie.Meta
 
 object PostgresInstances {
