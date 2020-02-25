@@ -29,18 +29,15 @@ object GolfResult {
   implicit val en: Encoder[GolfResult] = deriveEncoder
   implicit val de: Decoder[GolfResult] = deriveDecoder
 
-  implicit val sg: Semigroup[GolfResult] = new Semigroup[GolfResult] {
-
-    def combine(x: GolfResult, y: GolfResult): GolfResult =
-      GolfResult(
-        x.id,
-        x.score |+| y.score,
-        x.strokesGained |+| y.strokesGained,
-        x.strokesGainedOffTheTee |+| y.strokesGainedOffTheTee,
-        x.strokesGainedApproach |+| y.strokesGainedApproach,
-        x.strokesGainedAround |+| y.strokesGainedAround,
-        x.strokesGainedPutting |+| y.strokesGainedPutting,
-        x.stablefordPoints |+| y.stablefordPoints
-      )
-  }
+  implicit val sg: Semigroup[GolfResult] = (x: GolfResult, y: GolfResult) =>
+    GolfResult(
+      x.id,
+      x.score |+| y.score,
+      x.strokesGained |+| y.strokesGained,
+      x.strokesGainedOffTheTee |+| y.strokesGainedOffTheTee,
+      x.strokesGainedApproach |+| y.strokesGainedApproach,
+      x.strokesGainedAround |+| y.strokesGainedAround,
+      x.strokesGainedPutting |+| y.strokesGainedPutting,
+      x.stablefordPoints |+| y.stablefordPoints
+    )
 }

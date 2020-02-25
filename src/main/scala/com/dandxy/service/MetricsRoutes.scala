@@ -12,8 +12,6 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.server.AuthMiddleware
 import org.http4s.{ AuthedRoutes, HttpRoutes }
 
-import scala.language.higherKinds
-
 class MetricsRoutes[F[_]](ms: MetricsStore[F], middleware: AuthMiddleware[F, Claims])(implicit F: Concurrent[F]) extends Http4sDsl[F] {
 
   private val routes: AuthedRoutes[Claims, F] = AuthedRoutes.of[Claims, F] {

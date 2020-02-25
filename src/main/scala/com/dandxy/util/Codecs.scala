@@ -13,8 +13,6 @@ import io.circe.Decoder.Result
 import io.circe.{ Decoder, Encoder, HCursor, Json }
 import org.http4s.{ EntityEncoder, Response, Status }
 
-import scala.language.higherKinds
-
 object Codecs {
 
   implicit def errorResponse[F[_]: Monad](implicit ee: EntityEncoder[F, DomainError]): ToHttpResponse[F, DomainError] =

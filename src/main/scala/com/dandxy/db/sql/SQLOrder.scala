@@ -1,6 +1,6 @@
 package com.dandxy.db.sql
 
-import doobie.util.Meta
+import doobie.Meta
 
 sealed trait SQLOrder {
   def direction: String

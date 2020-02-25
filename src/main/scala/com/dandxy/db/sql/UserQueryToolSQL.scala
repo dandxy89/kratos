@@ -13,6 +13,7 @@ import com.dandxy.model.user._
 import com.dandxy.strokes.GolfResult
 import doobie._
 import doobie.implicits._
+import doobie.implicits.javasql._
 
 object UserQueryToolSQL {
 

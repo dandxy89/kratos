@@ -14,7 +14,6 @@ import com.dandxy.strokes.StablefordCalculator.{ calculate => StablefordPoints }
 import com.dandxy.util.Helpers.{ combineAll, roundAt3 }
 
 import scala.annotation.tailrec
-import scala.language.higherKinds
 
 object StrokesGainedCalculator {
 
@@ -98,8 +97,6 @@ object StrokesGainedCalculator {
   def calculateMany[F[_]](dbOp: GetStat[F])(h: Handicap, input: List[UserShotInput])(implicit F: Monad[F]): F[List[StrokesGained]] = {
     val uniqueHoles = input.map(_.hole).distinct
 
-    uniqueHoles.traverse { hole =>
-      calculateOne(dbOp)(h, input.filter(_.hole == hole).sortBy(_.hole.id * -1), Option(hole))
-    }
+    uniqueHoles.traverse(hole => calculateOne(dbOp)(h, input.filter(_.hole == hole).sortBy(_.hole.id * -1), Option(hole)))
   }
 }

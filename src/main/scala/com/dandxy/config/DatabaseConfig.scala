@@ -4,12 +4,12 @@ import cats.effect._
 import cats.syntax.functor._
 import com.typesafe.scalalogging.StrictLogging
 import doobie.hikari.HikariTransactor
+import doobie.util.ExecutionContexts
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import org.flywaydb.core.Flyway
 
 import scala.concurrent.ExecutionContext
-import scala.language.higherKinds
 
 final case class DatabaseConfig(driver: String,
                                 host: String,
@@ -20,16 +20,14 @@ final case class DatabaseConfig(driver: String,
 
 object DatabaseConfig extends StrictLogging {
 
-  def hikariDbTransactor[F[_]: Async: ContextShift](dbc: DatabaseConfig,
-                                                    connEc: ExecutionContext,
-                                                    blocker: Blocker): Resource[F, HikariTransactor[F]] =
+  def hikariDbTransactor[F[_]: Async: ContextShift](dbc: DatabaseConfig, connEc: ExecutionContext): Resource[F, HikariTransactor[F]] =
     HikariTransactor.newHikariTransactor[F](
       dbc.driver,
       s"jdbc:postgresql://${dbc.host}:${dbc.port}/",
       dbc.user,
       dbc.password,
       connEc,
-      blocker.blockingContext
+      Blocker.liftExecutionContext(ExecutionContexts.synchronous)
     )
 
   def initializeDb[F[_]](cfg: DatabaseConfig)(implicit S: Sync[F]): F[Unit] =

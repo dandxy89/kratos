@@ -11,8 +11,6 @@ import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl
 
-import scala.language.higherKinds
-
 class HealthRoutes[F[_]](dbStatus: Ref[F, Status])(implicit F: Sync[F]) extends Http4sDsl[F] {
 
   val healthService: HttpRoutes[F] = HttpRoutes.of[F] {

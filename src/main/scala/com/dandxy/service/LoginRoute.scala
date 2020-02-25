@@ -11,8 +11,6 @@ import org.http4s.server.middleware.authentication.BasicAuth
 import org.http4s.server.middleware.authentication.BasicAuth.BasicAuthenticator
 import org.http4s.{ AuthedRoutes, BasicCredentials, Header, HttpRoutes, Response, Status }
 
-import scala.language.higherKinds
-
 class LoginRoute[F[_]](authenticator: BasicAuthenticator[F, PlayerId], newToken: PlayerId => String)(implicit F: Sync[F])
     extends Http4sDsl[F] {
 

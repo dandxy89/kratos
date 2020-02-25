@@ -16,7 +16,6 @@ import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.{ Router, Server => HTTP4Server }
 
 import scala.concurrent.ExecutionContext
-import scala.language.higherKinds
 
 object Server extends IOApp {
 
@@ -30,9 +29,8 @@ object Server extends IOApp {
       conf <- Resource.liftF(parser.decodePathF[F, ApplicationConfig]("golf"))
       // Concurrency execution contexts
       conE <- ExecutionContexts.fixedThreadPool[F](conf.jdbc.connections.poolSize)
-      cacE <- ExecutionContexts.cachedThreadPool[F]
       // JDBC Ops
-      dbXa <- DatabaseConfig.hikariDbTransactor(conf.jdbc, conE, Blocker.liftExecutionContext(cacE))
+      dbXa <- DatabaseConfig.hikariDbTransactor(conf.jdbc, conE)
       urDB = UserPostgresQueryInterpreter(dbXa, conf.auth)
       pgDB = PGAPostgresQueryInterpreter(dbXa)
       gsDB = MetricsStoreInterpreter(dbXa)

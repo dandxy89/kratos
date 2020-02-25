@@ -19,8 +19,6 @@ import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl
 
-import scala.language.higherKinds
-
 class RegistrationRoute[F[_]: Monad](registerUser: (UserRegistration, Password, Timestamp) => F[PlayerId])(implicit F: Sync[F])
     extends Http4sDsl[F] {
 

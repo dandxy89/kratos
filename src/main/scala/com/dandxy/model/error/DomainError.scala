@@ -34,7 +34,5 @@ object DomainError {
     val msg: String = ""
   }
 
-  implicit val e: Encoder[DomainError] = Encoder.instance { e =>
-    Json.obj("error" -> e.msg.asJson)
-  }
+  implicit val e: Encoder[DomainError] = Encoder.instance(e => Json.obj("error" -> e.msg.asJson))
 }

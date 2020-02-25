@@ -16,8 +16,6 @@ import com.dandxy.strokes.GolfResult
 import doobie.implicits._
 import doobie.util.transactor.Transactor
 
-import scala.language.higherKinds
-
 trait UserStore[F[_]] {
   def gdprPurge(playerId: PlayerId): F[Int]
   def registerUser(registration: UserRegistration, hashedPassword: Password, updateTime: Timestamp): F[PlayerId]
@@ -38,7 +36,7 @@ trait UserStore[F[_]] {
   def getGameHandicap(game: GameId): F[Option[Handicap]]
 }
 
-class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F], config: AuthSalt) extends UserStore[F] {
+class UserPostgresQueryInterpreter[F[_]: Bracket[*[_], Throwable], A](xa: Transactor[F], config: AuthSalt) extends UserStore[F] {
 
   import com.dandxy.db.sql.UserQueryToolSQL._
 
@@ -131,7 +129,7 @@ class UserPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](xa: Transa
 
 object UserPostgresQueryInterpreter {
 
-  def apply[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F], config: AuthSalt): UserPostgresQueryInterpreter[F, A] =
+  def apply[F[_]: Bracket[*[_], Throwable], A](xa: Transactor[F], config: AuthSalt): UserPostgresQueryInterpreter[F, A] =
     new UserPostgresQueryInterpreter(xa, config)
 
 }

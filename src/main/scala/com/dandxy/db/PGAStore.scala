@@ -7,13 +7,11 @@ import com.dandxy.golf.pga.Statistic.PGAStatistic
 import doobie.implicits._
 import doobie.util.transactor.Transactor
 
-import scala.language.higherKinds
-
 trait PGAStore[F[_]] {
   def getStatistic(distance: Distance, stat: Location): F[Option[PGAStatistic]]
 }
 
-class PGAPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](val xa: Transactor[F]) extends PGAStore[F] {
+class PGAPostgresQueryInterpreter[F[_]: Bracket[*[_], Throwable], A](val xa: Transactor[F]) extends PGAStore[F] {
 
   import com.dandxy.db.sql.PGAQueryToolSQL._
 
@@ -24,7 +22,7 @@ class PGAPostgresQueryInterpreter[F[_]: Bracket[?[_], Throwable], A](val xa: Tra
 
 object PGAPostgresQueryInterpreter {
 
-  def apply[F[_]: Bracket[?[_], Throwable], A](xa: Transactor[F]): PGAPostgresQueryInterpreter[F, A] =
+  def apply[F[_]: Bracket[*[_], Throwable], A](xa: Transactor[F]): PGAPostgresQueryInterpreter[F, A] =
     new PGAPostgresQueryInterpreter(xa)
 
 }

@@ -3,20 +3,15 @@ import sbt.{ ModuleID, compilerPlugin, _ }
 object ProjectDependencies extends {
 
   private[this] object Version {
-    val circeVersion       = "0.11.2"
-    val doobieVersion      = "0.7.1"
-    val fS2Version         = "1.0.4"
-    val http4sVersion      = "0.20.17"
-    val JwtVersion         = "3.1.0"
-    val logbackVersion     = "1.2.3"
+    val doobieVersion      = "0.8.8"
+    val fS2Version         = "2.2.2"
     val scalaLogVersion    = "3.9.2"
-    val pureConfigVersion  = "0.10.2"
+    val pureConfigVersion  = "0.12.2"
     val zioVersion         = "1.0.0-RC17"
-    val scalaTestVersion   = "3.0.5"
-    val flywayVersion      = "6.1.0"
-    val profigVersion      = "2.3.4"
-    val scala4jLogging     = "1.7.26"
-    val circeConfigVersion = "0.6.1"
+    val scalaTestVersion   = "3.1.1"
+    val flywayVersion      = "6.2.4"
+    val scala4jLogging     = "1.7.30"
+    val circeConfigVersion = "0.7.0"
     val kratosLibVersion   = "0.0.1-SNAPSHOT"
   }
 
@@ -40,7 +35,7 @@ object ProjectDependencies extends {
     "com.dandxy89" %% "kratos-middleware" % Version.kratosLibVersion,
     "com.dandxy89" %% "kratos-auth"       % Version.kratosLibVersion,
     // Compiler Plugins
-    compilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.4"),
-    compilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.3.1")
+    compilerPlugin("org.typelevel" %% "kind-projector"     % "0.11.0" cross CrossVersion.full),
+    compilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
   )
 }
