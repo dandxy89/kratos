@@ -1,7 +1,6 @@
+# kratos-backend**
 
-**kratos-backend**
-
-# Overview of Application
+## Overview of Application
 
 The purpose of this backend application is to record, calculate and analyse golf data.
 
@@ -11,7 +10,7 @@ The intention longer term is to incorporate more analysis and modes to record sh
 
 The ultimate goal is for this to assist with my own golf game - to take an analytical approach towards becoming a Scratch golfer.
 
-# Strokes Gained
+## Strokes Gained
 
 From PGA Tours Website:
 
@@ -39,34 +38,35 @@ Worked example:
 
 [Link](https://www.pgatour.com/news/2016/05/31/strokes-gained-defined.html)
 
-## Useful command
+### Useful command
 
 * Kill all dockers: ```docker kill $(docker ps -q)```
 * Temporary database: ```docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 postgres```
 * Long-term development: ```docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres```
 * Command line connection to postgres: ```psql -h localhost -U postgres -d postgres```
 
-## Http4s Server
+### Http4s Server
 
 Postman specification included within this project
 
-## UI
+### UI
 
 Yet to be decided / built.
 
-# Code Coverage
+## Code Coverage
 
 * ```sbt clean coverage it:test coverageReport``` - run the tests and generate a coverage report
 * ```bash <(curl -s https://codecov.io/bash) -t 2136d990-e22d-4501-8293-501f554bf29f``` - push results to [codecov.io](https://codecov.io/gh/dandxy89/kratos)
 
 ## Code Count
 
-* Scala: 4560 lines
-* SQL: 3537
-* Python: 210
-* R: 37 
+* Scala: 4753 lines
+* SQL: 3892
+* JSON: 1354
+* Markdown: 168
+* R: 37
 
-# Documents
+## Documents
 
 All documents relating to this project are located [here](/docs)
 
@@ -86,6 +86,4 @@ You'll need to publish both `auth` and `middleware` projects locally:
 
 Then run the following to publish locally:
 
-```bash
-sh publishLibraryLocally.sh
-```
+    sh publishLibraryLocally.sh
