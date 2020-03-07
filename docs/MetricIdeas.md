@@ -14,11 +14,12 @@
   * Holed putt distance
   * Putts to hole from distance(s)
   * Eagles, Birdies, Pars, ...
-  * Hole where GIR and Not GIR - Broken
-  * Avg Putts per Green in Regulation - Broken
-  * Avg Putts per Non Green in Regulation - Broken
+  * Hole where GIR and Not GIR
+  * Avg Putts per Green in Regulation
+  * Avg Putts per Non Green in Regulation
   * First Putt distance Green in Regulation
   * First Putt distance Non Green in Regulation
+  * Compare against round, last 3 rounds, all-time
 
 * Need classification:
   * What if Analysis? Shot distance vs shot distance from hole
@@ -43,6 +44,5 @@
   * Worst performing club
   * Up and downs - In Scope
   * First 6, Middle 6 and Last 6
-  * Compare against round, last 3 rounds, all-time
   * Get best x shots By Club
   * Get worst x shots By Club
