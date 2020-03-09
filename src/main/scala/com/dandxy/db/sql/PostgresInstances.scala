@@ -31,4 +31,5 @@ object PostgresInstances {
   implicit val m19: Meta[Hole]               = Meta[Int].imap(Hole(_))(_.id)
   implicit val m20: Meta[ShotSerialId]       = Meta[Int].imap(ShotSerialId(_))(_.id)
   implicit val m21: Meta[UserEmail]          = Meta[String].imap(UserEmail(_))(_.email)
+  implicit val m22: Meta[SQLOrder]           = Meta[String].timap(v => SQLOrder.fromString(v))(v => v.direction)
 }

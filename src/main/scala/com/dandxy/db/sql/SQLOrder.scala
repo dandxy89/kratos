@@ -1,7 +1,5 @@
 package com.dandxy.db.sql
 
-import doobie.Meta
-
 sealed trait SQLOrder {
   def direction: String
 }
@@ -21,7 +19,4 @@ object SQLOrder {
       case "ASC"  => Ascending
       case "DESC" => Descending
     }
-
-  implicit val meta: Meta[SQLOrder] = Meta[String].timap(v => fromString(v))(v => v.direction)
-
 }
